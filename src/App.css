@@ -1,0 +1,35 @@
+.App {
+  height:100vh; 
+  display: flex;
+  flex-direction: row;
+  margin:0em;
+  overflow:hidden; 
+}
+
+.SideBar {
+  width: 65px;
+  position: relative;
+  margin: 0;
+  flex-grow:0;
+  flex-shrink: 0;
+}
+
+.ListView {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  width: 400px;
+  margin-right:0;
+  flex-grow:0;  
+}
+
+.NetworkView {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  width:200em;
+  display:flex;
+  flex-direction: column;
+  flex-grow:1;
+  flex-shrink: 1;
+}
