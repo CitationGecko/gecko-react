@@ -1,0 +1,8 @@
+.primary-rounded-button {
+    margin: .5em;
+    padding: .8em 1em;
+    border-radius: 50px;
+    outline: none;
+    background: #FFC700;
+    border:none;
+}

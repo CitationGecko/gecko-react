@@ -1,0 +1,9 @@
+.side-bar{
+    width: 65px;
+    background-color: #E0DFDF
+}
+
+.bottom-button{
+    position: absolute;
+    bottom:0px
+}

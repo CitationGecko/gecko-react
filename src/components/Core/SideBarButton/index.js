@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import './styles.module.css';
+import styles from './styles.module.css';
+
 
 class SideBarButton extends Component {
     render() {
       return (
-        <button className="SideBarButton"> 
+        <button className={styles.button}> 
+          <img src={this.props.img} alt='icon' className={styles.icon}/>
         </button>
       );
     }
