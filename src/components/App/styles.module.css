@@ -1,0 +1,7 @@
+.App {
+  height:100vh; 
+  display: flex;
+  flex-direction: row;
+  margin:0em;
+  overflow:hidden; 
+}
