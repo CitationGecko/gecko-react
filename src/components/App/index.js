@@ -5,8 +5,6 @@ import ListView from 'components/ListView';
 import NetworkView from 'components/NetworkView';
 import Logo from '../Logo';
 import OnboardingModal from '../OnboardingModal';
-import 'styles/global-styles.module.css'
-
 
 class App extends Component {
   render() {

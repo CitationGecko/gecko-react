@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SideBarButton from 'components/Core/SideBarButton'
-import icon from 'resources/seed-icon.png'
+import icon from './seed-icon.png'
 
 class SeedsButton extends Component {
     render() {
