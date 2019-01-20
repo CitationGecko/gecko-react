@@ -4,17 +4,17 @@ import SideBar from 'components/SideBar';
 import ListView from 'components/ListView';
 import NetworkView from 'components/NetworkView';
 import Logo from '../Logo';
-import OnboardingModal from '../OnboardingModal';
+import ModalContainer from '../Modals';
 
 class App extends Component {
   render() {
     return (
       <div className={styles.App}>
-        <SideBar/>
-        <ListView/>
-        <NetworkView/>
-        <OnboardingModal/>
-        <Logo/>
+        <SideBar />
+        <ListView />
+        <NetworkView />
+        <ModalContainer />
+        <Logo />
       </div>
     );
   }
