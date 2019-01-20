@@ -1,0 +1,15 @@
+.large-secondary-button {
+    width: 100%;
+    padding: 1em;
+    background: #5B5C5A;
+    color: #FFFFFF;
+    margin: 2px 0;
+    outline: none;
+    transition: background .3s;
+    cursor: pointer;
+    border:none;
+}
+
+.large-secondary-button:hover {
+    background: #E2B104;
+}
