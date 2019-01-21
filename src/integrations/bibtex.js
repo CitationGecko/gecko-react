@@ -26,20 +26,21 @@ function parseBibtexEntry(p) {
 
 export function importBibTex(evt) {
   const files = evt.target.files; // FileList object
-  for (var i = 0, f; (f = files[i]); i++) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const papers = bibtexParse.toJSON(e.target.result);
-      const newPapers = papers.filter(p => p.entryTags.doi).map(parseBibtexEntry);
-      if (!newPapers.length) {
-        alert(
-          "We couldn't find any DOIs in the BibTex you uploaded please check your export settings"
-        );
-      }
-      console.log(newPapers);
+  const reader = new FileReader();
+  return new Promise((resolve, reject) => {
+    reader.onerror = () => {
+      reader.abort();
+      reject(new DOMException('Problem parsing input file.'));
     };
-    reader.readAsText(f);
-  }
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsText(files[0]);
+  }).then(data => {
+    const papers = bibtexParse.toJSON(data);
+    const newPapers = papers.filter(p => p.entryTags.doi).map(parseBibtexEntry);
+    return newPapers;
+  });
 }
 // Importing Example BibTex
 export function importExampleBibTex() {
