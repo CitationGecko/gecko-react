@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import PrimarySquareButton from 'components/Core/PrimarySquareButton';
-import { openModal, loadExample } from '../../../state';
+import { openModal, updatePapers, closeModal } from '../../../state';
+import { importExampleBibTex } from '../../../integrations/bibtex';
 
 class OnboardingModal extends Component {
   render() {
@@ -19,7 +20,7 @@ class OnboardingModal extends Component {
           important papers you may have missed.
         </p>
         <div className={styles['modal-footer']}>
-          <PrimarySquareButton onClick={this.props.clickStart} text={'Start discovering papers!'} />
+          <PrimarySquareButton onClick={this.props.clickStart} text={'Start discovering papers'} />
         </div>
         <div>
           <button className={styles['demo-button']} onClick={this.props.clickExample}>
@@ -36,8 +37,10 @@ const mapDispatchToProps = dispatch => {
     clickStart: () => {
       dispatch(openModal('addSeeds'));
     },
-    clickExample: () => {
-      dispatch(loadExample());
+    clickExample: async () => {
+      let papers = await importExampleBibTex();
+      dispatch(updatePapers(papers, true));
+      dispatch(closeModal());
     }
   };
 };

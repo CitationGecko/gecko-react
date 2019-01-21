@@ -5,50 +5,51 @@ import { composeWithDevTools } from 'redux-devtools-extension';
  * actions
  */
 
-const NEW_SEEDS = 'NEW_SEEDS';
-const UPDATE_SEED = 'UPDATE_SEED';
-const DELETE_SEED = 'DELETE_SEED';
-const NEW_PAPERS = 'NEW_PAPERS';
-const UPDATE_PAPER = 'UPDATE_PAPER';
-const NEW_EDGES = 'NEW_EDGES';
+const DELETE_PAPERS = 'DELETE_PAPERS';
+const UPDATE_PAPERS = 'UPDATE_PAPERS';
+const UPDATE_EDGES = 'UPDATE_EDGES';
 const OPEN_MODAL = 'OPEN_MODAL';
 const CLOSE_MODAL = 'CLOSE_MODAL';
-const LOAD_EXAMPLE = 'LOAD_EXAMPLE';
+const SELECT_PAPER = 'SELECT_PAPER';
+const SWITCH_LIST_VIEW = 'SWITCH_LIST_VIEW';
 
 /*
  * action creators
  */
-export function loadExample() {
-  return { type: LOAD_EXAMPLE };
-}
+
 export function closeModal() {
   return { type: CLOSE_MODAL };
 }
 export function openModal(modal) {
   return { type: OPEN_MODAL, modal };
 }
-export function newSeeds(text) {
-  return { type: NEW_SEEDS, text };
+export function updatePapers(papers, seeds) {
+  return { type: UPDATE_PAPERS, papers, seeds };
 }
-export function newPapers(index) {
-  return { type: NEW_PAPERS, index };
+export function deletePapers(index) {
+  return { type: DELETE_PAPERS, index };
 }
-export function updateSeed(index) {
-  return { type: UPDATE_SEED, index };
+export function updateEdges(index) {
+  return { type: UPDATE_EDGES, index };
 }
-export function updatePaper(index) {
-  return { type: UPDATE_PAPER, index };
+export function selectPaper(paper) {
+  return { type: SELECT_PAPER, paper };
 }
-export function deleteSeed(index) {
-  return { type: DELETE_SEED, index };
-}
-export function newEdges(index) {
-  return { type: NEW_EDGES, index };
+export function switchToList(view) {
+  return { type: SWITCH_LIST_VIEW, view };
 }
 
 /*
  * reducers
  */
+
+function listView(state = 'Seeds', action) {
+  if (action.type === SWITCH_LIST_VIEW) {
+    return action.view;
+  } else {
+    return state;
+  }
+}
 
 function modal(state = 'onboarding', action) {
   switch (action.type) {
@@ -63,7 +64,21 @@ function modal(state = 'onboarding', action) {
 
 function papers(state = [], action) {
   switch (action.type) {
-    case NEW_SEEDS:
+    case UPDATE_PAPERS:
+      let newState = { ...state };
+      action.papers.forEach(paper => {
+        paper.seed = action.seeds;
+        // Match / merge and return with ID
+        // For each reference / citedBy match and merge then match / merge edges
+        let match = matchPapers(paper, state);
+        if (!match) {
+          newState[Object.keys(newState).length] = paper;
+        } else {
+          newState[match.ID] = merge(match, paper);
+        }
+      });
+      return newState;
+    case DELETE_PAPERS:
       return state;
     default:
       return state;
@@ -72,13 +87,50 @@ function papers(state = [], action) {
 
 function edges(state = [], action) {
   switch (action.type) {
-    case NEW_EDGES:
+    case UPDATE_EDGES:
       return state;
     default:
       return state;
   }
 }
 
-const reducer = combineReducers({ papers, edges, modal });
+const reducer = combineReducers({ papers, edges, modal, listView });
 
 export const store = createStore(reducer, composeWithDevTools());
+
+//For a new paper this function tries to find a match in the existing database
+function matchPapers(paper, Papers) {
+  var match;
+  if (paper.microsoftID) {
+    match = Papers.filter(function(p) {
+      return p.microsoftID === paper.microsoftID;
+    })[0];
+  }
+  if (!match && paper.doi) {
+    match = Papers.filter(function(p) {
+      return paper.doi.toLowerCase() === (p.doi ? p.doi.toLowerCase() : null);
+    })[0];
+  }
+  if (!match && paper.title && paper.author) {
+    match = Papers.filter(function(p) {
+      if (p.title) {
+        return (
+          p.title.toLowerCase() === paper.title.toLowerCase() &&
+          paper.author.toLowerCase() === (p.author ? p.author.toLowerCase() : null)
+        );
+      }
+      return null;
+    })[0];
+  }
+  return match;
+}
+
+//Given two paper/edge objects that are deemed to be matching, this merges the info in the two.
+function merge(oldRecord, newRecord) {
+  let mergedRecord = { ...oldRecord };
+  for (let i in newRecord) {
+    mergedRecord[i] = oldRecord[i] ? oldRecord[i] : newRecord[i];
+  }
+  mergedRecord.seed = oldRecord.seed || newRecord.seed; //If either record is marked as a seed make the merged result a seed.
+  return mergedRecord;
+}

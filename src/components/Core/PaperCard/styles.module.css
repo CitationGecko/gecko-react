@@ -1,0 +1,72 @@
+.paper-box {
+  background-color: #f7f7f7;
+  border: none;
+  margin: 0.1em 0;
+  padding: 5% 2% 5% 10%;
+}
+.paper-title {
+  padding-bottom: 0.2em;
+}
+
+.float-right {
+  float: right;
+  position: relative;
+  right: 0em;
+  padding: 0.2em;
+}
+
+.metric {
+  float: right;
+  position: relative;
+  right: 0em;
+  padding: 0.2em 0em;
+  color: black;
+  font-weight: 400;
+}
+.metric-count {
+  color: #be2121;
+  font-weight: 400;
+}
+
+.delete-seed {
+  height: 1em;
+  cursor: pointer;
+  float: right;
+  position: relative;
+  right: 0em;
+  padding: 0.2em;
+}
+.author-year {
+  text-align: left;
+  padding: 0.2em 0em;
+}
+.journal {
+  text-align: left;
+  padding: 0.2em 0em;
+  font-style: italic;
+}
+.linkout-icon {
+  margin-left: 0.5em;
+  max-height: 1em;
+}
+
+/* .paper-box:hover{
+  background-color:rgb(255, 199, 0)
+}
+
+.paper-box:hover .stroke1 {
+  stroke:white;
+}
+.paper-box:hover .fill1 {
+  fill:white;
+} */
+
+.selected-paper {
+  background-color: rgb(255, 199, 0);
+}
+.selected-paper .stroke1 {
+  stroke: white;
+}
+.selected-paper .fill1 {
+  fill: white;
+}

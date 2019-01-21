@@ -4,16 +4,20 @@ import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import PrimaryButton from '../Core/PrimaryButton';
 import SecondaryButton from '../Core/SecondaryButton';
-import { openModal } from '../../state';
+import { openModal, selectPaper } from '../../state';
+import PaperCard from '../Core/PaperCard';
 
-class ListView extends Component {
+class SeedList extends Component {
   render() {
+    const paperBoxes = this.props.papers.map(p => (
+      <PaperCard mode={this.props.mode} paper={p} onClick={() => this.props.selectPaper(p)} />
+    ));
     return (
       <div className={styles['list-view']}>
         <div className={styles['list-header']}>
           <h1>My Seed Papers</h1>
         </div>
-        <div className={styles['list-body']} />
+        <div className={styles['list-body']}>{paperBoxes}</div>
         <div className={styles['list-footer']}>
           <div className={styles['list-footer-btn-group']}>
             <PrimaryButton onClick={this.props.clickAddSeeds} text={'Add more seeds'} />
@@ -26,13 +30,19 @@ class ListView extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    papers: Object.values(state.papers).filter(p => p.seed),
+    mode: state.listView
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     clickAddSeeds: () => {
       dispatch(openModal('addSeeds'));
+    },
+    selectPaper: p => {
+      dispatch(selectPaper(p));
     }
   };
 };
@@ -40,4 +50,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListView);
+)(SeedList);
