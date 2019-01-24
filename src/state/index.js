@@ -62,22 +62,30 @@ function modal(state = 'onboarding', action) {
   }
 }
 
-function papers(state = [], action) {
+function papers(state = { Papers: {}, Edges: [] }, action) {
   switch (action.type) {
     case UPDATE_PAPERS:
-      let newState = { ...state };
+      let Papers = { ...state.Papers };
+      let Edges = [...state.Edges];
       action.papers.forEach(paper => {
         paper.seed = action.seeds;
-        // Match / merge and return with ID
+        paper = addPaper(paper, Papers);
         // For each reference / citedBy match and merge then match / merge edges
-        let match = matchPapers(paper, state);
-        if (!match) {
-          newState[Object.keys(newState).length] = paper;
-        } else {
-          newState[match.ID] = merge(match, paper);
+        if (paper.seed) {
+          // Add references and citations.
+          paper.references.forEach(ref => {
+            ref = addPaper(ref, Papers);
+            let edge = { source: paper.ID, target: ref.ID };
+            addEdge(edge, Edges);
+          });
+          paper.citations.forEach(ref => {
+            ref = addPaper(ref, Papers);
+            let edge = { source: ref.ID, target: paper.ID };
+            addEdge(edge, Edges);
+          });
         }
       });
-      return newState;
+      return { Papers, Edges };
     case DELETE_PAPERS:
       return state;
     default:
@@ -99,7 +107,7 @@ const reducer = combineReducers({ papers, edges, modal, listView });
 export const store = createStore(reducer, composeWithDevTools());
 
 //For a new paper this function tries to find a match in the existing database
-function matchPapers(paper, Papers) {
+function matchPaper(paper, Papers) {
   var match;
   if (paper.microsoftID) {
     match = Papers.filter(function(p) {
@@ -125,12 +133,38 @@ function matchPapers(paper, Papers) {
   return match;
 }
 
+function matchEdge(edge, Edges) {
+  return Edges.filter(function(e) {
+    return (e.source === edge.source) & (e.target === edge.target);
+  })[0];
+}
+
 //Given two paper/edge objects that are deemed to be matching, this merges the info in the two.
 function merge(oldRecord, newRecord) {
+  if (!oldRecord) return newRecord;
   let mergedRecord = { ...oldRecord };
   for (let i in newRecord) {
-    mergedRecord[i] = oldRecord[i] ? oldRecord[i] : newRecord[i];
+    mergedRecord[i] = oldRecord[i] || newRecord[i];
   }
   mergedRecord.seed = oldRecord.seed || newRecord.seed; //If either record is marked as a seed make the merged result a seed.
   return mergedRecord;
+}
+
+function addPaper(paper, Papers) {
+  let match = matchPaper(paper, Papers);
+  paper = merge(match, paper);
+  paper.ID = paper.ID | Object.keys(Papers).length;
+  Papers[paper.ID] = paper;
+  return paper;
+}
+
+function addEdge(edge, Edges) {
+  let matchedEdge = Edges.filter(function(e) {
+    return (e.source === edge.source) & (e.target === edge.target);
+  })[0];
+  if (!matchedEdge) {
+    Edges.push(edge);
+  } else {
+    merge(matchedEdge, edge);
+  }
 }
