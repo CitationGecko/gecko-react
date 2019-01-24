@@ -1,30 +1,11 @@
-import { store, updatePapers, updateEdges } from '../state';
+import { store, updatePapers } from '../state';
 
 store.subscribe(async function() {
   let allPapers = Object.values(store.getState().papers);
   let toQuery = allPapers.filter(p => !p.crossref);
   if (toQuery.length) {
     let updatedPapers = (await getMetadata(toQuery)).map(parsePaper);
-    let seedPapers = updatedPapers.filter(paper => paper.seed && paper.references);
-    let references = seedPapers.map(p => p.references.map(parseReference));
     store.dispatch(updatePapers(updatedPapers));
-    updatedPapers
-      .filter(paper => paper.seed && paper.references)
-      .forEach(async paper => {
-        console.log(`CrossRef found ${paper.references.length} citations for ${paper.doi}`);
-        let newPapers = paper.references.map(parseReference);
-        newPapers = await getMetadata(newPapers);
-        newPapers = newPapers.map(parsePaper);
-        store.dispatch(updatePapers(newPapers));
-        let newEdges = newPapers.map(p => {
-          return {
-            source: paper,
-            target: p,
-            crossref: true
-          };
-        });
-        store.dispatch(updateEdges(newEdges));
-      });
   }
 });
 
@@ -53,7 +34,7 @@ export function crossrefSearch(input) {
     });
 }
 
-function parsePaper(response) {
+export function parsePaper(response) {
   let date = response['published-print'] ? response['published-print'] : response['created'];
 
   return {
@@ -65,12 +46,12 @@ function parsePaper(response) {
     timestamp: new Date(date['date-time']),
     journal: response['container-title'] ? response['container-title'][0] : '',
     citationCount: response['is-referenced-by-count'],
-    references: response['reference'] ? response['reference'] : false,
+    references: response['reference'] ? response['reference'].map(parseReference) : false,
     crossref: true
   };
 }
 
-function parseReference(ref) {
+export function parseReference(ref) {
   return {
     doi: ref.DOI ? ref.DOI : null,
     title: ref['article-title'] ? ref['article-title'] : 'unavailable',
