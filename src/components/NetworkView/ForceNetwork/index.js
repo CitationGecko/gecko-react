@@ -127,12 +127,13 @@ class ForceNetwork extends Component {
       .attr('marker-end', 'url(#end)')
       .merge(this.lines);
 
-    // Update and restart the simulation. Only restart if new papers
+    // Update and restart the simulation.
     this.simulation.nodes(this.nodes).on('tick', () => tick(this));
     this.simulation.force('link').links(this.edges);
     this.simulation.force('collide').initialize(this.simulation.nodes());
 
     if (newNodes | deadNodes | newEdges | deadEdges) {
+      // Only restart if there is a network change
       this.simulation.alpha(1).restart();
       this.circles.style('opacity', 1);
       this.lines.style('opacity', 1);
