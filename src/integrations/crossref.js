@@ -1,30 +1,46 @@
-import { store, updatePapers } from '../state';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { updatePapers, requestSent } from '../state';
 
-store.subscribe(handleRequest);
-
-async function handleRequest() {
-  let allPapers = Object.values(store.getState().data.Papers);
-  let toQuery = allPapers.filter(p => !p.crossref);
-  console.log(toQuery);
-  if (toQuery.length) {
-    let updatedPapers = (await getMetadata(toQuery)).map(parsePaper);
-    store.dispatch(updatePapers(updatedPapers));
+class CrossRef extends Component {
+  render() {
+    if (this.props.papers.length) {
+      this.props.requestMetadata(this.props.papers);
+    }
+    return null;
   }
 }
 
-export function getMetadata(papers) {
-  let dois = papers.filter(p => p.doi);
-  if (dois.length) {
-    let query = dois.map(p => `doi:${p.doi}`).join();
-    let base = 'https://api.crossref.org/works?rows=1000&filter=';
-    return fetch(base + query)
-      .then(resp => resp.json())
-      .then(json => {
-        return json.message.items;
+const mapStateToProps = state => {
+  return {
+    papers: Object.values(state.data.Papers).filter(p => !p.crossref && p.doi)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    requestMetadata: papers => {
+      dispatch(requestSent(papers, 'crossref'));
+      getMetadata(papers).then(papers => {
+        dispatch(updatePapers(papers.map(parsePaper)));
       });
-  } else {
-    return [];
-  }
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CrossRef);
+
+export function getMetadata(papers) {
+  let query = papers.map(p => `doi:${p.doi}`).join();
+  let base = 'https://api.crossref.org/works?rows=1000&filter=';
+  return fetch(base + query)
+    .then(resp => resp.json())
+    .then(json => {
+      return json.message.items;
+    });
 }
 
 export function crossrefSearch(input) {
