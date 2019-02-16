@@ -31,7 +31,7 @@ class RecommendedList extends Component {
 
 const mapStateToProps = state => {
   return {
-    papers: Object.values(state.papers).filter(p => !p.seed),
+    papers: Object.values(state.data.Papers).filter(p => !p.seed),
     mode: state.listView
   };
 };
