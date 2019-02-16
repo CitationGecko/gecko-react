@@ -5,7 +5,6 @@ import './index.css';
 import App from './components/App/index';
 import registerServiceWorker from './registerServiceWorker';
 import { store } from './state';
-import './integrations/crossref';
 
 ReactDOM.render(
   <Provider store={store}>

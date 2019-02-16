@@ -12,6 +12,7 @@ const OPEN_MODAL = 'OPEN_MODAL';
 const CLOSE_MODAL = 'CLOSE_MODAL';
 const SELECT_PAPER = 'SELECT_PAPER';
 const SWITCH_LIST_VIEW = 'SWITCH_LIST_VIEW';
+const REQUEST_SENT = 'REQUEST_SENT';
 
 /*
  * action creators
@@ -37,6 +38,9 @@ export function selectPaper(paper) {
 }
 export function switchToList(view) {
   return { type: SWITCH_LIST_VIEW, view };
+}
+export function requestSent(papers, source) {
+  return { type: REQUEST_SENT, papers, source };
 }
 
 /*
@@ -64,11 +68,17 @@ function modal(state = 'onboarding', action) {
 
 function data(state = { Papers: {}, Edges: [] }, action) {
   switch (action.type) {
+    case REQUEST_SENT:
+      let papers = action.papers.map(paper => {
+        paper[action.source] = true;
+        return paper;
+      });
+      return { Papers: { ...state.Papers, ...papers }, Edges: state.Edges };
     case UPDATE_PAPERS:
       let Papers = { ...state.Papers };
       let Edges = [...state.Edges];
       action.papers.forEach(paper => {
-        paper.seed = action.seeds;
+        paper.seed = paper.seed || action.seeds;
         paper = addPaper(paper, Papers);
         // For each reference / citedBy match and merge then match / merge edges
         if (paper.seed) {
