@@ -62,7 +62,7 @@ function modal(state = 'onboarding', action) {
   }
 }
 
-function papers(state = { Papers: {}, Edges: [] }, action) {
+function data(state = { Papers: {}, Edges: [] }, action) {
   switch (action.type) {
     case UPDATE_PAPERS:
       let Papers = { ...state.Papers };
@@ -73,16 +73,20 @@ function papers(state = { Papers: {}, Edges: [] }, action) {
         // For each reference / citedBy match and merge then match / merge edges
         if (paper.seed) {
           // Add references and citations.
-          paper.references.forEach(ref => {
-            ref = addPaper(ref, Papers);
-            let edge = { source: paper.ID, target: ref.ID };
-            addEdge(edge, Edges);
-          });
-          paper.citations.forEach(ref => {
-            ref = addPaper(ref, Papers);
-            let edge = { source: ref.ID, target: paper.ID };
-            addEdge(edge, Edges);
-          });
+          if (paper.references) {
+            paper.references.forEach(ref => {
+              ref = addPaper(ref, Papers);
+              let edge = { source: paper.ID, target: ref.ID };
+              addEdge(edge, Edges);
+            });
+          }
+          if (paper.citations) {
+            paper.citations.forEach(ref => {
+              ref = addPaper(ref, Papers);
+              let edge = { source: ref.ID, target: paper.ID };
+              addEdge(edge, Edges);
+            });
+          }
         }
       });
       return { Papers, Edges };
@@ -93,21 +97,13 @@ function papers(state = { Papers: {}, Edges: [] }, action) {
   }
 }
 
-function edges(state = [], action) {
-  switch (action.type) {
-    case UPDATE_EDGES:
-      return state;
-    default:
-      return state;
-  }
-}
-
-const reducer = combineReducers({ papers, edges, modal, listView });
+const reducer = combineReducers({ data, modal, listView });
 
 export const store = createStore(reducer, composeWithDevTools());
 
 //For a new paper this function tries to find a match in the existing database
 function matchPaper(paper, Papers) {
+  Papers = Object.values(Papers);
   var match;
   if (paper.microsoftID) {
     match = Papers.filter(function(p) {

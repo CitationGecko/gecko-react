@@ -1,13 +1,16 @@
 import { store, updatePapers } from '../state';
 
-store.subscribe(async function() {
-  let allPapers = Object.values(store.getState().papers);
+store.subscribe(handleRequest);
+
+async function handleRequest() {
+  let allPapers = Object.values(store.getState().data.Papers);
   let toQuery = allPapers.filter(p => !p.crossref);
+  console.log(toQuery);
   if (toQuery.length) {
     let updatedPapers = (await getMetadata(toQuery)).map(parsePaper);
     store.dispatch(updatePapers(updatedPapers));
   }
-});
+}
 
 export function getMetadata(papers) {
   let dois = papers.filter(p => p.doi);
