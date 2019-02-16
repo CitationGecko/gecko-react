@@ -15,7 +15,7 @@ class PaperCard extends Component {
         break;
       case 'CitedBySeeds':
         rightFloat = (
-          <span>
+          <span className={styles['metric']}>
             cited by <span className={styles['metric-count']}>{this.props.paper.seedsCitedBy}</span>{' '}
             seed papers
           </span>
@@ -39,13 +39,14 @@ class PaperCard extends Component {
           <a
             className={styles['linkout-icon']}
             target="_blank"
+            rel="noreferrer noopener"
             href={`https://doi.org/${this.props.paper.doi}`}
           >
             {<LinkoutIcon />}
           </a>
         </div>
         <div className={styles['author-year']}>{`${author} ${this.props.paper.year}`}</div>
-        <div className={styles['right-float']}>{rightFloat}</div>
+        <div className={styles['float-right']}>{rightFloat}</div>
         <div className={styles['journal']}>{journal}</div>
       </div>
     );

@@ -67,16 +67,17 @@ function modal(state = 'onboarding', action) {
 }
 
 function data(state = { Papers: {}, Edges: [] }, action) {
+  let Papers = { ...state.Papers };
+  let Edges = [...state.Edges];
   switch (action.type) {
     case REQUEST_SENT:
-      let papers = action.papers.map(paper => {
+      action.papers.forEach(paper => {
         paper[action.source] = true;
+        Papers[paper.ID] = paper;
         return paper;
       });
-      return { Papers: { ...state.Papers, ...papers }, Edges: state.Edges };
+      return { Papers: Papers, Edges: state.Edges };
     case UPDATE_PAPERS:
-      let Papers = { ...state.Papers };
-      let Edges = [...state.Edges];
       action.papers.forEach(paper => {
         paper.seed = paper.seed || action.seeds;
         paper = addPaper(paper, Papers);
@@ -89,6 +90,7 @@ function data(state = { Papers: {}, Edges: [] }, action) {
               let edge = { source: paper.ID, target: ref.ID };
               addEdge(edge, Edges);
             });
+            Papers = updateMetrics(Papers, Edges);
           }
           if (paper.citations) {
             paper.citations.forEach(ref => {
@@ -96,6 +98,7 @@ function data(state = { Papers: {}, Edges: [] }, action) {
               let edge = { source: ref.ID, target: paper.ID };
               addEdge(edge, Edges);
             });
+            Papers = updateMetrics(Papers, Edges);
           }
         }
       });
@@ -158,19 +161,52 @@ function merge(oldRecord, newRecord) {
 
 function addPaper(paper, Papers) {
   let match = matchPaper(paper, Papers);
-  paper = merge(match, paper);
-  paper.ID = paper.ID | Object.keys(Papers).length;
+  if (!match) {
+    paper.ID = Object.keys(Papers).length;
+  } else {
+    paper = merge(match, paper);
+  }
   Papers[paper.ID] = paper;
   return paper;
 }
 
 function addEdge(edge, Edges) {
-  let matchedEdge = Edges.filter(function(e) {
-    return (e.source === edge.source) & (e.target === edge.target);
-  })[0];
+  let matchedEdge = matchEdge(edge, Edges);
   if (!matchedEdge) {
     Edges.push(edge);
   } else {
     merge(matchedEdge, edge);
   }
+}
+
+export var metrics = {
+  localCitedBy: function(paper, Papers, Edges) {
+    //Count number of times cited in the edges list supplied
+    return Edges.filter(e => e.target === paper.ID).length;
+  },
+  localReferences: function(paper, Papers, Edges) {
+    //Count number of times a paper cites another paper (in the edge list provided)
+    return Edges.filter(e => e.source === paper.ID).length;
+  },
+  seedsCitedBy: function(paper, Papers, Edges) {
+    //Count number of seed papers that cite the paper.
+    return Edges.filter(e => Papers[e.source].seed & (e.target === paper.ID)).length;
+  },
+  seedsCited: function(paper, Papers, Edges) {
+    //Count number of seed papers the paper cites.
+    return Edges.filter(e => Papers[e.target].seed & (e.source === paper.ID)).length;
+  }
+};
+
+//Recalculates all metrics
+export function updateMetrics(Papers, Edges) {
+  let updatedPapers = Papers;
+  for (let metric in metrics) {
+    for (let p in updatedPapers) {
+      let updatedPaper = { ...updatedPapers[p] };
+      updatedPaper[metric] = metrics[metric](updatedPaper, Papers, Edges);
+      updatedPapers[p] = updatedPaper;
+    }
+  }
+  return updatedPapers;
 }

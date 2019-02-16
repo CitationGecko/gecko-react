@@ -10,7 +10,7 @@ import PaperCard from '../Core/PaperCard';
 class SeedList extends Component {
   render() {
     const paperBoxes = this.props.papers.map(p => (
-      <PaperCard mode={this.props.mode} paper={p} onClick={() => this.props.selectPaper(p)} />
+      <PaperCard mode={'Seeds'} paper={p} onClick={() => this.props.selectPaper(p)} />
     ));
     return (
       <div className={styles['list-view']}>
@@ -31,8 +31,7 @@ class SeedList extends Component {
 
 const mapStateToProps = state => {
   return {
-    papers: Object.values(state.data.Papers).filter(p => p.seed),
-    mode: state.listView
+    papers: Object.values(state.data.Papers).filter(p => p.seed)
   };
 };
 

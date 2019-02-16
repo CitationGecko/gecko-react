@@ -1,37 +1,17 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import { updatePapers, requestSent } from '../state';
+import { store, updatePapers, requestSent } from '../state';
 
-class CrossRef extends Component {
-  render() {
-    if (this.props.papers.length) {
-      this.props.requestMetadata(this.props.papers);
-    }
-    return null;
+store.subscribe(handleStateChange);
+
+function handleStateChange() {
+  let allPapers = Object.values(store.getState().data.Papers);
+  let toQuery = allPapers.filter(p => !p.crossref && p.doi);
+  if (toQuery.length) {
+    store.dispatch(requestSent(toQuery, 'crossref'));
+    getMetadata(toQuery)
+      .then(resp => resp.map(parsePaper))
+      .then(papers => store.dispatch(updatePapers(papers)));
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    papers: Object.values(state.data.Papers).filter(p => !p.crossref && p.doi)
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    requestMetadata: papers => {
-      dispatch(requestSent(papers, 'crossref'));
-      getMetadata(papers).then(papers => {
-        dispatch(updatePapers(papers.map(parsePaper)));
-      });
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CrossRef);
 
 export function getMetadata(papers) {
   let query = papers.map(p => `doi:${p.doi}`).join();
@@ -49,7 +29,7 @@ export function crossrefSearch(input) {
   return fetch(url)
     .then(resp => resp.json())
     .then(json => {
-      const items = json.message.items.map(parsePaper);
+      return json.message.items.map(parsePaper);
     });
 }
 
@@ -58,7 +38,7 @@ export function parsePaper(response) {
 
   return {
     doi: response.DOI,
-    title: response.title ? response.title[0] : 'unavailable',
+    title: response.title ? response.title[0].replace(/<\/?[^>]+(>|$)/g, '') : 'unavailable',
     author: response.author ? response.author[0].family : '',
     month: date['date-parts'][0][1],
     year: date['date-parts'][0][0],
@@ -73,7 +53,9 @@ export function parsePaper(response) {
 export function parseReference(ref) {
   return {
     doi: ref.DOI ? ref.DOI : null,
-    title: ref['article-title'] ? ref['article-title'] : 'unavailable',
+    title: ref['article-title']
+      ? ref['article-title'].replace(/<\/?[^>]+(>|$)/g, '')
+      : 'unavailable',
     author: ref.author ? ref.author : null,
     year: ref.year ? ref.year : null,
     journal: ref['journal-title'] ? ref['journal-title'] : null

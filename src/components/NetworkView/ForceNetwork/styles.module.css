@@ -1,0 +1,26 @@
+.force-graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.node {
+  stroke: #fff;
+  stroke-width: 1px;
+  fill: rgb(94, 94, 94);
+}
+.seed-node {
+  stroke: #fff;
+  stroke-width: 1px;
+  fill: rgb(255, 199, 0);
+}
+.link {
+  stroke: #999;
+  stroke-opacity: 0.6;
+  stroke-width: 1.5px;
+}
+.node:hover,
+.seed-node:hover {
+  stroke: rgb(97, 97, 97);
+  stroke-width: 2px;
+}

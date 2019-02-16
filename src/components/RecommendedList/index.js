@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import PrimaryButton from '../Core/PrimaryButton';
 import SecondaryButton from '../Core/SecondaryButton';
-import { openModal, selectPaper, updatePapers } from '../../state';
+import { selectPaper, updatePapers } from '../../state';
 import PaperCard from '../Core/PaperCard';
 
 class RecommendedList extends Component {
@@ -31,8 +31,7 @@ class RecommendedList extends Component {
 
 const mapStateToProps = state => {
   return {
-    papers: Object.values(state.data.Papers).filter(p => !p.seed),
-    mode: state.listView
+    papers: Object.values(state.data.Papers).filter(p => !p.seed)
   };
 };
 
