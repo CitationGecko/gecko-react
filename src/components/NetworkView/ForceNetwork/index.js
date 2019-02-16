@@ -73,6 +73,10 @@ class ForceNetwork extends Component {
     });
 
     this.circles = this.circles.data(this.nodes, d => d.ID); // Rebind data to svg circles
+
+    let newNodes = this.circles.enter().size();
+    let deadNodes = this.circles.exit().size();
+
     this.circles.exit().remove(); // Remove circles with no corresponding data
     this.circles = this.circles
       .enter()
@@ -112,6 +116,10 @@ class ForceNetwork extends Component {
     this.lines = this.lines.data(this.edges, function(d) {
       return d.source.ID + '-' + d.target.ID;
     });
+
+    let newEdges = this.lines.enter().size();
+    let deadEdges = this.lines.exit().size();
+
     this.lines.exit().remove();
     this.lines = this.lines
       .enter()
@@ -123,9 +131,12 @@ class ForceNetwork extends Component {
     this.simulation.nodes(this.nodes).on('tick', () => tick(this));
     this.simulation.force('link').links(this.edges);
     this.simulation.force('collide').initialize(this.simulation.nodes());
-    this.simulation.alpha(1).restart();
-    this.circles.style('opacity', 1);
-    this.lines.style('opacity', 1);
+
+    if (newNodes | deadNodes | newEdges | deadEdges) {
+      this.simulation.alpha(1).restart();
+      this.circles.style('opacity', 1);
+      this.lines.style('opacity', 1);
+    }
   }
 
   componentWillUnmount() {
