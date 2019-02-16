@@ -7,7 +7,6 @@ import Logo from '../Logo';
 import ModalContainer from '../Modals';
 import RecommendedList from '../RecommendedList';
 import SeedList from '../SeedList';
-import CrossRef from '../../integrations/crossref';
 
 class App extends Component {
   render() {
@@ -17,7 +16,7 @@ class App extends Component {
         List = <SeedList />;
         break;
       case 'Recommended':
-        List = <RecommendedList />;
+        List = <RecommendedList mode="CitedBySeeds" />;
         break;
       default:
         List = <SeedList />;
@@ -30,7 +29,6 @@ class App extends Component {
         <NetworkView />
         <ModalContainer />
         <Logo />
-        <CrossRef />
       </div>
     );
   }
