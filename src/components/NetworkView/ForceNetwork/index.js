@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
-import { selectPaper } from '../../../state';
+import { selectPaper } from 'state/actions';
 import styles from './styles.module.css';
 
 class ForceNetwork extends Component {

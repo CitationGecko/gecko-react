@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles.module.css';
-import { LinkoutIcon } from '../../Icons/LinkoutIcon';
-import { DeleteIcon } from '../../Icons/DeleteIcon';
+import { LinkoutIcon } from 'components/Icons/LinkoutIcon';
+import { DeleteIcon } from 'components/Icons/DeleteIcon';
 
 class PaperCard extends Component {
   render() {

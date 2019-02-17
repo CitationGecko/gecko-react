@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './components/App/index';
 import registerServiceWorker from './registerServiceWorker';
-import { store } from './state';
+import { store } from './state/store';
 import './integrations/crossref';
 
 ReactDOM.render(

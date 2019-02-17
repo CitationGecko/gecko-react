@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import PrimarySquareButton from 'components/Core/PrimarySquareButton';
-import { openModal, updatePapers, closeModal } from '../../../state';
-import { importExampleBibTex } from '../../../integrations/bibtex';
+import { importExampleBibTex } from 'integrations/bibtex';
+import { openModal, updatePapers, closeModal } from 'state/actions';
 
 class OnboardingModal extends Component {
   render() {

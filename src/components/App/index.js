@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import SideBar from 'components/SideBar';
 import NetworkView from 'components/NetworkView';
-import Logo from '../Logo';
-import ModalContainer from '../Modals';
-import RecommendedList from '../RecommendedList';
-import SeedList from '../SeedList';
+import Logo from 'components/Logo';
+import ModalContainer from 'components/Modals';
+import RecommendedList from 'components/RecommendedList';
+import SeedList from 'components/SeedList';
 
 class App extends Component {
   render() {
@@ -36,7 +36,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    listView: state.listView
+    listView: state.ui.listView
   };
 };
 
