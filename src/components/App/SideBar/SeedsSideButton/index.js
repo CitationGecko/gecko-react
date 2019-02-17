@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SideBarButton from 'components/Core/SideBarButton';
-import icon from './recommended-icon.png';
+
+import SideBarButton from 'components/Generic/SideBarButton';
+import icon from './seed-icon.png';
 import { switchToList } from 'state/actions';
 
-class RecommendedButton extends Component {
+class SeedsButton extends Component {
   render() {
     return <SideBarButton active={this.props.active} img={icon} onClick={this.props.onClick} />;
   }
@@ -12,14 +13,14 @@ class RecommendedButton extends Component {
 
 const mapStateToProps = state => {
   return {
-    active: state.ui.listView === 'Recommended'
+    active: state.listView === 'Seeds'
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onClick: () => {
-      dispatch(switchToList('Recommended'));
+      dispatch(switchToList('Seeds'));
     }
   };
 };
@@ -27,4 +28,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecommendedButton);
+)(SeedsButton);

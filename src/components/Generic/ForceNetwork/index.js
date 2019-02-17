@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import * as d3 from 'd3';
-import { selectPaper } from 'state/actions';
 import styles from './styles.module.css';
 
-class ForceNetwork extends Component {
+export default class ForceNetwork extends Component {
   componentDidMount() {
     this.width = this.svg.node().getBoundingClientRect().width;
     this.height = this.svg.node().getBoundingClientRect().height;
@@ -99,7 +97,7 @@ class ForceNetwork extends Component {
       )
       .on('dblclick', p => p) // Display abstract?
       .on('click', p => {
-        this.props.selectPaper(p.ID);
+        this.props.onSelect(p.ID);
         /* selectedPapers.splice();
         selectedPapers.push(p);
         surfacePaperBox(p); */
@@ -155,25 +153,6 @@ class ForceNetwork extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    data: state.data
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    selectPaper: id => {
-      dispatch(selectPaper(id));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ForceNetwork);
 
 function neighboring(a, b, edges) {
   return edges.filter(e => {

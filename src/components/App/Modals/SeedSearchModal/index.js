@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
-import SecondarySquareButton from 'components/Core/SecondarySquareButton';
+import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
 
 class SeedSearchModal extends Component {
   render() {
