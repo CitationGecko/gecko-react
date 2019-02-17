@@ -47,6 +47,15 @@ export function requestSent(papers, source) {
  * reducers
  */
 
+function selectedPapers(state = [], action) {
+  switch (action.type) {
+    case SELECT_PAPER:
+      return [action.paper];
+    default:
+      return state;
+  }
+}
+
 function listView(state = 'Seeds', action) {
   if (action.type === SWITCH_LIST_VIEW) {
     return action.view;
@@ -110,7 +119,7 @@ function data(state = { Papers: {}, Edges: [] }, action) {
   }
 }
 
-const reducer = combineReducers({ data, modal, listView });
+const reducer = combineReducers({ data, modal, listView, selectedPapers });
 
 export const store = createStore(reducer, composeWithDevTools());
 
