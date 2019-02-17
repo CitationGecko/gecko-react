@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import SideBarButton from 'components/Core/SideBarButton';
 import icon from './seed-icon.png';
-import { switchToList } from '../../../state';
+import { switchToList } from 'state/actions';
 
 class SeedsButton extends Component {
   render() {

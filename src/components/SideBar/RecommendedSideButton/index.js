@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SideBarButton from 'components/Core/SideBarButton';
 import icon from './recommended-icon.png';
-import { switchToList } from '../../../state';
+import { switchToList } from 'state/actions';
 
 class RecommendedButton extends Component {
   render() {
@@ -12,7 +12,7 @@ class RecommendedButton extends Component {
 
 const mapStateToProps = state => {
   return {
-    active: state.listView === 'Recommended'
+    active: state.ui.listView === 'Recommended'
   };
 };
 

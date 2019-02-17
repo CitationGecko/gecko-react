@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
-import SecondarySquareButton from '../../Core/SecondarySquareButton';
-import { openModal } from '../../../state';
+import SecondarySquareButton from 'components/Core/SecondarySquareButton';
+import { openModal } from 'state/actions';
 
 class AddSeedsModal extends Component {
   render() {

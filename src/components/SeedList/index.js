@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import styles from './styles.module.css';
-import PrimaryButton from '../Core/PrimaryButton';
-import SecondaryButton from '../Core/SecondaryButton';
-import { openModal, selectPaper } from '../../state';
-import PaperCard from '../Core/PaperCard';
+import PrimaryButton from 'components/Core/PrimaryButton';
+import SecondaryButton from 'components/Core/SecondaryButton';
+import { openModal, selectPaper } from 'state/actions';
+import PaperCard from 'components/Core/PaperCard';
 
 class SeedList extends Component {
   render() {
@@ -43,9 +43,9 @@ class SeedList extends Component {
 const mapStateToProps = state => {
   return {
     papers: Object.values(state.data.Papers).filter(p => p.seed),
-    selected: state.selectedPapers,
+    selected: state.ui.selectedPapers,
     isSelected: id => {
-      return state.selectedPapers.includes(id);
+      return state.ui.selectedPapers.includes(id);
     }
   };
 };

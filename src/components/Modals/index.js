@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { closeModal } from 'state';
+import { closeModal } from 'state/actions';
 import styles from './styles.module.css';
 import OnboardingModal from './OnboardingModal';
 import AddSeedsModal from './AddSeedsModal';
@@ -36,7 +36,7 @@ class Modal extends Component {
 
 const mapStateToProps = state => {
   return {
-    modal: state.modal
+    modal: state.ui.modal
   };
 };
 

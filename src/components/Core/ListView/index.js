@@ -4,16 +4,17 @@ import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import PrimaryButton from 'components/Core/PrimaryButton';
 import SecondaryButton from 'components/Core/SecondaryButton';
-import { selectPaper, updatePapers } from 'state/actions';
+import { openModal, selectPaper } from 'state/actions';
 import PaperCard from 'components/Core/PaperCard';
 
-class RecommendedList extends Component {
+class ListView extends Component {
   render() {
     const paperBoxes = this.props.papers.map(p => (
       <div ref={p.ID}>
         <PaperCard
+          ref={p.ID}
           selected={this.props.isSelected(p.ID)}
-          mode={this.props.mode}
+          mode={'Seeds'}
           paper={p}
           onClick={() => this.props.selectPaper(p.ID)}
         />
@@ -25,13 +26,13 @@ class RecommendedList extends Component {
     return (
       <div className={styles['list-view']}>
         <div className={styles['list-header']}>
-          <h1>Recommended Papers</h1>
+          <h1>{this.props.header}</h1>
         </div>
         <div className={styles['list-body']}>{paperBoxes}</div>
         <div className={styles['list-footer']}>
           <div className={styles['list-footer-btn-group']}>
-            <PrimaryButton onClick={this.props.clickAddSeed} text={'Add as seed'} />
-            <SecondaryButton text={'Export'} />
+            <PrimaryButton onClick={this.props.clickAddSeeds} text={'Add more seeds'} />
+            <SecondaryButton text={'Delete'} />
           </div>
         </div>
       </div>
@@ -41,7 +42,7 @@ class RecommendedList extends Component {
 
 const mapStateToProps = state => {
   return {
-    papers: Object.values(state.data.Papers).filter(p => !p.seed),
+    papers: Object.values(state.data.Papers).filter(p => p.seed),
     selected: state.ui.selectedPapers,
     isSelected: id => {
       return state.ui.selectedPapers.includes(id);
@@ -51,8 +52,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    clickAddSeed: () => {
-      dispatch(updatePapers());
+    clickAddSeeds: () => {
+      dispatch(openModal('addSeeds'));
     },
     selectPaper: id => {
       dispatch(selectPaper(id));
@@ -63,4 +64,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecommendedList);
+)(ListView);
