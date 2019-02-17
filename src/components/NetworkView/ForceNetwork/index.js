@@ -164,8 +164,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectPaper: p => {
-      dispatch(selectPaper(p));
+    selectPaper: id => {
+      dispatch(selectPaper(id));
     }
   };
 };

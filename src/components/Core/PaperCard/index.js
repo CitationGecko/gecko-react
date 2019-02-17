@@ -33,7 +33,12 @@ class PaperCard extends Component {
         rightFloat = '';
     }
     return (
-      <div className={styles['paper-box']} onClick={this.props.onClick}>
+      <div
+        className={`${styles['paper-box']} ${
+          this.props.selected ? styles['selected-paper'] : null
+        }`}
+        onClick={this.props.onClick}
+      >
         <div className={styles['paper-title']}>
           {this.props.paper.title}
           <a
@@ -42,7 +47,7 @@ class PaperCard extends Component {
             rel="noreferrer noopener"
             href={`https://doi.org/${this.props.paper.doi}`}
           >
-            {<LinkoutIcon />}
+            {<LinkoutIcon color={this.props.selected ? 'white' : 'rgb(255, 199, 0)'} />}
           </a>
         </div>
         <div className={styles['author-year']}>{`${author} ${this.props.paper.year}`}</div>

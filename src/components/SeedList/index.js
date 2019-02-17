@@ -10,8 +10,19 @@ import PaperCard from '../Core/PaperCard';
 class SeedList extends Component {
   render() {
     const paperBoxes = this.props.papers.map(p => (
-      <PaperCard mode={'Seeds'} paper={p} onClick={() => this.props.selectPaper(p)} />
+      <div ref={p.ID}>
+        <PaperCard
+          ref={p.ID}
+          selected={this.props.isSelected(p.ID)}
+          mode={'Seeds'}
+          paper={p}
+          onClick={() => this.props.selectPaper(p.ID)}
+        />
+      </div>
     ));
+    if (this.props.selected.length === 1) {
+      this.refs[this.props.selected[0]].scrollIntoView();
+    }
     return (
       <div className={styles['list-view']}>
         <div className={styles['list-header']}>
@@ -31,7 +42,11 @@ class SeedList extends Component {
 
 const mapStateToProps = state => {
   return {
-    papers: Object.values(state.data.Papers).filter(p => p.seed)
+    papers: Object.values(state.data.Papers).filter(p => p.seed),
+    selected: state.selectedPapers,
+    isSelected: id => {
+      return state.selectedPapers.includes(id);
+    }
   };
 };
 
@@ -40,8 +55,8 @@ const mapDispatchToProps = dispatch => {
     clickAddSeeds: () => {
       dispatch(openModal('addSeeds'));
     },
-    selectPaper: p => {
-      dispatch(selectPaper(p));
+    selectPaper: id => {
+      dispatch(selectPaper(id));
     }
   };
 };
