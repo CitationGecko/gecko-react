@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
-import PrimarySquareButton from 'components/Core/PrimarySquareButton';
+import PrimarySquareButton from 'components/Generic/PrimarySquareButton';
 import { importExampleBibTex } from 'integrations/bibtex';
 import { openModal, updatePapers, closeModal } from 'state/actions';
 

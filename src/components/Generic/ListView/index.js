@@ -2,37 +2,39 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import styles from './styles.module.css';
-import PrimaryButton from 'components/Core/PrimaryButton';
-import SecondaryButton from 'components/Core/SecondaryButton';
+import PrimaryButton from 'components/Generic/PrimaryButton';
+import SecondaryButton from 'components/Generic/SecondaryButton';
 import { openModal, selectPaper } from 'state/actions';
-import PaperCard from 'components/Core/PaperCard';
+import PaperCard from 'components/Generic/PaperCard';
 
 class ListView extends Component {
   render() {
-    const paperBoxes = this.props.papers.map(p => (
+    const { header, papers, selected, onSelect, primaryButton, secondaryButton } = this.props;
+
+    const paperBoxes = papers.map(p => (
       <div ref={p.ID}>
         <PaperCard
           ref={p.ID}
-          selected={this.props.isSelected(p.ID)}
-          mode={'Seeds'}
+          selected={selected.includes(p.ID)}
+          mode={this.props.mode}
           paper={p}
-          onClick={() => this.props.selectPaper(p.ID)}
+          onClick={() => onSelect(p.ID)}
         />
       </div>
     ));
-    if (this.props.selected.length === 1) {
-      this.refs[this.props.selected[0]].scrollIntoView();
+    if (selected.length === 1) {
+      this.refs[selected[0]].scrollIntoView();
     }
     return (
       <div className={styles['list-view']}>
         <div className={styles['list-header']}>
-          <h1>{this.props.header}</h1>
+          <h1>{header}</h1>
         </div>
         <div className={styles['list-body']}>{paperBoxes}</div>
         <div className={styles['list-footer']}>
           <div className={styles['list-footer-btn-group']}>
-            <PrimaryButton onClick={this.props.clickAddSeeds} text={'Add more seeds'} />
-            <SecondaryButton text={'Delete'} />
+            <PrimaryButton onClick={primaryButton.onClick} text={primaryButton.text} />
+            <SecondaryButton text={secondaryButton.text} />
           </div>
         </div>
       </div>
