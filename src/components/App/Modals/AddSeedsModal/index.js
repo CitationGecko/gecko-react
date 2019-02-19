@@ -26,8 +26,8 @@ class AddSeedsModal extends Component {
       }
     ];
 
-    const buttons = actions.map(b => {
-      return <SecondarySquareButton action={b.action} text={b.text} />;
+    const buttons = actions.map((b, i) => {
+      return <SecondarySquareButton key={i} action={b.action} text={b.text} />;
     });
 
     return (
