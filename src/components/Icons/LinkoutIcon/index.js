@@ -2,7 +2,7 @@ import React from 'react';
 
 export var LinkoutIcon = props => (
   <svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="16" height="14" fill="black" fill-opacity="0" transform="translate(0 1)" />
+    <rect width="16" height="14" fill="black" fillOpacity="0" transform="translate(0 1)" />
     <path d="M7.5 8.5L16 1M16 1H11.5M16 1V5.5" stroke={props.color} strokeWidth="1.8" />
     <path
       fillRule="evenodd"

@@ -97,7 +97,7 @@ export default class ForceNetwork extends Component {
       )
       .on('dblclick', p => p) // Display abstract?
       .on('click', p => {
-        this.props.onSelect(p.ID);
+        this.props.onSelect(p);
         /* selectedPapers.splice();
         selectedPapers.push(p);
         surfacePaperBox(p); */

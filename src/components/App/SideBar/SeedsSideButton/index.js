@@ -13,7 +13,7 @@ class SeedsButton extends Component {
 
 const mapStateToProps = state => {
   return {
-    active: state.listView === 'Seeds'
+    active: state.ui.listView === 'Seeds'
   };
 };
 

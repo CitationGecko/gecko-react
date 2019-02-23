@@ -26,8 +26,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSelect: id => {
-      dispatch(selectPaper(id));
+    onSelect: paper => {
+      dispatch(selectPaper(paper));
     },
     switchView: () => {},
     onThreshold: () => {}

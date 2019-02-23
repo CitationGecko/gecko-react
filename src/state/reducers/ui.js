@@ -9,16 +9,19 @@ const reducers = {
   selectedPapers: function(state = [], action) {
     switch (action.type) {
       case SELECT_PAPER:
-        return [action.paper];
+        return [action.paper.ID];
       default:
         return state;
     }
   },
   listView: function(state = 'Seeds', action) {
-    if (action.type === SWITCH_LIST_VIEW) {
-      return action.view;
-    } else {
-      return state;
+    switch (action.type) {
+      case SWITCH_LIST_VIEW:
+        return action.view;
+      case SELECT_PAPER:
+        return action.paper.seed ? 'Seeds' : 'Recommended';
+      default:
+        return state;
     }
   },
   modal: function(state = 'onboarding', action) {
