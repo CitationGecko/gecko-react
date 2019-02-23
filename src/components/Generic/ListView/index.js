@@ -4,13 +4,14 @@ import styles from './styles.module.css';
 import PrimaryButton from 'components/Generic/PrimaryButton';
 import SecondaryButton from 'components/Generic/SecondaryButton';
 import PaperCard from 'components/Generic/PaperCard';
+import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 
 class ListView extends Component {
   render() {
     const { header, papers, selected, onSelect, primaryButton, secondaryButton } = this.props;
 
     const paperBoxes = papers.map(p => (
-      <div ref={p.ID}>
+      <ScrollIntoViewIfNeeded active={selected.includes(p.ID)} options={{ behavior: 'instant' }}>
         <PaperCard
           key={p.ID}
           selected={selected.includes(p.ID)}
@@ -18,7 +19,7 @@ class ListView extends Component {
           paper={p}
           onClick={() => onSelect(p)}
         />
-      </div>
+      </ScrollIntoViewIfNeeded>
     ));
 
     return (
@@ -35,11 +36,6 @@ class ListView extends Component {
         </div>
       </div>
     );
-  }
-  componentDidUpdate() {
-    if (this.props.selected.length === 1 && this.refs[this.props.selected[0]]) {
-      this.refs[this.props.selected[0]].scrollIntoView();
-    }
   }
 }
 
