@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import styles from './styles.module.css';
 import PrimaryButton from 'components/Generic/PrimaryButton';
 import SecondaryButton from 'components/Generic/SecondaryButton';
-import { openModal, selectPaper } from 'state/actions';
 import PaperCard from 'components/Generic/PaperCard';
 
 class ListView extends Component {
@@ -14,17 +12,15 @@ class ListView extends Component {
     const paperBoxes = papers.map(p => (
       <div ref={p.ID}>
         <PaperCard
-          ref={p.ID}
+          key={p.ID}
           selected={selected.includes(p.ID)}
           mode={this.props.mode}
           paper={p}
-          onClick={() => onSelect(p.ID)}
+          onClick={() => onSelect(p)}
         />
       </div>
     ));
-    if (selected.length === 1) {
-      this.refs[selected[0]].scrollIntoView();
-    }
+
     return (
       <div className={styles['list-view']}>
         <div className={styles['list-header']}>
@@ -40,30 +36,11 @@ class ListView extends Component {
       </div>
     );
   }
+  componentDidUpdate() {
+    if (this.props.selected.length === 1 && this.refs[this.props.selected[0]]) {
+      this.refs[this.props.selected[0]].scrollIntoView();
+    }
+  }
 }
 
-const mapStateToProps = state => {
-  return {
-    papers: Object.values(state.data.Papers).filter(p => p.seed),
-    selected: state.ui.selectedPapers,
-    isSelected: id => {
-      return state.ui.selectedPapers.includes(id);
-    }
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    clickAddSeeds: () => {
-      dispatch(openModal('addSeeds'));
-    },
-    selectPaper: id => {
-      dispatch(selectPaper(id));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListView);
+export default ListView;

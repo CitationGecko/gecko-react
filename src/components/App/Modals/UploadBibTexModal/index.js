@@ -10,7 +10,7 @@ class UploadBibTexModal extends Component {
       <React.Fragment>
         <h1>Upload BibTex</h1>
         <div>
-          <input type="file" onChange={this.props.onSelect} />
+          <input type="file" accept=".bib" onChange={this.props.onSelect} />
           <output />
         </div>
       </React.Fragment>

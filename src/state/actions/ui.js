@@ -20,6 +20,6 @@ export function openModal(modal) {
 export function switchToList(view) {
   return { type: SWITCH_LIST_VIEW, view };
 }
-export function selectPaper(id) {
-  return { type: SELECT_PAPER, id };
+export function selectPaper(paper) {
+  return { type: SELECT_PAPER, paper };
 }

@@ -10,39 +10,40 @@ class ListPanel extends Component {
     let seedPapers = Object.values(papers).filter(p => p.seed);
     let nonSeeds = Object.values(papers).filter(p => !p.seed);
 
+    let listProps;
+
     switch (listView) {
-      case 'Seed':
-        return (
-          <ListView
-            header={'My Seed Papers'}
-            papers={seedPapers}
-            selected={selected}
-            onSelect={onSelect}
-            primaryButton={{ text: 'Add more seeds', onClick: addSeeds }}
-            secondaryButton={{ text: 'Delete' }}
-          />
-        );
+      case 'Seeds':
+        listProps = {
+          header: 'My Seed Papers',
+          papers: seedPapers,
+          selected: selected,
+          onSelect: onSelect,
+          primaryButton: { text: 'Add more seeds', onClick: addSeeds },
+          secondaryButton: { text: 'Delete' }
+        };
+        break;
       case 'Recommended':
-        return (
-          <ListView
-            header={'Recommended Papers'}
-            papers={nonSeeds}
-            isSelected={selected}
-            onSelect={onSelect}
-            primaryButton={{ text: 'Add as seed', onClick: addSeeds }}
-            secondaryButton={{ text: 'Export' }}
-          />
-        );
+        listProps = {
+          header: 'Recommended Papers',
+          papers: nonSeeds,
+          selected: selected,
+          onSelect: onSelect,
+          primaryButton: { text: 'Add as seed', onClick: addSeeds },
+          secondaryButton: { text: 'Export' }
+        };
+        break;
       default:
         return null;
     }
+    return <ListView {...listProps} />;
   }
 }
 
 const mapStateToProps = state => {
   return {
     papers: state.data.Papers,
-    selected: state.ui.selected,
+    selected: state.ui.selectedPapers,
     listView: state.ui.listView
   };
 };
@@ -52,8 +53,8 @@ const mapDispatchToProps = dispatch => {
     addSeeds: () => {
       dispatch(openModal('addSeeds'));
     },
-    onSelect: id => {
-      dispatch(selectPaper(id));
+    onSelect: paper => {
+      dispatch(selectPaper(paper));
     }
   };
 };
