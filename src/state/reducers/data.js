@@ -1,4 +1,4 @@
-import { REQUEST_SENT, UPDATE_PAPERS, DELETE_PAPERS } from '../actions/data';
+import { REQUEST_SENT, UPDATE_PAPERS, DELETE_PAPERS, MAKE_SEED } from '../actions/data';
 import { addPaper, addEdge } from '../utils';
 import { updateMetrics } from '../metrics';
 
@@ -45,6 +45,28 @@ export function data(state = { Papers: {}, Edges: [] }, action) {
       return { Papers, Edges };
     case DELETE_PAPERS:
       return state;
+    case MAKE_SEED:
+      let paper = { ...Papers[action.id] };
+      paper.seed = true;
+      Papers[action.id] = paper;
+
+      if (paper.references) {
+        paper.references.forEach(ref => {
+          ref = addPaper(ref, Papers);
+          let edge = { source: paper.ID, target: ref.ID };
+          addEdge(edge, Edges);
+        });
+        Papers = updateMetrics(Papers, Edges);
+      }
+      if (paper.citations) {
+        paper.citations.forEach(ref => {
+          ref = addPaper(ref, Papers);
+          let edge = { source: ref.ID, target: paper.ID };
+          addEdge(edge, Edges);
+        });
+        Papers = updateMetrics(Papers, Edges);
+      }
+      return { Papers, Edges };
     default:
       return state;
   }

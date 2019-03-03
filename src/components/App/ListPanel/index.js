@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ListView from 'components/Generic/ListView';
-import { openModal, selectPaper } from 'state/actions';
+import { openModal, selectPaper, makeSeed } from 'state/actions';
 
 class ListPanel extends Component {
   render() {
-    const { listView, papers, selected, onSelect, addSeeds } = this.props;
+    const { listView, papers, selected, onSelect, addSeeds, makeSeed } = this.props;
 
     let seedPapers = Object.values(papers).filter(p => p.seed);
     let nonSeeds = Object.values(papers).filter(p => !p.seed);
@@ -29,7 +29,7 @@ class ListPanel extends Component {
           papers: nonSeeds,
           selected: selected,
           onSelect: onSelect,
-          primaryButton: { text: 'Add as seed', onClick: addSeeds },
+          primaryButton: { text: 'Add as seed', onClick: () => makeSeed(selected[0]) },
           secondaryButton: { text: 'Export' }
         };
         break;
@@ -55,6 +55,9 @@ const mapDispatchToProps = dispatch => {
     },
     onSelect: paper => {
       dispatch(selectPaper(paper));
+    },
+    makeSeed: id => {
+      dispatch(makeSeed(id));
     }
   };
 };

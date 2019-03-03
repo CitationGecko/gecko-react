@@ -15,6 +15,20 @@ function handleStateChange() {
 }
 
 export function getMetadata(papers) {
+  //split into groups of 50
+  let chunks = chunkArray(papers, 50);
+  let results = chunks.map(singleCrossRefRequest);
+  return Promise.all(results)
+    .then(() => {
+      return results.flat();
+    })
+    .catch(e => {
+      console.log(e);
+      return results.filter(Array.isArray).flat();
+    });
+}
+
+function singleCrossRefRequest(papers) {
   let query = papers.map(p => `doi:${p.doi}`).join();
   let base = 'https://api.crossref.org/works?rows=1000&filter=';
   return fetch(base + query)
@@ -61,4 +75,14 @@ export function parseReference(ref) {
     year: ref.year ? ref.year : null,
     journal: ref['journal-title'] ? ref['journal-title'] : null
   };
+}
+
+function chunkArray(myArray, chunk_size) {
+  let results = [];
+
+  while (myArray.length) {
+    results.push(myArray.splice(0, chunk_size));
+  }
+
+  return results;
 }
