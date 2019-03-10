@@ -19,8 +19,8 @@ export function getMetadata(papers) {
   let chunks = chunkArray(papers, 50);
   let results = chunks.map(singleCrossRefRequest);
   return Promise.all(results)
-    .then(() => {
-      return results.flat();
+    .then(res => {
+      return res.flat();
     })
     .catch(e => {
       console.log(e);
