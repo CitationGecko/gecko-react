@@ -54,8 +54,9 @@ export default class ForceNetwork extends Component {
   }
 
   componentDidUpdate() {
-    let sizeMetric = this.props.sizeMetric;
-    this.nodes = Object.values(this.props.data.Papers).map(p => {
+    const { sizeMetric, data, onSelect, selected } = this.props;
+
+    this.nodes = Object.values(data.Papers).map(p => {
       return {
         ID: p.ID,
         seed: p.seed,
@@ -63,78 +64,65 @@ export default class ForceNetwork extends Component {
         size: p.seed ? 10 : 5 * p[sizeMetric]
       };
     });
-    this.edges = Object.values(this.props.data.Edges).map(e => {
+    this.edges = Object.values(data.Edges).map(e => {
       return {
         source: e.source,
         target: e.target
       };
     });
 
-    this.circles = this.circles.data(this.nodes, d => d.ID); // Rebind data to svg circles
+    let reboundCircles = this.circles.data(this.nodes, d => d.ID); // Rebind data to svg circles
+    let newNodes = reboundCircles.enter().size();
+    let deadNodes = reboundCircles.exit().size();
 
-    let newNodes = this.circles.enter().size();
-    let deadNodes = this.circles.exit().size();
+    let reboundLines = this.lines.data(this.edges);
+    let newEdges = reboundLines.enter().size();
+    let deadEdges = reboundLines.exit().size();
 
-    this.circles.exit().remove(); // Remove circles with no corresponding data
-    this.circles = this.circles
-      .enter()
-      .append('circle')
-      .merge(this.circles)
-      .attr('r', d => d.size)
-      .attr('class', function(d) {
-        if (d.seed) {
-          return styles['seed-node'];
-        } else {
-          return styles['node'];
-        }
-      })
-      .call(
-        d3
-          .drag()
-          .on('start', d => dragstarted(d, this.simulation))
-          .on('drag', d => dragged(d))
-          .on('end', d => dragended(d, this.simulation))
-      )
-      .on('dblclick', p => p) // Display abstract?
-      .on('click', p => {
-        this.props.onSelect(p);
-        /* selectedPapers.splice();
-        selectedPapers.push(p);
-        surfacePaperBox(p); */
-        highlightNode(p, this);
-      })
-      .on('mouseover', p => {
-        //surfacePaperBox(p);
-      });
-
-    this.circles.append('title').text(function(d) {
-      return d.label;
-    }); //Label nodes with title on hover
-
-    this.lines = this.lines.data(this.edges, function(d) {
-      return d.source.ID + '-' + d.target.ID;
-    });
-
-    let newEdges = this.lines.enter().size();
-    let deadEdges = this.lines.exit().size();
-
-    this.lines.exit().remove();
-    this.lines = this.lines
-      .enter()
-      .append('line')
-      .attr('marker-end', 'url(#end)')
-      .merge(this.lines);
-
-    // Update and restart the simulation.
-    this.simulation.nodes(this.nodes).on('tick', () => tick(this));
-    this.simulation.force('link').links(this.edges);
-    this.simulation.force('collide').initialize(this.simulation.nodes());
-
-    if (newNodes | deadNodes | newEdges | deadEdges) {
+    if (true || newNodes || deadNodes || newEdges || deadEdges) {
       // Only restart if there is a network change
+      this.circles = reboundCircles
+        .join('circle')
+        .attr('r', d => d.size)
+        .attr('class', function(d) {
+          if (d.seed) {
+            return styles['seed-node'];
+          } else {
+            return styles['node'];
+          }
+        })
+        .call(
+          d3
+            .drag()
+            .on('start', d => dragstarted(d, this.simulation))
+            .on('drag', d => dragged(d))
+            .on('end', d => dragended(d, this.simulation))
+        )
+        .on('dblclick', p => p) // Display abstract?
+        .on('click', p => {
+          onSelect(p);
+        })
+        .on('mouseover', p => {
+          //surfacePaperBox(p);
+        });
+
+      this.circles.append('title').text(function(d) {
+        return d.label;
+      }); //Label nodes with title on hover
+
+      this.lines = reboundLines.join('line');
+
+      // Update and restart the simulation.
+      this.simulation.nodes(this.nodes).on('tick', () => tick(this));
+      this.simulation.force('link').links(this.edges);
+      this.simulation.force('collide').initialize(this.simulation.nodes());
       this.simulation.alpha(1).restart();
       this.circles.style('opacity', 1);
       this.lines.style('opacity', 1);
+    }
+
+    if (selected.length) {
+      //highlightNode(selected[0], this);
     }
   }
 
@@ -154,23 +142,24 @@ export default class ForceNetwork extends Component {
   }
 }
 
-function neighboring(a, b, edges) {
-  return edges.filter(e => {
-    return (e.source === a) | (e.target === a) && (e.source === b) | (e.target === b);
-  }).length;
+function neighbours(a, b, edges) {
+  return (
+    a === b ||
+    edges.filter(e => {
+      return (e.source.ID === a && e.target.ID === b) || (e.target.ID === a && e.source.ID === b);
+    }).length
+  );
 }
 
-function highlightNode(d, graph) {
-  graph.circles.style('opacity', 1);
-  graph.lines.style('opacity', 1);
-  graph.circles.style('opacity', o => {
-    return neighboring(d, o, graph.edges) ? 1 : 0.15;
+function highlightNode(id, graph) {
+  graph.circles.style('opacity', node => {
+    return neighbours(id, node.ID, graph.edges) ? 1 : 0.15;
   });
-  graph.lines.style('opacity', function(o) {
-    return o.source === d || o.target === d ? 1 : 0.15;
+  graph.lines.style('opacity', edge => {
+    return edge.source.ID === id || edge.target.ID === id ? 1 : 0.15;
   });
-  graph.circles.on('mouseover', null);
-  d3.event.stopPropagation();
+  //graph.circles.on('mouseover', null);
+  //d3.event.stopPropagation();
 }
 
 function dragstarted(d, simulation) {

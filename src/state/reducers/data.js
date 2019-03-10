@@ -44,7 +44,11 @@ export function data(state = { Papers: {}, Edges: [] }, action) {
       });
       return { Papers, Edges };
     case DELETE_PAPERS:
-      return state;
+      action.paperIDs.forEach(id => {
+        Papers[id] = { ...Papers[id], seed: false };
+      });
+      Papers = updateMetrics(Papers, Edges);
+      return { Papers, Edges };
     case MAKE_SEED:
       let paper = { ...Papers[action.id] };
       paper.seed = true;

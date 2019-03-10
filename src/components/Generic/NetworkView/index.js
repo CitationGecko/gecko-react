@@ -6,12 +6,12 @@ import ForceNetwork from 'components/Generic/ForceNetwork';
 
 export class NetworkView extends Component {
   render() {
-    const { onSwitch, onThreshold, data, sizeMetric, onSelect } = this.props;
+    const { onSwitch, onThreshold, data, sizeMetric, onSelect, selected } = this.props;
     return (
       <div className={styles['network-panel']}>
         <NetworkKey onSwitch={onSwitch} />
         <ThresholdSlider threshold={onThreshold} />
-        <ForceNetwork data={data} sizeMetric={sizeMetric} onSelect={onSelect} />
+        <ForceNetwork data={data} sizeMetric={sizeMetric} onSelect={onSelect} selected={selected} />
       </div>
     );
   }
