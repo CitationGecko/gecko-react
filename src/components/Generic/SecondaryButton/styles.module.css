@@ -1,7 +1,8 @@
 .secondary-rounded-button {
-    margin: .5em;
-    padding: .8em 1em;
-    border-radius: 50px;
-    outline: none;
-    border: none;
+  margin: 0.5em;
+  padding: 0.8em 1em;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }

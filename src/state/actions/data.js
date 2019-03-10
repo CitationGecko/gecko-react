@@ -15,8 +15,8 @@ export const MAKE_SEED = 'MAKE_SEED';
 export function updatePapers(papers, seeds) {
   return { type: UPDATE_PAPERS, papers, seeds };
 }
-export function deletePapers(index) {
-  return { type: DELETE_PAPERS, index };
+export function deletePapers(paperIDs) {
+  return { type: DELETE_PAPERS, paperIDs };
 }
 export function updateEdges(index) {
   return { type: UPDATE_EDGES, index };

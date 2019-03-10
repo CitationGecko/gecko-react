@@ -3,22 +3,19 @@ import React, { Component } from 'react';
 import styles from './styles.module.css';
 import PrimaryButton from 'components/Generic/PrimaryButton';
 import SecondaryButton from 'components/Generic/SecondaryButton';
-import PaperCard from 'components/Generic/PaperCard';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 
 class ListView extends Component {
   render() {
-    const { header, papers, selected, onSelect, primaryButton, secondaryButton } = this.props;
+    const { header, paperCards, selected, primaryButton, secondaryButton } = this.props;
 
-    const paperBoxes = papers.map(p => (
-      <ScrollIntoViewIfNeeded active={selected.includes(p.ID)} options={{ behavior: 'instant' }}>
-        <PaperCard
-          key={p.ID}
-          selected={selected.includes(p.ID)}
-          mode={this.props.mode}
-          paper={p}
-          onClick={() => onSelect(p)}
-        />
+    const paperBoxes = paperCards.map(paperCard => (
+      <ScrollIntoViewIfNeeded
+        key={paperCard.key}
+        active={selected.includes(parseInt(paperCard.key, 10))}
+        options={{ behavior: 'instant' }}
+      >
+        {paperCard}
       </ScrollIntoViewIfNeeded>
     ));
 
@@ -31,7 +28,7 @@ class ListView extends Component {
         <div className={styles['list-footer']}>
           <div className={styles['list-footer-btn-group']}>
             <PrimaryButton onClick={primaryButton.onClick} text={primaryButton.text} />
-            <SecondaryButton text={secondaryButton.text} />
+            <SecondaryButton onClick={secondaryButton.onClick} text={secondaryButton.text} />
           </div>
         </div>
       </div>

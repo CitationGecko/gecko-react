@@ -1,37 +1,12 @@
 import React, { Component } from 'react';
 import styles from './styles.module.css';
 import { LinkoutIcon } from 'components/Icons/LinkoutIcon';
-import { DeleteIcon } from 'components/Icons/DeleteIcon';
 
 class PaperCard extends Component {
   render() {
     let author = this.props.paper.author ? this.props.paper.author : '';
     let journal = this.props.paper.journal ? this.props.paper.journal : '';
 
-    let rightFloat;
-    switch (this.props.mode) {
-      case 'Seeds':
-        rightFloat = <div className={styles['delete-seed']}>{<DeleteIcon />}</div>;
-        break;
-      case 'CitedBySeeds':
-        rightFloat = (
-          <span className={styles['metric']}>
-            cited by <span className={styles['metric-count']}>{this.props.paper.seedsCitedBy}</span>{' '}
-            seed papers
-          </span>
-        );
-        break;
-      case 'CitingSeeds':
-        rightFloat = (
-          <span>
-            cites <span className={styles['metric-count']}>{this.props.paper.seedsCited}</span> seed
-            papers
-          </span>
-        );
-        break;
-      default:
-        rightFloat = '';
-    }
     return (
       <div
         className={`${styles['paper-box']} ${
@@ -51,7 +26,7 @@ class PaperCard extends Component {
           </a>
         </div>
         <div className={styles['author-year']}>{`${author} ${this.props.paper.year}`}</div>
-        <div className={styles['float-right']}>{rightFloat}</div>
+        <div className={styles['float-right']}>{this.props.rightFloat}</div>
         <div className={styles['journal']}>{journal}</div>
       </div>
     );
