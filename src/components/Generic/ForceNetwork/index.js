@@ -56,20 +56,26 @@ export default class ForceNetwork extends Component {
   shouldComponentUpdate(nextProps) {
     const { sizeMetric, data, onSelect, selected } = nextProps;
 
-    this.nodes = Object.values(data.Papers).map(p => {
-      return {
-        ID: p.ID,
-        seed: p.seed,
-        label: p.title,
-        size: p.seed ? 10 : 5 * p[sizeMetric]
-      };
-    });
-    this.edges = Object.values(data.Edges).map(e => {
-      return {
-        source: e.source,
-        target: e.target
-      };
-    });
+    // Update nodes
+    const existingNodes = this.nodes.map(n => n.ID);
+    const newNodes = Object.values(data.Papers)
+      .filter(p => !existingNodes.includes(p.ID))
+      .map(p => {
+        return {
+          ID: p.ID,
+          seed: p.seed,
+          label: p.title,
+          size: p.seed ? 10 : 5 * p[sizeMetric]
+        };
+      });
+    const deadNodes = existingNodes.filter(n => !data.Papers[n]);
+    this.nodes = this.nodes.filter(n => deadNodes.includes(n.ID)).concat(newNodes);
+
+    // Update edges
+    const existingEdges = this.edges.map(e => e.ID);
+    const newEdges = Object.values(data.Edges).filter(e => !existingEdges.includes(e));
+    const deadEdges = existingEdges.filter(e => !data.Edges[e]);
+    this.edges = this.edges.filter(e => deadEdges.includes(e.ID)).concat(newEdges);
 
     this.circles = this.circles
       .data(this.nodes, d => d.ID)
@@ -118,6 +124,7 @@ export default class ForceNetwork extends Component {
     if (selected.length) {
       highlightNode(selected[0], this);
     }
+
     return false;
   }
 
