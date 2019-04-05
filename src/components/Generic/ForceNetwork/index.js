@@ -17,10 +17,10 @@ export default class ForceNetwork extends Component {
       .selectAll('circle');
 
     this.svg
-      .on('mouseover', () => {
+      /* .on('mouseover', () => {
         this.circles.style('opacity', 1);
         this.lines.style('opacity', 1);
-      })
+      }) */
       .on('click', () => {
         this.circles.style('opacity', 1);
         this.lines.style('opacity', 1);
@@ -43,13 +43,8 @@ export default class ForceNetwork extends Component {
       .force('charge', d3.forceManyBody().strength(-100))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force('xattract', d3.forceX())
-      .force('yattract', d3.forceY())
-      .force(
-        'collide',
-        d3.forceCollide().radius(function(d) {
-          return d.size;
-        })
-      );
+      .force('yattract', d3.forceY());
+
     this.nodes = [];
     this.edges = [];
   }
@@ -62,19 +57,19 @@ export default class ForceNetwork extends Component {
       selected
     } = nextProps;
 
-    if (selected.length) {
+    if (selected.length && Papers[selected[0]]) {
       highlightNode(selected[0], this);
     }
+
+    if (this.nodes.length === Object.keys(Papers).length) return false;
 
     // Add / remove / update nodes from the simulation
     const existingNodeIDs = this.nodes.map(n => n.ID);
     const newNodes = Object.values(Papers)
       .filter(p => !existingNodeIDs.includes(p.ID))
       .map(p => {
-        return { ...p, size: p.seed ? 10 : 5 * p[sizeMetric] };
+        return { ...p };
       });
-
-    if (!newNodes.length) return false;
 
     this.nodes = this.nodes
       .filter(n => Papers[n.ID]) // filter dead nodes
@@ -92,7 +87,7 @@ export default class ForceNetwork extends Component {
       .data(this.nodes, p => p.ID)
       .join('circle')
       .attr('r', p => {
-        return p.size;
+        return nodeSize(p, sizeMetric);
       })
       .attr('class', function(d) {
         if (d.seed) {
@@ -145,6 +140,12 @@ export default class ForceNetwork extends Component {
     // Update and restart the simulation.
     this.simulation.nodes(this.nodes).on('tick', () => tick(this));
     this.simulation.force('link').links(this.edges);
+    this.simulation.force(
+      'collide',
+      d3.forceCollide().radius(function(d) {
+        return nodeSize(d, sizeMetric);
+      })
+    );
     this.simulation.force('collide').initialize(this.simulation.nodes());
     this.simulation.alpha(1).restart();
 
@@ -167,24 +168,13 @@ export default class ForceNetwork extends Component {
   }
 }
 
-function updateNodes(nodes, Papers) {
-  const existingNodeIDs = nodes.map(n => n.ID);
-  const newNodes = Object.values(Papers)
-    .filter(p => !existingNodeIDs.includes(p.ID))
-    .map(p => {
-      return { ...p };
-    });
-  return nodes
-    .map(n => {
-      return { ...n, ...Papers[n.ID] }; // update existing info
-    })
-    .filter(n => Papers[n.ID]) // filter dead nodes
-    .concat(newNodes); // add new nodes
+function nodeSize(p, sizeMetric) {
+  return p.seed ? 10 : 5 * p[sizeMetric];
 }
 
 function findNeighbours(id, edges) {
-  const targets = edges.filter(e => e.source === id).map(e => e.target);
-  const sources = edges.filter(e => e.target === id).map(e => e.source);
+  const targets = edges.filter(e => e.source.ID === id).map(e => e.target.ID);
+  const sources = edges.filter(e => e.target.ID === id).map(e => e.source.ID);
   return targets.concat(sources);
 }
 

@@ -7,15 +7,17 @@ import MetricLabel from 'components/Generic/MetricLabel';
 
 class RecommendedList extends Component {
   render() {
-    const { papers, selected, onSelect, makeSeed, mode } = this.props;
+    const { papers, selected, onSelect, makeSeed, sortMetric } = this.props;
 
-    let nonSeeds = Object.values(papers).filter(p => !p.seed);
+    let nonSeeds = Object.values(papers)
+      .filter(p => !p.seed)
+      .sort((a, b) => b[sortMetric] - a[sortMetric]);
 
     let paperCards = nonSeeds.map(p => (
       <PaperCard
         key={p.ID}
         selected={selected.includes(p.ID)}
-        rightFloat={<MetricLabel paper={p} metric={mode} />}
+        rightFloat={<MetricLabel paper={p} metric={sortMetric} />}
         paper={p}
         onClick={() => onSelect(p)}
       />
@@ -37,7 +39,7 @@ const mapStateToProps = state => {
   return {
     papers: state.data.Papers,
     selected: state.ui.selectedPapers,
-    mode: 'seedsCitedBy'
+    sortMetric: 'seedsCitedBy'
   };
 };
 
