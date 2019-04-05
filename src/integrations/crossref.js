@@ -53,7 +53,7 @@ export function parsePaper(response) {
 
   return {
     doi: response.DOI,
-    title: response.title ? response.title[0].replace(/<\/?[^>]+(>|$)/g, '') : 'unavailable',
+    title: response.title ? response.title[0].replace(/<\/?[^>]+(>|$)/g, '') : null,
     author: response.author ? response.author[0].family : '',
     month: date['date-parts'][0][1],
     year: date['date-parts'][0][0],
@@ -68,9 +68,7 @@ export function parsePaper(response) {
 export function parseReference(ref) {
   return {
     doi: ref.DOI ? ref.DOI : null,
-    title: ref['article-title']
-      ? ref['article-title'].replace(/<\/?[^>]+(>|$)/g, '')
-      : 'unavailable',
+    title: ref['article-title'] ? ref['article-title'].replace(/<\/?[^>]+(>|$)/g, '') : null,
     author: ref.author ? ref.author : null,
     year: ref.year ? ref.year : null,
     journal: ref['journal-title'] ? ref['journal-title'] : null

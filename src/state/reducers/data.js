@@ -19,7 +19,7 @@ export function data(state = { Papers: {}, Edges: [] }, action) {
       return { Papers: Papers, Edges: state.Edges };
     case UPDATE_PAPERS:
       action.papers.forEach(paper => {
-        paper.seed = paper.seed || action.seeds;
+        paper.seed = paper.seed || action.seeds || false;
         paper = addPaper(paper, Papers);
         // For each reference / citedBy match and merge then match / merge edges
         if (paper.seed) {
