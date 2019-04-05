@@ -55,6 +55,7 @@ export function addPaper(paper, Papers) {
 }
 
 export function addEdge(edge, Edges) {
+  edge.ID = `${edge.source}-${edge.target}`;
   let matchedEdge = matchEdge(edge, Edges);
   if (!matchedEdge) {
     Edges.push(edge);

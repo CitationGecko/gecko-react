@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from './styles.module.css';
 import NetworkKey from 'components/Generic/NetworkKey';
 import ThresholdSlider from 'components/Generic/ThresholdSlider';
-import ForceNetwork from 'components/Generic/ForceNetwork';
+import ForceNetwork from 'components/Generic/ForceNetwork/';
 
 export class NetworkView extends Component {
   render() {
