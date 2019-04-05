@@ -17,14 +17,13 @@ export default class ForceNetwork extends Component {
       .selectAll('circle');
 
     this.svg
+      .on('mouseover', () => {
+        this.circles.style('opacity', 1);
+        this.lines.style('opacity', 1);
+      })
       .on('click', () => {
         this.circles.style('opacity', 1);
         this.lines.style('opacity', 1);
-        this.circles.on('mouseover', p => {
-          // surfacePaperBox(p);
-        });
-        //d3.selectAll('.paper-box').classed('selected-paper', false);
-        //document.getElementById('selected-paper-box').style.display = 'none';
       }) // Event listener to unselect papers when clicking background
       .call(
         d3.zoom().on('zoom', () => {
@@ -51,36 +50,50 @@ export default class ForceNetwork extends Component {
           return d.size;
         })
       );
+    this.nodes = [];
+    this.edges = [];
   }
 
   shouldComponentUpdate(nextProps) {
-    const { sizeMetric, data, onSelect, selected } = nextProps;
+    const {
+      sizeMetric,
+      data: { Papers, Edges },
+      onSelect,
+      selected
+    } = nextProps;
 
-    // Update nodes
-    const existingNodes = this.nodes.map(n => n.ID);
-    const newNodes = Object.values(data.Papers)
-      .filter(p => !existingNodes.includes(p.ID))
+    if (selected.length) {
+      highlightNode(selected[0], this);
+    }
+
+    // Add / remove / update nodes from the simulation
+    const existingNodeIDs = this.nodes.map(n => n.ID);
+    const newNodes = Object.values(Papers)
+      .filter(p => !existingNodeIDs.includes(p.ID))
       .map(p => {
-        return {
-          ID: p.ID,
-          seed: p.seed,
-          label: p.title,
-          size: p.seed ? 10 : 5 * p[sizeMetric]
-        };
+        return { ...p, size: p.seed ? 10 : 5 * p[sizeMetric] };
       });
-    const deadNodes = existingNodes.filter(n => !data.Papers[n]);
-    this.nodes = this.nodes.filter(n => deadNodes.includes(n.ID)).concat(newNodes);
 
+    if (!newNodes.length) return false;
+
+    this.nodes = this.nodes
+      .filter(n => Papers[n.ID]) // filter dead nodes
+      .map(n => {
+        return { ...n, ...Papers[n.ID] }; // update existing info
+      })
+      .concat(newNodes); // add new nodes
     // Update edges
-    const existingEdges = this.edges.map(e => e.ID);
-    const newEdges = Object.values(data.Edges).filter(e => !existingEdges.includes(e));
-    const deadEdges = existingEdges.filter(e => !data.Edges[e]);
-    this.edges = this.edges.filter(e => deadEdges.includes(e.ID)).concat(newEdges);
+    this.edges = Edges.map(e => {
+      return { ...e };
+    });
 
+    // Update the svg circles to match simulation
     this.circles = this.circles
-      .data(this.nodes, d => d.ID)
+      .data(this.nodes, p => p.ID)
       .join('circle')
-      .attr('r', d => d.size)
+      .attr('r', p => {
+        return p.size;
+      })
       .attr('class', function(d) {
         if (d.seed) {
           return styles['seed-node'];
@@ -95,35 +108,45 @@ export default class ForceNetwork extends Component {
           .on('drag', d => dragged(d))
           .on('end', d => dragended(d, this.simulation))
       )
+      /*
       .on('dblclick', p => p) // Display abstract?
+      .on('mouseover', p => {
+        onSelect(p);
+        d3.event.stopPropagation();
+      }) */
       .on('click', p => {
         onSelect(p);
-      })
-      .on('mouseover', p => {
-        //surfacePaperBox(p);
+        //this.circles.on('mouseover', null);
+        //this.svg.on('mouseover', null);
+        d3.event.stopPropagation();
       });
 
+    //Clicking background restores mouseover beahviour
+    this.svg.on('click', () => {
+      this.circles.style('opacity', 1);
+      this.lines.style('opacity', 1);
+      /*  this.circles.on('mouseover', p => {
+        onSelect(p);
+        d3.event.stopPropagation();
+      });
+      this.svg.on('mouseover', () => {
+        this.circles.style('opacity', 1);
+        this.lines.style('opacity', 1);
+      }); */
+    });
+
     this.circles.append('title').text(function(d) {
-      return d.label;
+      return d.title;
     }); //Label nodes with title on hover
 
-    this.lines = this.lines
-      .data(this.edges, d => {
-        return d.source.ID + '-' + d.target.ID;
-      })
-      .join('line');
+    // Update svg lines to match simulation
+    this.lines = this.lines.data(this.edges, d => d.ID).join('line');
 
     // Update and restart the simulation.
     this.simulation.nodes(this.nodes).on('tick', () => tick(this));
     this.simulation.force('link').links(this.edges);
     this.simulation.force('collide').initialize(this.simulation.nodes());
     this.simulation.alpha(1).restart();
-    this.circles.style('opacity', 1);
-    this.lines.style('opacity', 1);
-
-    if (selected.length) {
-      highlightNode(selected[0], this);
-    }
 
     return false;
   }
@@ -144,24 +167,35 @@ export default class ForceNetwork extends Component {
   }
 }
 
-function neighbours(a, b, edges) {
-  return (
-    a === b ||
-    edges.filter(e => {
-      return (e.source.ID === a && e.target.ID === b) || (e.target.ID === a && e.source.ID === b);
-    }).length
-  );
+function updateNodes(nodes, Papers) {
+  const existingNodeIDs = nodes.map(n => n.ID);
+  const newNodes = Object.values(Papers)
+    .filter(p => !existingNodeIDs.includes(p.ID))
+    .map(p => {
+      return { ...p };
+    });
+  return nodes
+    .map(n => {
+      return { ...n, ...Papers[n.ID] }; // update existing info
+    })
+    .filter(n => Papers[n.ID]) // filter dead nodes
+    .concat(newNodes); // add new nodes
+}
+
+function findNeighbours(id, edges) {
+  const targets = edges.filter(e => e.source === id).map(e => e.target);
+  const sources = edges.filter(e => e.target === id).map(e => e.source);
+  return targets.concat(sources);
 }
 
 function highlightNode(id, graph) {
+  const neighbours = findNeighbours(id, graph.edges);
   graph.circles.style('opacity', node => {
-    return neighbours(id, node.ID, graph.edges) ? 1 : 0.15;
+    return node.ID === id || neighbours.includes(node.ID) ? 1 : 0.15;
   });
   graph.lines.style('opacity', edge => {
     return edge.source.ID === id || edge.target.ID === id ? 1 : 0.15;
   });
-  //graph.circles.on('mouseover', null);
-  //d3.event.stopPropagation();
 }
 
 function dragstarted(d, simulation) {
