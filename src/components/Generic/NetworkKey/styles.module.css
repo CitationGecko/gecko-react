@@ -1,68 +1,69 @@
 .network-key {
-    position:absolute;
-    left: 1%;
-    top: 1%;
-    font-size: .8em;
+  position: absolute;
+  left: 1%;
+  top: 1%;
+  font-size: 0.8em;
 }
 
 .key-icon {
-    float:left;
-    height: 54px; 
-}
-.mode-toggle{
-	height: 0;
-	width: 0;
-    visibility: hidden;
-    margin:0;
-}
-.seed-key{
-    content: '';
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	width: 14px;
-	height: 14px;
-    background: rgb(255, 199, 0);
-	border-radius: 14px;
-}
-.toggle {
-	cursor: pointer;
-	text-indent: -9999px;
-	width: 18px;
-	height: 36px;
-	background: rgb(200,200,200);
-	display: block;
-	border-radius: 18px;
-    position: absolute;
-    top:18px;
-}
-.toggle:after {
-	content: '';
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	width: 14px;
-	height: 14px;
-	background:rgb(94, 94, 94);
-	border-radius: 14px;
-	transition: 0.3s;
-}
-.mode-toggle:checked + .toggle:after {
-	top: calc(100% - 2px);
-	transform: translateY(-100%);
-}
-.toggle:active:after {
-	height: 20px;
+  float: left;
+  height: 54px;
 }
 .key-label {
-	position: absolute;
-	top:-3px;
-    left:18px;
+  position: absolute;
+  top: -3px;
+  left: 18px;
 }
 .key-label div {
-    white-space: nowrap;
-    height:8px;
-	padding:5px;
-	position: relative;
-    top: -.15em;
+  white-space: nowrap;
+  height: 8px;
+  padding: 5px;
+  position: relative;
+  top: -0.15em;
+}
+.seed-key {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: rgb(255, 199, 0);
+  border-radius: 14px;
+}
+.mode-toggle {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  margin: 0;
+}
+.toggle {
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 18px;
+  height: 36px;
+  background: rgb(200, 200, 200);
+  display: block;
+  border-radius: 18px;
+  position: absolute;
+  top: 18px;
+}
+.toggle:after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: rgb(94, 94, 94);
+  border-radius: 14px;
+  transition: 0.3s;
+}
+.toggle:active:after {
+  height: 20px;
+}
+
+.toggle-on {
+  top: calc(100% - 2px);
+  transform: translateY(-100%);
 }

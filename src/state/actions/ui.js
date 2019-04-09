@@ -6,6 +6,7 @@ export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const SELECT_PAPER = 'SELECT_PAPER';
 export const SWITCH_LIST_VIEW = 'SWITCH_LIST_VIEW';
+export const SWITCH_MODE = 'SWITCH_MODE';
 
 /*
  * action creators
@@ -22,4 +23,7 @@ export function switchToList(view) {
 }
 export function selectPaper(paper) {
   return { type: SELECT_PAPER, paper };
+}
+export function switchMode(mode) {
+  return { type: SWITCH_MODE, mode };
 }

@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NetworkView } from 'components/Generic/NetworkView';
-import { selectPaper } from 'state/actions';
+import { selectPaper, switchMode } from 'state/actions';
 
 class NetworkPanel extends Component {
   render() {
-    const { onSwitch, onThreshold, data, selected, onSelect } = this.props;
+    const { onSwitch, onThreshold, data, selected, onSelect, mode } = this.props;
     const Papers = { ...data.Papers };
+    let selector;
+    let metric;
+    switch (mode) {
+      case 'citations':
+        selector = 'target';
+        metric = 'seedsCited';
+        break;
+      case 'references':
+        selector = 'source';
+        metric = 'seedsCitedBy';
+        break;
+      default:
+        selector = 'source';
+        metric = 'seedsCitedBy';
+    }
     const Edges = data.Edges.filter(e => {
-      return Papers[e.source].seed || Papers[e.target].seed;
+      return Papers[e[selector]].seed;
     });
 
     const unconnectedPapers = Object.keys(Papers).filter(id => {
@@ -30,7 +45,7 @@ class NetworkPanel extends Component {
         onSwitch={onSwitch}
         onThreshold={onThreshold}
         data={{ Papers, Edges }}
-        sizeMetric={'seedsCitedBy'}
+        sizeMetric={metric}
       />
     );
   }
@@ -39,7 +54,8 @@ class NetworkPanel extends Component {
 const mapStateToProps = state => {
   return {
     data: state.data,
-    selected: state.ui.selectedPapers
+    selected: state.ui.selectedPapers,
+    mode: state.ui.mode
   };
 };
 
@@ -48,7 +64,9 @@ const mapDispatchToProps = dispatch => {
     onSelect: paper => {
       dispatch(selectPaper(paper));
     },
-    switchView: () => {},
+    onSwitch: mode => {
+      dispatch(switchMode(mode));
+    },
     onThreshold: () => {}
   };
 };
