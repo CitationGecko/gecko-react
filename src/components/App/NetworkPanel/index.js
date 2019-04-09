@@ -40,6 +40,7 @@ class NetworkPanel extends Component {
 
     return (
       <NetworkView
+        mode={mode}
         selected={selected}
         onSelect={onSelect}
         onSwitch={onSwitch}
@@ -65,7 +66,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(selectPaper(paper));
     },
     onSwitch: mode => {
-      dispatch(switchMode(mode));
+      dispatch(switchMode('citations'));
     },
     onThreshold: () => {}
   };

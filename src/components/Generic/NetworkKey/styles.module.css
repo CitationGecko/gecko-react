@@ -63,7 +63,7 @@
   height: 20px;
 }
 
-.toggle-on {
+.toggle-on:after {
   top: calc(100% - 2px);
   transform: translateY(-100%);
 }

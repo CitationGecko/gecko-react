@@ -1,19 +1,15 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-const NetworkKey = ({ mode, onClick }) => {
-  const checked = mode === 'references';
+const NetworkKey = ({ mode, onSwitch }) => {
+  const className =
+    mode === 'references' ? styles['toggle'] : `${styles['toggle']} ${styles['toggle-on']}`;
   return (
     <div className={styles['network-key']}>
       <div className={styles['key-icon']}>
         <div className={styles['seed-key']} />
-        <input
-          type="checkbox"
-          className={styles['mode-toggle']}
-          checked={checked}
-          onChange={onClick}
-        />
-        <label className={styles['toggle']} htmlFor={styles['mode-toggle']} />
+        <input type="checkbox" className={styles['mode-toggle']} />
+        <label onClick={onSwitch} className={className} htmlFor={styles['mode-toggle']} />
       </div>
       <div className={styles['key-label']}>
         <div>Seed Papers</div>
