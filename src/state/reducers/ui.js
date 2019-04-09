@@ -1,11 +1,25 @@
 import { combineReducers } from 'redux';
-import { OPEN_MODAL, CLOSE_MODAL, SWITCH_LIST_VIEW, SELECT_PAPER } from 'state/actions';
+import {
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  SWITCH_LIST_VIEW,
+  SELECT_PAPER,
+  SWITCH_MODE
+} from 'state/actions';
 
 /*
  * reducers
  */
 
 const reducers = {
+  mode: function(state = 'references', action) {
+    switch (action.type) {
+      case SWITCH_MODE:
+        return state === 'references' ? 'citations' : 'references';
+      default:
+        return state;
+    }
+  },
   selectedPapers: function(state = [], action) {
     switch (action.type) {
       case SELECT_PAPER:
