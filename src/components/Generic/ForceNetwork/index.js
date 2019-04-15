@@ -61,8 +61,6 @@ export default class ForceNetwork extends Component {
       highlightNode(selected[0], this);
     }
 
-    if (this.nodes.length === Object.keys(Papers).length) return false;
-
     // Add / remove / update nodes from the simulation
     const existingNodeIDs = this.nodes.map(n => n.ID);
     const newNodes = Object.values(Papers)
@@ -82,10 +80,12 @@ export default class ForceNetwork extends Component {
       return { ...e };
     });
 
+    if (newNodes.length) {
+      this.circles = this.circles.data(this.nodes, p => p.ID).join('circle');
+    }
     // Update the svg circles to match simulation
     this.circles = this.circles
       .data(this.nodes, p => p.ID)
-      .join('circle')
       .attr('r', p => {
         return nodeSize(p, sizeMetric);
       })
@@ -147,7 +147,10 @@ export default class ForceNetwork extends Component {
       })
     );
     this.simulation.force('collide').initialize(this.simulation.nodes());
-    this.simulation.alpha(1).restart();
+
+    if (newNodes.length) {
+      this.simulation.alpha(1).restart();
+    }
 
     return false;
   }
@@ -200,8 +203,8 @@ function dragged(d) {
 
 function dragended(d, simulation) {
   if (!d3.event.active) simulation.alphaTarget(0);
-  d.fx = null;
-  d.fy = null;
+  d.fx = d.x;
+  d.fy = d.y;
 }
 
 function tick(graph) {
