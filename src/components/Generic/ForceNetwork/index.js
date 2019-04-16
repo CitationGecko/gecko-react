@@ -59,6 +59,9 @@ export default class ForceNetwork extends Component {
 
     if (selected.length && Papers[selected[0]]) {
       highlightNode(selected[0], this);
+    } else {
+      this.circles.style('opacity', 1);
+      this.lines.style('opacity', 1);
     }
 
     // Add / remove / update nodes from the simulation

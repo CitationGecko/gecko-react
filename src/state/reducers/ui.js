@@ -24,6 +24,8 @@ const reducers = {
     switch (action.type) {
       case SELECT_PAPER:
         return [action.paper.ID];
+      case SWITCH_MODE:
+        return [];
       default:
         return state;
     }
