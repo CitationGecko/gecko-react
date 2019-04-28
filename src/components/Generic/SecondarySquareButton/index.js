@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 class SecondarySquareButton extends Component {
   render() {
     return (
-      <button className={styles['large-secondary-button']} onClick={this.props.action}>
+      <button className={styles['large-secondary-button']} onClick={this.props.onClick}>
         {this.props.text}
       </button>
     );

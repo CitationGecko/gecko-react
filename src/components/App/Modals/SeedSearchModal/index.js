@@ -3,9 +3,35 @@ import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
 import Loader from 'components/Generic/Loader';
-import { seedSearchSubmit } from 'state/actions';
+import { seedSearchSubmit, updatePapers } from 'state/actions';
 
 class SeedSearchModal extends Component {
+  state = {
+    selectAll: false,
+    selected: {}
+  };
+  toggleAll = () => {
+    this.setState(prevState => {
+      return {
+        selectAll: !prevState.selectAll,
+        selected: Object.assign({}, this.props.results.map(() => !prevState.selectAll))
+      };
+    });
+  };
+  toggle = index => {
+    this.setState(prevState => {
+      let selected = { ...prevState.selected };
+      selected[index] = !prevState.selected[index];
+      return {
+        ...prevState,
+        selected
+      };
+    });
+  };
+  addSeeds = () => {
+    const toAdd = this.props.results.filter((x, i) => this.state.selected[i]);
+    this.props.addPapers(toAdd);
+  };
   handleSubmit = event => {
     event.preventDefault();
     this.props.seedSearchSubmit(event.target[0].value);
@@ -27,7 +53,11 @@ class SeedSearchModal extends Component {
             <thead>
               <tr>
                 <td>
-                  <input className={styles['select-all']} type="checkbox" />
+                  <input
+                    className={styles['select-all']}
+                    type="checkbox"
+                    onChange={this.toggleAll}
+                  />
                 </td>
                 <td>TITLE</td>
                 <td>AUTHOR</td>
@@ -37,10 +67,14 @@ class SeedSearchModal extends Component {
             </thead>
             <tbody className={styles['table-body']}>
               {this.props.results &&
-                this.props.results.map(paper => (
-                  <tr>
+                this.props.results.map((paper, i) => (
+                  <tr key={i}>
                     <td>
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={this.state.selected[i]}
+                        onChange={() => this.toggle(i)}
+                      />
                     </td>
                     <td>{paper.title}</td>
                     <td>{paper.author}</td>
@@ -50,7 +84,7 @@ class SeedSearchModal extends Component {
                 ))}
             </tbody>
           </table>
-          <SecondarySquareButton text={'Add selected as seed papers'} />
+          <SecondarySquareButton text={'Add selected as seed papers'} onClick={this.addSeeds} />
         </div>
       </React.Fragment>
     );
@@ -65,7 +99,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    seedSearchSubmit: query => dispatch(seedSearchSubmit(query))
+    seedSearchSubmit: query => dispatch(seedSearchSubmit(query)),
+    addPapers: papers => dispatch(updatePapers(papers, true))
   };
 };
 
