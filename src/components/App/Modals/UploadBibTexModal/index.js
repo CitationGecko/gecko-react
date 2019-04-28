@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
-import { importBibTex } from 'integrations/bibtex';
+import { importBibTex } from 'import-modules/bibtex';
 import { updatePapers, closeModal } from 'state/actions';
 
 class UploadBibTexModal extends Component {

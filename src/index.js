@@ -5,7 +5,8 @@ import './index.css';
 import App from './components/App/index';
 import registerServiceWorker from './registerServiceWorker';
 import { store } from './state/store';
-import './data-sources';
+import './data-modules';
+import './import-modules';
 
 ReactDOM.render(
   <Provider store={store}>

@@ -31,7 +31,8 @@ export default class ForceNetwork extends Component {
         })
       ) // Event listener to enable zoom by scrolling
       .on('dblclick.zoom', null); // Disable double click zooming
-
+    // Center the canvas
+    this.canvas.attr('transform', `translate(${this.width / 2},${this.height / 2})`);
     this.simulation = d3
       .forceSimulation()
       .force(
@@ -41,7 +42,7 @@ export default class ForceNetwork extends Component {
         })
       )
       .force('charge', d3.forceManyBody().strength(-100))
-      .force('center', d3.forceCenter(this.width / 2, this.height / 2))
+      //.force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force('xattract', d3.forceX())
       .force('yattract', d3.forceY());
 
@@ -83,7 +84,7 @@ export default class ForceNetwork extends Component {
       return { ...e };
     });
 
-    if (newNodes.length) {
+    if (this.nodes.length !== existingNodeIDs) {
       this.circles = this.circles.data(this.nodes, p => p.ID).join('circle');
     }
     // Update the svg circles to match simulation
@@ -119,7 +120,7 @@ export default class ForceNetwork extends Component {
         d3.event.stopPropagation();
       });
 
-    //Clicking background restores mouseover beahviour
+    //Clicking background restores mouseover behaviour
     this.svg.on('click', () => {
       this.circles.style('opacity', 1);
       this.lines.style('opacity', 1);
