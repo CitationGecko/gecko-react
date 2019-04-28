@@ -1,61 +1,64 @@
-.title-search-table {
-    height:98%;
+.text-input {
+  border: solid 1px;
+  margin-left: 1em;
 }
 
-.title-search-container{
-    margin-top: 1em;
-    overflow: auto;
-    box-sizing: border-box;
-    max-height: 20em;
-}
-.add-from-search{
-    position: relative;
-    float: right;
-    right: 0px;
-    top:0px;
-    height: 100%;
-    border-radius: 5em;
-    background: #FFC700;
-    padding: .5em;
-    cursor: pointer;
+.submit {
+  display: inline;
+  margin-left: 1em;
 }
 
-.paper-box:hover .add-from-search{
-    
-    background:#383A38;
-    color:white;
+.table {
+  display: block;
+  height: 80%;
+  border-spacing: 0 0.1em;
 }
 
-.search-input > input{
-    border:solid 1px;
-    margin-left:1em;
+.table tbody {
+  height: 68%;
+  overflow: auto;
 }
 
-.search-input{
-    display: inline;
-    margin-left:1em;
+.table tbody tr {
+  background-color: #eaeaea;
+  transition: background 0.3s;
 }
 
-.title-input-modal > h1{
-    margin-left:0;
+.table tbody tr:hover {
+  background: #ffc700;
 }
 
-.title-search-container > .paper-box{
-    padding: 1em 2em;
+.table td {
+  padding: 1em;
+  font-size: 12px;
 }
 
-.title-input-modal .modal-content {
-    height: 90%;
+.table td:nth-child(1) {
+  width: 5%;
+}
+.table td:nth-child(2) {
+  width: 35%;
 }
 
-.add-search-items{
-    transition: background 0.3s;
-    position:absolute;
-    bottom:1em;
-    width:95%;
-    height:10%;
+.table td:nth-child(3) {
+  width: 10%;
+}
+.table td:nth-child(4) {
+  width: 10%;
+}
+.table td:nth-child(5) {
+  width: 20%;
 }
 
-.add-search-items:hover{
-    background: #FFC700;
+.table tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.table thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
