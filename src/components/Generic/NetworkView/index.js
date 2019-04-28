@@ -10,7 +10,7 @@ export class NetworkView extends Component {
     return (
       <div className={styles['network-panel']}>
         <NetworkKey mode={mode} onSwitch={onSwitch} />
-        <ThresholdSlider threshold={onThreshold} />
+        {/*<ThresholdSlider threshold={onThreshold} />*/}
         <ForceNetwork data={data} sizeMetric={sizeMetric} onSelect={onSelect} selected={selected} />
       </div>
     );

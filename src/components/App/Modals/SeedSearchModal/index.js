@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
+import { seedSearchSubmit, updatePapers } from 'state/actions';
 import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
 import Loader from 'components/Generic/Loader';
-import { seedSearchSubmit, updatePapers } from 'state/actions';
 
 class SeedSearchModal extends Component {
   state = {
