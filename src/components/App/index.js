@@ -8,6 +8,7 @@ import NetworkPanel from './NetworkPanel';
 
 class App extends Component {
   render() {
+    fetch('/ping').then(resp => console.log(resp));
     return (
       <div className={styles.App}>
         <SideBar />

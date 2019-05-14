@@ -6,6 +6,7 @@ import OnboardingModal from './OnboardingModal';
 import AddSeedsModal from './AddSeedsModal';
 import UploadBibTexModal from './UploadBibTexModal';
 import SeedSearchModal from './SeedSearchModal';
+import ZoteroImportModal from './ZoteroImportModal';
 
 class Modal extends Component {
   render() {
@@ -15,7 +16,8 @@ class Modal extends Component {
       onboarding: <OnboardingModal />,
       addSeeds: <AddSeedsModal />,
       bibtex: <UploadBibTexModal />,
-      seedSearch: <SeedSearchModal />
+      seedSearch: <SeedSearchModal />,
+      zotero: <ZoteroImportModal />
     };
 
     const ModalContent = modals[this.props.modal] ? (
