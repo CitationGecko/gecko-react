@@ -1,4 +1,4 @@
-import { store } from 'state/store';
+import { store } from 'state/data';
 import { requestSent, updatePapers } from 'state/actions';
 
 store.subscribe(handleStateChange);

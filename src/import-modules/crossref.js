@@ -1,4 +1,4 @@
-import { store } from 'state/store';
+import { store } from 'state/data';
 import { seedSearchPending, seedSearchComplete } from 'state/actions';
 import { parsePaper } from '../data-modules/crossref';
 
