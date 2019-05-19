@@ -14,10 +14,20 @@ export function useUserInterface() {
 
   return {
     ...state,
-    closeModal: () => setState({ modal: null }),
-    openModal: modal => setState({ modal }),
-    switchToList: view => setState({ listView: view }),
+    closeModal: () => setState(prevState => ({ ...prevState, modal: null })),
+    openModal: modal => setState(prevState => ({ ...prevState, modal })),
+    switchToList: view => setState(prevState => ({ ...prevState, listView: view })),
+    switchMode: () =>
+      setState(prevState => ({
+        ...prevState,
+        selectedPapers: [],
+        mode: prevState.mode === 'references' ? 'citations' : 'references'
+      })),
     selectPaper: paper =>
-      setState({ listView: paper.seed ? 'Seeds' : 'Recommended', selectedPapers: [paper.id] })
+      setState(prevState => ({
+        ...prevState,
+        listView: paper ? (paper.seed ? 'Seeds' : 'Recommended') : prevState.listView,
+        selectedPapers: paper ? [paper.ID] : []
+      }))
   };
 }

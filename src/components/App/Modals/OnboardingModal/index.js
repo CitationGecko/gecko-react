@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import PrimarySquareButton from 'components/Generic/PrimarySquareButton';
 import { importExampleBibTex } from 'import-modules/bibtex';
 import { UI } from 'state/ui';
-import { Store } from 'state/ui';
+import { Store } from 'state/data';
 
 const OnboardingModal = () => {
   const { openModal, closeModal } = useContext(UI);
@@ -22,7 +22,7 @@ const OnboardingModal = () => {
       </p>
       <div className={styles['modal-footer']}>
         <PrimarySquareButton
-          onClick={() => openModal('addsSeeds')}
+          onClick={() => openModal('addSeeds')}
           text={'Start discovering papers'}
         />
       </div>

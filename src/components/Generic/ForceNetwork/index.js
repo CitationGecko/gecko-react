@@ -17,14 +17,6 @@ export default class ForceNetwork extends Component {
       .selectAll('circle');
 
     this.svg
-      /* .on('mouseover', () => {
-        this.circles.style('opacity', 1);
-        this.lines.style('opacity', 1);
-      }) */
-      .on('click', () => {
-        this.circles.style('opacity', 1);
-        this.lines.style('opacity', 1);
-      }) // Event listener to unselect papers when clicking background
       .call(
         d3.zoom().on('zoom', () => {
           this.canvas.attr('transform', d3.event.transform);
@@ -122,16 +114,7 @@ export default class ForceNetwork extends Component {
 
     //Clicking background restores mouseover behaviour
     this.svg.on('click', () => {
-      this.circles.style('opacity', 1);
-      this.lines.style('opacity', 1);
-      /*  this.circles.on('mouseover', p => {
-        onSelect(p);
-        d3.event.stopPropagation();
-      });
-      this.svg.on('mouseover', () => {
-        this.circles.style('opacity', 1);
-        this.lines.style('opacity', 1);
-      }); */
+      onSelect(null);
     });
 
     this.circles.append('title').text(function(d) {

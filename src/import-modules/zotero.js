@@ -13,7 +13,6 @@ export function getCollections() {
       zotero.totalCollections = json.data.length;
       zotero.status = true;
       zotero.collections = json.data;
-      displayCollections(zotero.collections);
     });
   });
 }
@@ -67,7 +66,6 @@ export function getItems(collectionID) {
           doi: item.DOI
         };
       });
-      printTable('#zotero-import-table', items);
     });
 }
 
