@@ -5,19 +5,25 @@ import Logo from './Logo';
 import ModalContainer from './Modals';
 import ListPanel from './ListPanel';
 import NetworkPanel from './NetworkPanel';
+import { Store, useDataStore } from 'state/data';
+import { UI, useUserInterface } from 'state/ui';
 
-class App extends Component {
-  render() {
-    return (
-      <div className={styles.App}>
-        <SideBar />
-        <ListPanel />
-        <NetworkPanel />
-        <ModalContainer />
-        <Logo />
-      </div>
-    );
-  }
+function App() {
+  let store = useDataStore();
+  let ui = useUserInterface();
+  return (
+    <Store.Provider value={store}>
+      <UI.Provider value={ui}>
+        <div className={styles.App}>
+          <SideBar />
+          <ListPanel />
+          <NetworkPanel />
+          <ModalContainer />
+          <Logo />
+        </div>
+      </UI.Provider>
+    </Store.Provider>
+  );
 }
 
 export default App;

@@ -1,6 +1,3 @@
-import { printTable } from 'ui/table-view';
-import { displayCollections } from 'ui/modals/zotero-import-modal';
-
 export var zotero = {
   collections: [],
   totalCollections: 0,
@@ -10,7 +7,7 @@ export var zotero = {
 
 export function getCollections() {
   let url = '/services/zotero/getCollections';
-  fetch(url).then(resp => {
+  return fetch(url).then(resp => {
     console.log('response from Zotero!');
     resp.json().then(json => {
       zotero.totalCollections = json.data.length;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import { seedSearchSubmit, updatePapers } from 'state/actions';
 import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
@@ -91,20 +90,4 @@ class SeedSearchModal extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    ...state.search
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    seedSearchSubmit: query => dispatch(seedSearchSubmit(query)),
-    addPapers: papers => dispatch(updatePapers(papers, true))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SeedSearchModal);
+export default null;
