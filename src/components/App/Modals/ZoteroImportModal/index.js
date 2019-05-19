@@ -12,7 +12,12 @@ class ZoteroImportModal extends Component {
       <div>
         <img className={styles.centered} src={logo} alt="zotero-logo" />
         <div className={styles.centered}>
-          <SecondaryButton text="Connect to Zotero" />
+          <SecondaryButton
+            text="Connect to Zotero"
+            onClick={() => {
+              window.location.href = window.location.href + 'services/zotero/auth/login';
+            }}
+          />
         </div>
       </div>
     );
