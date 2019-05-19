@@ -29,7 +29,7 @@ function SeedList() {
       header={'My Seed Papers'}
       paperCards={paperCards}
       selected={selectedPapers}
-      primaryButton={{ text: 'Add more seeds', onClick: openModal('addSeeds') }}
+      primaryButton={{ text: 'Add more seeds', onClick: () => openModal('addSeeds') }}
       secondaryButton={{
         text: 'Delete',
         onClick: () => {

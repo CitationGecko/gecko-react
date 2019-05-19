@@ -7,6 +7,8 @@ import ListPanel from './ListPanel';
 import NetworkPanel from './NetworkPanel';
 import { Store, useDataStore } from 'state/data';
 import { UI, useUserInterface } from 'state/ui';
+import { Crossref } from 'data-modules/crossref';
+import { Coci } from 'data-modules/coci';
 
 function App() {
   let store = useDataStore();
@@ -22,6 +24,8 @@ function App() {
           <Logo />
         </div>
       </UI.Provider>
+      <Crossref />
+      <Coci />
     </Store.Provider>
   );
 }

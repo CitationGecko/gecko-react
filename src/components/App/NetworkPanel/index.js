@@ -22,22 +22,25 @@ const NetworkPanel = () => {
       selector = 'source';
       metric = 'seedsCitedBy';
   }
-  const displayEdges = Edges.filter(e => {
+  const edgesToDisplay = Edges.filter(e => {
     return Papers[e[selector]].seed;
   });
 
-  const unconnectedPapers = Object.keys(Papers).filter(id => {
-    return !(
-      displayEdges
-        .map(e => e.source)
-        .concat(Edges.map(e => e.target))
-        .includes(parseInt(id, 10)) || Papers[id].seed
-    );
-  });
-
-  unconnectedPapers.forEach(id => {
-    delete Papers[id];
-  });
+  const papersToDisplay = Object.keys(Papers)
+    .filter(id => {
+      return (
+        edgesToDisplay
+          .map(e => e.source)
+          .concat(Edges.map(e => e.target))
+          .includes(parseInt(id, 10)) || Papers[id].seed
+      );
+    })
+    .reduce((obj, key) => {
+      return {
+        ...obj,
+        [key]: Papers[key]
+      };
+    }, {});
 
   return (
     <NetworkView
@@ -46,7 +49,7 @@ const NetworkPanel = () => {
       onSelect={selectPaper}
       onSwitch={switchMode}
       onThreshold={() => {}}
-      data={{ Papers, Edges: displayEdges }}
+      data={{ Papers: papersToDisplay, Edges: edgesToDisplay }}
       sizeMetric={metric}
     />
   );

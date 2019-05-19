@@ -1,24 +1,30 @@
-import React, { Component } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './styles.module.css';
-import { seedSearchSubmit, updatePapers } from 'state/actions';
 import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
 import Loader from 'components/Generic/Loader';
+import { Store } from 'state/data';
+import { crossrefSearch } from 'import-modules/crossref';
 
-class SeedSearchModal extends Component {
-  state = {
+const SeedSearchModal = () => {
+  const [state, setState] = useState({
+    status: null,
     selectAll: false,
-    selected: {}
-  };
-  toggleAll = () => {
-    this.setState(prevState => {
+    selected: {},
+    results: []
+  });
+
+  const { updatePapers } = useContext(Store);
+
+  const toggleAll = () => {
+    setState(prevState => {
       return {
         selectAll: !prevState.selectAll,
-        selected: Object.assign({}, this.props.results.map(() => !prevState.selectAll))
+        selected: Object.assign({}, state.results.map(() => !prevState.selectAll))
       };
     });
   };
-  toggle = index => {
-    this.setState(prevState => {
+  const toggle = index => {
+    setState(prevState => {
       let selected = { ...prevState.selected };
       selected[index] = !prevState.selected[index];
       return {
@@ -27,67 +33,59 @@ class SeedSearchModal extends Component {
       };
     });
   };
-  addSeeds = () => {
-    const toAdd = this.props.results.filter((x, i) => this.state.selected[i]);
-    this.props.addPapers(toAdd);
+  const addSeeds = () => {
+    const toAdd = state.results.filter((x, i) => state.selected[i]);
+    updatePapers(toAdd, true);
   };
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    this.props.seedSearchSubmit(event.target[0].value);
+    crossrefSearch(event.target[0].value).then(results => {
+      setState(prevState => ({ ...prevState, results }));
+    });
   };
-  render() {
-    return (
-      <React.Fragment>
-        <h1>Search for seed papers</h1>
-        <form className={styles['search-input']} onSubmit={this.handleSubmit}>
-          <span>Enter query:</span>
-          <input type="text" className={styles['text-input']} />
-          <Loader display={this.props.status === 'pending'} />
-          {this.props.status !== 'pending' && (
-            <input type="submit" className={styles['submit']} value="Search" />
-          )}
-        </form>
-        <div>
-          <table className={styles['table']}>
-            <thead>
-              <tr>
-                <td>
-                  <input
-                    className={styles['select-all']}
-                    type="checkbox"
-                    onChange={this.toggleAll}
-                  />
-                </td>
-                <td>TITLE</td>
-                <td>AUTHOR</td>
-                <td>YEAR</td>
-                <td>PUBLICATION</td>
-              </tr>
-            </thead>
-            <tbody className={styles['table-body']}>
-              {this.props.results &&
-                this.props.results.map((paper, i) => (
-                  <tr key={i}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={this.state.selected[i]}
-                        onChange={() => this.toggle(i)}
-                      />
-                    </td>
-                    <td>{paper.title}</td>
-                    <td>{paper.author}</td>
-                    <td>{paper.year}</td>
-                    <td>{paper.journal}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-          <SecondarySquareButton text={'Add selected as seed papers'} onClick={this.addSeeds} />
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <h1>Search for seed papers</h1>
+      <form className={styles['search-input']} onSubmit={handleSubmit}>
+        <span>Enter query:</span>
+        <input type="text" className={styles['text-input']} />
+        <Loader display={state.status === 'pending'} />
+        {state.status !== 'pending' && (
+          <input type="submit" className={styles['submit']} value="Search" />
+        )}
+      </form>
+      <div>
+        <table className={styles['table']}>
+          <thead>
+            <tr>
+              <td>
+                <input className={styles['select-all']} type="checkbox" onChange={toggleAll} />
+              </td>
+              <td>TITLE</td>
+              <td>AUTHOR</td>
+              <td>YEAR</td>
+              <td>PUBLICATION</td>
+            </tr>
+          </thead>
+          <tbody className={styles['table-body']}>
+            {state.results &&
+              state.results.map((paper, i) => (
+                <tr key={i}>
+                  <td>
+                    <input type="checkbox" checked={state.selected[i]} onChange={() => toggle(i)} />
+                  </td>
+                  <td>{paper.title}</td>
+                  <td>{paper.author}</td>
+                  <td>{paper.year}</td>
+                  <td>{paper.journal}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <SecondarySquareButton text={'Add selected as seed papers'} onClick={addSeeds} />
+      </div>
+    </React.Fragment>
+  );
+};
 
-export default null;
+export default SeedSearchModal;
