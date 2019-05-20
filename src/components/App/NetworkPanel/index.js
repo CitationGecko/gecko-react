@@ -31,7 +31,7 @@ const NetworkPanel = () => {
       return (
         edgesToDisplay
           .map(e => e.source)
-          .concat(Edges.map(e => e.target))
+          .concat(edgesToDisplay.map(e => e.target))
           .includes(parseInt(id, 10)) || Papers[id].seed
       );
     })

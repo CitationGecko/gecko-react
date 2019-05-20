@@ -6,6 +6,7 @@ const initialState = {
   listView: 'Seeds',
   modal: 'onboarding'
 };
+// TODO: Split state
 
 export const UI = createContext(initialState);
 
