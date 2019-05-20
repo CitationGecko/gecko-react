@@ -18,6 +18,7 @@ const SeedSearchModal = () => {
   const toggleAll = () => {
     setState(prevState => {
       return {
+        ...prevState,
         selectAll: !prevState.selectAll,
         selected: Object.assign({}, state.results.map(() => !prevState.selectAll))
       };

@@ -13,9 +13,9 @@ export function useDataStore() {
   return {
     Papers: state.Papers,
     Edges: state.Edges,
-    updatePapers: (papers, seeds) => setState(updatePapers(papers, seeds, state)),
-    deletePapers: paperIDs => setState(deletePapers(paperIDs, state)),
-    makeSeed: id => setState(makeSeed(id, state))
+    updatePapers: (papers, seeds) => setState(prevState => updatePapers(papers, seeds, prevState)),
+    deletePapers: paperIDs => setState(prevState => deletePapers(paperIDs, prevState)),
+    makeSeed: id => setState(prevState => makeSeed(id, prevState))
   };
 }
 
