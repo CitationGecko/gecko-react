@@ -31,7 +31,8 @@ function AuthZoteroVerifyRoute(req, res) {
         _.set(req.session, 'auth.zotero.username', results.username);
       }
 
-      console.log('req.session', req.session);
+      res.cookie('gecko_zotero_key', accessToken).send();
+      res.cookie('gecko_zotero_userID', results.userID).send();
       return res.redirect('/');
     }
   );
