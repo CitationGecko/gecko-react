@@ -1,6 +1,5 @@
-// http://localhost:3000/auth/zotero/verify
 const _ = require('lodash');
-const ZoteroOAuthClient = require('./config').OAuthClient;
+const ZoteroOAuthClient = require('./lib/auth').OAuthClient;
 
 function AuthZoteroVerifyRoute(req, res) {
   const oauthVerifier = req.query.oauth_verifier;
