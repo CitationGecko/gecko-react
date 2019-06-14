@@ -1,7 +1,17 @@
 const _ = require('lodash');
-const request = require('request');
+const request = require('request-promise');
 
 const API_ROOT = 'https://api.zotero.org';
+
+function getUser(data) {
+  const opts = {
+    url: API_ROOT + '/keys/' + data.userApiKey,
+    method: 'GET',
+    headers: getHeaders(data)
+  };
+
+  return request(opts).then(resp => JSON.parse(resp));
+}
 
 function getHeaders(data) {
   return {
@@ -16,7 +26,7 @@ function getHeaders(data) {
  * @param data.aggregatedResults
  * @param data.offset
  */
-function getCollections(data, callback) {
+function getCollections(data) {
   const limit = 100;
 
   if (!data.offset) {
@@ -34,45 +44,33 @@ function getCollections(data, callback) {
 
   data.aggregatedResults = data.aggregatedResults || [];
 
-  return request(opts, (error, response, body) => {
-    if (error) {
-      return callback(error);
-    }
-
-    const parsedBody = JSON.parse(body);
+  return request(opts).then(response => {
+    const parsedBody = JSON.parse(response);
     const totalCollections = _.get(response, 'headers.total-results');
     var collections = _.map(parsedBody, 'data');
 
     if (parsedBody && parsedBody.error) {
-      return callback(parsedBody.message || 'Unknown error communicating with Zotero');
+      return parsedBody.message || 'Unknown error communicating with Zotero';
     }
 
     data.aggregatedResults = data.aggregatedResults.concat(collections);
 
     if (totalCollections > data.offset + limit) {
       data.offset += limit;
-      return getCollections(data, callback);
+      return getCollections(data);
     }
-
-    return callback(null, data.aggregatedResults);
+    return data.aggregatedResults;
   });
 }
 
-function getContents(collectionID, data, callback) {
+function getContents(collectionID, data) {
   const opts = {
     url: API_ROOT + '/users/' + data.userId + '/collections/' + collectionID + '/items/top',
     method: 'GET',
     headers: getHeaders(data)
   };
 
-  return request(opts, (error, response, body) => {
-    if (error) {
-      return callback(error);
-    }
-
-    const parsedBody = JSON.parse(body);
-    return callback(null, parsedBody);
-  });
+  return request(opts).then(resp => JSON.parse(resp));
 }
 
 function insertPaperDataIntoTemplate(template, paper, collectionId) {
@@ -91,7 +89,7 @@ function insertPaperDataIntoTemplate(template, paper, collectionId) {
  * @param data.userApiKey
  * @param data.collectionId
  */
-function addItems(papers, collectionId, data, callback) {
+function addItems(papers, collectionId, data) {
   if (!Array.isArray(papers) && typeof papers === 'object') {
     papers = [papers];
   }
@@ -103,30 +101,23 @@ function addItems(papers, collectionId, data, callback) {
     headers: getHeaders(data)
   };
 
-  request(templateOpts, (templateErr, templateResponse, templateBody) => {
-    const template = JSON.parse(templateBody);
+  request(templateOpts).then(resp => {
+    const template = JSON.parse(resp);
     const allPapersPayload = _.map(papers, paper =>
       insertPaperDataIntoTemplate(template, paper, collectionId)
     );
-
     const opts = {
       url: API_ROOT + '/users/' + data.userId + '/items',
       method: 'POST',
       headers: getHeaders(data),
       body: JSON.stringify(allPapersPayload)
     };
-
-    request(opts, (error, response, body) => {
-      if (error) {
-        return callback(error);
-      }
-      console.log(body);
-      return callback(null, body);
-    });
+    return request(opts).then(resp => JSON.parse(resp));
   });
 }
 
 module.exports = {
+  getUser,
   getCollections,
   getContents,
   addItems

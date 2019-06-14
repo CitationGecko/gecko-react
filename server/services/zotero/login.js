@@ -1,12 +1,19 @@
-// http://localhost:3000/auth/zotero/login
 const _ = require('lodash');
-const ZoteroAuthLib = require('./config');
+const Zotero = require('./lib/zotero');
+const ZoteroAuthLib = require('./lib/auth');
 
 const ZoteroEndpoints = ZoteroAuthLib.endpoints;
 const ZoteroOAuthClient = ZoteroAuthLib.OAuthClient;
 
 function AuthZoteroLoginRoute(req, res) {
   // const opts = { oauth_callback:  };
+  if (req.query.key) {
+    return Zotero.getUser({ userApiKey: req.query.key }).then(user => {
+      _.set(req.session, 'auth.zotero.accessToken', req.query.key);
+      _.set(req.session, 'auth.zotero.userID', user.userID);
+      return res.send({ success: true, data: { user } });
+    });
+  }
 
   return ZoteroOAuthClient.getOAuthRequestToken((err, token, tokenSecret, parsedQueryString) => {
     if (err) {

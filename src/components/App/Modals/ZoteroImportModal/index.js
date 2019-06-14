@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import Select from 'react-select';
 import styles from './styles.module.css';
-//import { importZotero } from 'import-modules/zotero';
 import logo from './new-logo.svg';
-import libraryIcon from './zotero-library.png';
-import collectionIcon from './zotero-collection.png';
 import SecondaryButton from 'components/Generic/SecondaryButton';
-import cookies from 'browser-cookies';
 import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
+import Table from 'components/Generic/Table';
+import { Store } from 'state/data';
+import { getCollections, getItems, authenticate } from 'import-modules/zotero';
 
 const ZoteroConnect = () => {
   return (
@@ -16,7 +16,7 @@ const ZoteroConnect = () => {
         <SecondaryButton
           text="Connect to Zotero"
           onClick={() => {
-            window.location.href = window.location.href + 'services/zotero/auth/login';
+            window.location.href = window.location.href + 'services/zotero/login';
           }}
         />
       </div>
@@ -26,78 +26,38 @@ const ZoteroConnect = () => {
 
 const ZoteroSearch = () => {
   const [papers, setPapers] = useState([]);
+  const [selected, setSelected] = useState({});
   const [collections, setCollections] = useState([]);
-  const [dropdown, toggleDropdown] = useState(false);
+  const [activeCollection, setActiveCollection] = useState(false);
+  const { updatePapers } = useContext(Store);
 
-  let url = '/services/zotero/getCollections';
-  fetch(url).then(resp => {
-    console.log('response from Zotero!');
-    resp.json().then(json => {
-      zotero.totalCollections = json.data.length;
-      zotero.status = true;
-      zotero.collections = json.data;
-    });
-  });
+  getCollections().then(setCollections);
 
-  const toggle = j => {
-    setPapers(papers =>
-      papers.map((paper, i) => (j && j !== i ? paper : { ...paper, selected: !paper.selected }))
-    );
+  const addSeeds = () => {
+    const selectedPapers = papers.filter((p, i) => selected[i]);
+    updatePapers(selectedPapers, true);
   };
 
-  const addSeeds = () => {};
+  const onCollectionSelect = ({ value }) => {
+    setActiveCollection(value);
+    console.log(value);
+    getItems(value.key).then(setPapers);
+  };
 
   return (
     <React.Fragment>
       <h1>Add papers from Zotero</h1>
-      <div>
+      <div className={styles.filter}>
         <span>Filter by Collection:</span>
-        <div class="dropdown">
-          <button class="dropbtn" onClick={() => toggleDropdown(!dropdown)}>
-            <img src={libraryIcon} alt="library-icon" />
-            My Library
-          </button>
-          {dropdown && (
-            <div id="zoteroDropdown" class="dropdown-content">
-              <input type="text" placeholder="Search..." id="zoteroInput" />
-              {collections.map(c => (
-                <div className="dropdown-item">
-                  <img src={collectionIcon} alt="zotero-collection" />
-                  {c.name}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <Select
+          className={styles.select}
+          value={activeCollection}
+          options={collections.map(c => ({ value: c, label: c.name }))}
+          onChange={onCollectionSelect}
+        />
       </div>
       <div>
-        <table className={styles['table']}>
-          <thead>
-            <tr>
-              <td>
-                <input className={styles['select-all']} type="checkbox" onChange={() => toggle()} />
-              </td>
-              <td>TITLE</td>
-              <td>AUTHOR</td>
-              <td>YEAR</td>
-              <td>PUBLICATION</td>
-            </tr>
-          </thead>
-          <tbody className={styles['table-body']}>
-            {papers &&
-              papers.map((paper, i) => (
-                <tr key={i}>
-                  <td>
-                    <input type="checkbox" checked={!!paper.selected} onChange={() => toggle(i)} />
-                  </td>
-                  <td>{paper.title}</td>
-                  <td>{paper.author}</td>
-                  <td>{paper.year}</td>
-                  <td>{paper.journal}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Table papers={papers} selected={selected} setSelected={setSelected} />
         <SecondarySquareButton text={'Add selected as seed papers'} onClick={addSeeds} />
       </div>
     </React.Fragment>
@@ -105,13 +65,12 @@ const ZoteroSearch = () => {
 };
 
 const ZoteroImportModal = () => {
-  const apiKey = cookies.get('gecko_zotero_key');
-  const userID = cookies.get('gecko_zotero_userID');
-  if (apiKey && userID) {
-    return <ZoteroSearch />;
-  } else {
-    return <ZoteroConnect />;
+  const [user, setUser] = useState(false);
+  if (!user) {
+    authenticate().then(user => setUser(user));
+    return null;
   }
+  return <ZoteroSearch />;
 };
 
 export default ZoteroImportModal;

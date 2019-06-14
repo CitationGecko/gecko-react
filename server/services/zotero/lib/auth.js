@@ -10,7 +10,7 @@ const endpoints = {
   requestToken: 'https://www.zotero.org/oauth/request?write_access=1',
   accessToken: 'https://www.zotero.org/oauth/access?write_access=1',
   authorize: 'https://www.zotero.org/oauth/authorize',
-  callbackUrl: APP_URL + '/services/zotero/auth/verify'
+  callbackUrl: APP_URL + '/services/zotero/verify'
 };
 
 const OAuthClient = new OAuth.OAuth(

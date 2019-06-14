@@ -19,17 +19,14 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(path.dirname(__dirname), 'build')));
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(path.dirname(__dirname), 'build', 'index.html'));
 });
 
-app.get('/services/zotero/auth/login', require('./routes/services/zotero/auth/login'));
-app.get('/services/zotero/auth/verify', require('./routes/services/zotero/auth/verify'));
-app.get('/services/zotero/getCollections', require('./routes/services/zotero/getCollections'));
-app.get(
-  '/services/zotero/getItemsInCollection',
-  require('./routes/services/zotero/getItemsInCollection')
-);
-app.post('/services/zotero/addItems', require('./routes/services/zotero/addItems'));
+app.get('/services/zotero/login', require('./services/zotero/login'));
+app.get('/services/zotero/verify', require('./services/zotero/verify'));
+app.get('/services/zotero/getCollections', require('./services/zotero/getCollections'));
+app.get('/services/zotero/getItemsInCollection', require('./services/zotero/getItemsInCollection'));
+app.post('/services/zotero/addItems', require('./services/zotero/addItems'));
 
 app.listen(process.env.PORT || 8080, () => console.log('CitationGecko server listening...'));

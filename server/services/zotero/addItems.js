@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const Zotero = require('./lib');
+const Zotero = require('./lib/zotero');
 
 function ZoteroAddItemRoute(req, res) {
   const body = JSON.parse(req.body);
@@ -18,11 +18,11 @@ function ZoteroAddItemRoute(req, res) {
   if (!opts.userId || !opts.userApiKey) {
     return res.json({
       success: false,
-      message: 'Authenticate with Zotero through /services/zotero/auth/login'
+      message: 'Authenticate with Zotero through /services/zotero/login'
     });
   }
 
-  Zotero.addItems(items, collectionId, opts, (err, data) => {
+  Zotero.addItems(items, collectionId, opts).then(data => {
     return res.json({ success: true, data: data });
   });
 }
