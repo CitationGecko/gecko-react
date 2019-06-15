@@ -1,10 +1,6 @@
-import { store } from 'state/store';
-import { seedSearchPending, seedSearchComplete } from 'state/actions';
 import { parsePaper } from '../data-modules/crossref';
 
-store.subscribe(handleStateChange);
-
-function handleStateChange() {
+/* function handleStateChange() {
   let search = store.getState().search;
   if (search.status === 'submitted') {
     store.dispatch(seedSearchPending());
@@ -12,7 +8,7 @@ function handleStateChange() {
       store.dispatch(seedSearchComplete(papers));
     });
   }
-}
+} */
 
 export function crossrefSearch(input) {
   let query = input.replace(' ', '+');

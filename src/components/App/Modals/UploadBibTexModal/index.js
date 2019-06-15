@@ -1,38 +1,27 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import styles from './styles.module.css';
+import React, { useContext } from 'react';
 import { importBibTex } from 'import-modules/bibtex';
-import { updatePapers, closeModal } from 'state/actions';
+import { Store } from 'state/data';
+import { UI } from 'state/ui';
 
-class UploadBibTexModal extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <h1>Upload BibTex</h1>
-        <div>
-          <input type="file" accept=".bib" onChange={this.props.onSelect} />
-          <output />
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+const UploadBibTexModal = () => {
+  const { updatePapers } = useContext(Store);
+  const { closeModal } = useContext(UI);
 
-const mapStateToProps = state => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSelect: async e => {
-      let papers = await importBibTex(e);
-      dispatch(updatePapers(papers, true));
-      dispatch(closeModal());
-    }
+  const onChange = async e => {
+    let papers = await importBibTex(e);
+    updatePapers(papers, true);
+    closeModal();
   };
+
+  return (
+    <React.Fragment>
+      <h1>Upload BibTex</h1>
+      <div>
+        <input type="file" accept=".bib" onChange={onChange} />
+        <output />
+      </div>
+    </React.Fragment>
+  );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UploadBibTexModal);
+export default UploadBibTexModal;

@@ -1,27 +1,19 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
 import SeedList from 'components/App/ListPanel/SeedList';
 import RecommendedList from 'components/App/ListPanel/RecommendedList';
+import { UI } from 'state/ui';
 
-class ListPanel extends Component {
-  render() {
-    const { listView } = this.props;
+const ListPanel = () => {
+  const { listView } = useContext(UI);
 
-    switch (listView) {
-      case 'Seeds':
-        return <SeedList />;
-      case 'Recommended':
-        return <RecommendedList />;
-      default:
-        return null;
-    }
+  switch (listView) {
+    case 'Seeds':
+      return <SeedList />;
+    case 'Recommended':
+      return <RecommendedList />;
+    default:
+      return null;
   }
-}
-
-const mapStateToProps = state => {
-  return {
-    listView: state.ui.listView
-  };
 };
 
-export default connect(mapStateToProps)(ListPanel);
+export default ListPanel;

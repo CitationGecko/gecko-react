@@ -1,65 +1,43 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
 import ListView from 'components/Generic/ListView';
-import { openModal, selectPaper, makeSeed } from 'state/actions';
 import PaperCard from 'components/Generic/PaperCard';
 import MetricLabel from 'components/Generic/MetricLabel';
+import { Store } from 'state/data';
+import { UI } from 'state/ui';
+import { exportBibtex } from 'import-modules/bibtex';
 
-class RecommendedList extends Component {
-  render() {
-    const { papers, selected, onSelect, makeSeed, mode } = this.props;
+const RecommendedList = () => {
+  const { Papers, makeSeed } = useContext(Store);
+  const { selectedPapers, selectPaper, mode } = useContext(UI);
 
-    const sortMetric = mode === 'references' ? 'seedsCitedBy' : 'seedsCited';
+  const sortMetric = mode === 'references' ? 'seedsCitedBy' : 'seedsCited';
 
-    let nonSeeds = Object.values(papers)
-      .filter(p => !p.seed && p[sortMetric] > 0)
-      .sort((a, b) => b[sortMetric] - a[sortMetric]);
+  let nonSeeds = Object.values(Papers)
+    .filter(p => !p.seed && p[sortMetric] > 0)
+    .sort((a, b) => b[sortMetric] - a[sortMetric]);
 
-    let paperCards = nonSeeds.map(p => (
-      <PaperCard
-        key={p.ID}
-        selected={selected.includes(p.ID)}
-        rightFloat={<MetricLabel paper={p} metric={sortMetric} />}
-        paper={p}
-        onClick={() => onSelect(p)}
-      />
-    ));
-    return (
-      <ListView
-        header={'Recommended Papers'}
-        paperCards={paperCards}
-        selected={selected}
-        onSelect={onSelect}
-        primaryButton={{ text: 'Add as seed', onClick: () => makeSeed(selected[0]) }}
-        secondaryButton={{ text: 'Export' }}
-      />
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    papers: state.data.Papers,
-    selected: state.ui.selectedPapers,
-    mode: state.ui.mode
-  };
+  let paperCards = nonSeeds.map(p => (
+    <PaperCard
+      key={p.ID}
+      selected={selectedPapers.includes(p.ID)}
+      rightFloat={<MetricLabel paper={p} metric={sortMetric} />}
+      paper={p}
+      onClick={() => selectPaper(p)}
+    />
+  ));
+  return (
+    <ListView
+      header={'Recommended Papers'}
+      paperCards={paperCards}
+      selected={selectedPapers}
+      onSelect={selectPaper}
+      primaryButton={{ text: 'Add as seed', onClick: () => makeSeed(selectedPapers[0]) }}
+      secondaryButton={{
+        text: 'Export',
+        onClick: () => exportBibtex('GeckoRecommendations.bib', nonSeeds)
+      }}
+    />
+  );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addSeeds: () => {
-      dispatch(openModal('addSeeds'));
-    },
-    onSelect: paper => {
-      dispatch(selectPaper(paper));
-    },
-    makeSeed: id => {
-      dispatch(makeSeed(id));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RecommendedList);
+export default RecommendedList;

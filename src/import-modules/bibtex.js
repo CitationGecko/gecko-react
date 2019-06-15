@@ -3,7 +3,7 @@ import bibtexParse from 'vendor/bibtexParse';
 
 function makeBibtexEntry(p) {
   return {
-    citationKey: p.author + p.year,
+    citationKey: `gecko${p.ID}`,
     entryType: 'ARTICLE',
     entryTags: {
       title: p.title,

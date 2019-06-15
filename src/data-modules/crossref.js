@@ -1,18 +1,19 @@
-import { store } from 'state/store';
-import { requestSent, updatePapers } from 'state/actions';
+import { useContext, useState } from 'react';
+import { Store } from 'state/data';
 
-store.subscribe(handleStateChange);
-
-function handleStateChange() {
-  let allPapers = Object.values(store.getState().data.Papers);
-  let toQuery = allPapers.filter(p => !p.crossref && p.doi);
+export const Crossref = () => {
+  const { Papers, updatePapers } = useContext(Store);
+  const [requests, setState] = useState({});
+  let toQuery = Object.values(Papers).filter(p => p.doi && !requests[p.doi]);
   if (toQuery.length) {
-    store.dispatch(requestSent(toQuery, 'crossref'));
+    const newRequests = toQuery.reduce((curr, next) => ({ ...curr, [next.doi]: 'pending' }), {});
+    setState({ ...requests, ...newRequests });
     getMetadata(toQuery)
       .then(resp => resp.map(parsePaper))
-      .then(papers => store.dispatch(updatePapers(papers)));
+      .then(papers => updatePapers(papers));
   }
-}
+  return null;
+};
 
 export function getMetadata(papers) {
   //split into groups of 50
@@ -28,7 +29,7 @@ export function getMetadata(papers) {
     });
 }
 
-function singleCrossRefRequest(papers) {
+export function singleCrossRefRequest(papers) {
   let query = papers.map(p => `doi:${p.doi}`).join();
   let base = 'https://api.crossref.org/works?rows=1000&filter=';
   return fetch(base + query)
@@ -84,3 +85,5 @@ function chunkArray(myArray, chunk_size) {
 
   return results;
 }
+
+export default Crossref;

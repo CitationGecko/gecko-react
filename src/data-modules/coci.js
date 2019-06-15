@@ -1,18 +1,19 @@
-import { store } from 'state/store';
-import { requestSent, updatePapers } from 'state/actions';
+import { useContext, useState } from 'react';
+import { Store } from 'state/data';
 
-store.subscribe(handleStateChange);
-
-function handleStateChange() {
-  let allPapers = Object.values(store.getState().data.Papers);
-  let toQuery = allPapers.filter(p => p.seed && !p.coci && p.doi);
+export const Coci = () => {
+  const { Papers, updatePapers } = useContext(Store);
+  const [requests, setState] = useState([]);
+  let toQuery = Object.values(Papers).filter(p => p.seed && p.doi && !requests[p.doi]);
   if (toQuery.length) {
-    store.dispatch(requestSent(toQuery, 'coci'));
+    const newRequests = toQuery.reduce((curr, next) => ({ ...curr, [next.doi]: 'pending' }), {});
+    setState({ ...requests, ...newRequests });
     toQuery.forEach(paper => {
-      getCitations(paper).then(updatedPaper => store.dispatch(updatePapers([updatedPaper])));
+      getCitations(paper).then(updatedPaper => updatePapers([updatedPaper]));
     });
   }
-}
+  return null;
+};
 
 export function getCitations(paper) {
   let url = `https://w3id.org/oc/index/coci/api/v1/citations/${paper.doi}`;
@@ -38,3 +39,5 @@ export function parseResponse(response, paper) {
   };
   return updatedPaper;
 }
+
+export default Coci;

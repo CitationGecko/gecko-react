@@ -1,68 +1,44 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
 import ListView from 'components/Generic/ListView';
-import { openModal, selectPaper, deletePapers } from 'state/actions';
 import PaperCard from 'components/Generic/PaperCard';
 import DeleteButton from 'components/Generic/DeleteButton';
+import { Store } from 'state/data';
+import { UI } from 'state/ui';
+import { exportBibtex } from 'import-modules/bibtex';
 
-class SeedList extends Component {
-  render() {
-    const { papers, selected, onSelect, addSeeds, deleteSeed } = this.props;
-    let seedPapers = Object.values(papers).filter(p => p.seed);
-    let paperCards = seedPapers.map(p => (
-      <PaperCard
-        key={p.ID}
-        selected={selected.includes(p.ID)}
-        rightFloat={
-          <DeleteButton
-            onClick={() => {
-              deleteSeed([p.ID]);
-            }}
-          />
+function SeedList() {
+  const { Papers, deletePapers } = useContext(Store);
+  const { selectedPapers, selectPaper, openModal } = useContext(UI);
+  let seedPapers = Object.values(Papers).filter(p => p.seed);
+  let paperCards = seedPapers.map(p => (
+    <PaperCard
+      key={p.ID}
+      selected={selectedPapers.includes(p.ID)}
+      rightFloat={
+        <DeleteButton
+          onClick={() => {
+            deletePapers([p.ID]);
+          }}
+        />
+      }
+      paper={p}
+      onClick={() => selectPaper(p)}
+    />
+  ));
+  return (
+    <ListView
+      header={'My Seed Papers'}
+      paperCards={paperCards}
+      selected={selectedPapers}
+      primaryButton={{ text: 'Add more seeds', onClick: () => openModal('addSeeds') }}
+      secondaryButton={{
+        text: 'Save Session',
+        onClick: () => {
+          exportBibtex('GeckoSession.bib', seedPapers);
         }
-        paper={p}
-        onClick={() => onSelect(p)}
-      />
-    ));
-    return (
-      <ListView
-        header={'My Seed Papers'}
-        paperCards={paperCards}
-        selected={selected}
-        primaryButton={{ text: 'Add more seeds', onClick: addSeeds }}
-        secondaryButton={{
-          text: 'Delete',
-          onClick: () => {
-            deleteSeed(selected);
-          }
-        }}
-      />
-    );
-  }
+      }}
+    />
+  );
 }
 
-const mapStateToProps = state => {
-  return {
-    papers: state.data.Papers,
-    selected: state.ui.selectedPapers
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addSeeds: () => {
-      dispatch(openModal('addSeeds'));
-    },
-    onSelect: paper => {
-      dispatch(selectPaper(paper));
-    },
-    deleteSeed: paper => {
-      dispatch(deletePapers(paper));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SeedList);
+export default SeedList;
