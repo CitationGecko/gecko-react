@@ -36,7 +36,6 @@ const SideBar = () => {
     <div className={styles['side-bar']}>
       <SeedsButton />
       <RecommendedButton />
-      <SettingsButton />
     </div>
   );
 };

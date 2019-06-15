@@ -9,9 +9,6 @@ function AuthZoteroVerifyRoute(req, res) {
 
   const token = req.query.oauth_token;
   const secret = req.session.secret;
-  console.log(secret);
-  console.log(token);
-  console.log(req.session.token);
 
   return ZoteroOAuthClient.getOAuthAccessToken(
     token,

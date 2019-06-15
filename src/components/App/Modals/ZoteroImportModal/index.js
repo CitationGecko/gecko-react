@@ -16,7 +16,7 @@ const ZoteroConnect = () => {
         <SecondaryButton
           text="Connect to Zotero"
           onClick={() => {
-            window.location.href = window.location.href + 'services/zotero/login';
+            window.location.href = window.location.href + 'services/zotero/authenticate';
           }}
         />
       </div>
@@ -38,18 +38,18 @@ const ZoteroSearch = () => {
     updatePapers(selectedPapers, true);
   };
 
-  const onCollectionSelect = ({ value }) => {
-    setActiveCollection(value);
-    console.log(value);
-    getItems(value.key).then(setPapers);
+  const onCollectionSelect = selection => {
+    setActiveCollection(selection);
+    getItems(selection.value.key).then(setPapers);
   };
 
   return (
     <React.Fragment>
       <h1>Add papers from Zotero</h1>
       <div className={styles.filter}>
-        <span>Filter by Collection:</span>
+        <span>Pick a Zotero Collection:</span>
         <Select
+          placeholder="Search..."
           className={styles.select}
           value={activeCollection}
           options={collections.map(c => ({ value: c, label: c.name }))}
@@ -68,7 +68,7 @@ const ZoteroImportModal = () => {
   const [user, setUser] = useState(false);
   if (!user) {
     authenticate().then(user => setUser(user));
-    return null;
+    return <ZoteroConnect />;
   }
   return <ZoteroSearch />;
 };

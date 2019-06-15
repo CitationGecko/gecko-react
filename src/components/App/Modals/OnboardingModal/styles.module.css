@@ -1,15 +1,19 @@
 .modal-footer {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-.demo-button{
-    display: block;
-    background:none;
-    text-decoration: underline;
-    text-align: right;
-    width:100%;
-    padding-right: 20%;
-    border:none;
-    cursor: pointer;
+.demo-button {
+  display: block;
+  background: none;
+  text-decoration: underline;
+  text-align: right;
+  width: 100%;
+  padding-right: 20%;
+  border: none;
+  cursor: pointer;
+}
+
+.demo-screenshot {
+  max-width: 100px;
 }

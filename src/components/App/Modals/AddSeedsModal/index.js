@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import styles from './styles.module.css';
 import SecondarySquareButton from 'components/Generic/SecondarySquareButton';
+import ButtonList from 'components/Generic/ButtonList';
 import { UI } from 'state/ui';
 
 const AddSeedsModal = () => {
@@ -28,11 +28,7 @@ const AddSeedsModal = () => {
     return <SecondarySquareButton key={i} onClick={b.action} text={b.text} />;
   });
 
-  return (
-    <React.Fragment>
-      <div className={styles['large-button-list']}>{buttons}</div>
-    </React.Fragment>
-  );
+  return <ButtonList>{buttons}</ButtonList>;
 };
 
 export default AddSeedsModal;
