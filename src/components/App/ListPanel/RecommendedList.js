@@ -4,6 +4,7 @@ import PaperCard from 'components/Generic/PaperCard';
 import MetricLabel from 'components/Generic/MetricLabel';
 import { Store } from 'state/data';
 import { UI } from 'state/ui';
+import { exportBibtex } from 'import-modules/bibtex';
 
 const RecommendedList = () => {
   const { Papers, makeSeed } = useContext(Store);
@@ -31,7 +32,10 @@ const RecommendedList = () => {
       selected={selectedPapers}
       onSelect={selectPaper}
       primaryButton={{ text: 'Add as seed', onClick: () => makeSeed(selectedPapers[0]) }}
-      secondaryButton={{ text: 'Export' }}
+      secondaryButton={{
+        text: 'Export',
+        onClick: () => exportBibtex('GeckoRecommendations.bib', nonSeeds)
+      }}
     />
   );
 };

@@ -4,6 +4,7 @@ import PaperCard from 'components/Generic/PaperCard';
 import DeleteButton from 'components/Generic/DeleteButton';
 import { Store } from 'state/data';
 import { UI } from 'state/ui';
+import { exportBibtex } from 'import-modules/bibtex';
 
 function SeedList() {
   const { Papers, deletePapers } = useContext(Store);
@@ -31,9 +32,9 @@ function SeedList() {
       selected={selectedPapers}
       primaryButton={{ text: 'Add more seeds', onClick: () => openModal('addSeeds') }}
       secondaryButton={{
-        text: 'Delete',
+        text: 'Save Session',
         onClick: () => {
-          deletePapers(selectedPapers);
+          exportBibtex('GeckoSession.bib', seedPapers);
         }
       }}
     />

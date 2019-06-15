@@ -23,8 +23,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(path.dirname(__dirname), 'build', 'index.html'));
 });
 
-app.get('/services/zotero/login', require('./services/zotero/login'));
+app.get('/services/zotero/authenticate', require('./services/zotero/authenticate'));
 app.get('/services/zotero/verify', require('./services/zotero/verify'));
+app.get('/services/zotero/login', require('./services/zotero/login'));
 app.get('/services/zotero/getCollections', require('./services/zotero/getCollections'));
 app.get('/services/zotero/getItemsInCollection', require('./services/zotero/getItemsInCollection'));
 app.post('/services/zotero/addItems', require('./services/zotero/addItems'));
