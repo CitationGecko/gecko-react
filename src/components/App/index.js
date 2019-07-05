@@ -8,7 +8,7 @@ import NetworkPanel from './NetworkPanel';
 import { Store, useDataStore } from 'state/data';
 import { UI, useUserInterface } from 'state/ui';
 import { Crossref } from 'data-modules/crossref';
-import { Coci } from 'data-modules/coci';
+import { OpenCitations } from 'data-modules/open-citations';
 
 function App() {
   let store = useDataStore();
@@ -25,7 +25,7 @@ function App() {
         </div>
       </UI.Provider>
       <Crossref />
-      <Coci />
+      <OpenCitations />
     </Store.Provider>
   );
 }

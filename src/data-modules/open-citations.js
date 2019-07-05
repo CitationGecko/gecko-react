@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Store } from 'state/data';
 
-export const Coci = () => {
+export const OpenCitations = () => {
   const { Papers, updatePapers } = useContext(Store);
   const [requests, setState] = useState([]);
   let toQuery = Object.values(Papers).filter(p => p.seed && p.doi && !requests[p.doi]);
@@ -16,7 +16,7 @@ export const Coci = () => {
 };
 
 export function getCitations(paper) {
-  let url = `https://w3id.org/oc/index/coci/api/v1/citations/${paper.doi}`;
+  let url = `https://w3id.org/oc/index/api/v1/citations/${paper.doi}`;
   return fetch(url, {
     headers: {
       Accept: 'application/sparql-results+json'
@@ -40,4 +40,4 @@ export function parseResponse(response, paper) {
   return updatedPaper;
 }
 
-export default Coci;
+export default OpenCitations;
