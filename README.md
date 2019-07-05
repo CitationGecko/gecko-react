@@ -32,7 +32,7 @@ The tool allows the user to view these highly connected papers either in a table
 
 ## Instructions for use
 
-1. Go to [citationgecko.com](http://citationgecko.com) or [localhost:3000](http://localhost:8080) if you're running application locally
+1. Go to [citationgecko.com](http://citationgecko.com) or [localhost:8080](http://localhost:8080) if you're running application locally
 2. Add some seed papers by clicking 'Add more seeds' button in the left-hand panel.
 3. There are several ways of choosing seed papers to start with:
    2. Upload a bibTex file (NOTE: currently only entries with a DOI will be added)
