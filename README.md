@@ -22,7 +22,7 @@ The tool allows the user to view these highly connected papers either in a table
 ## Running Citation Gecko locally
 
 1. Clone the git repo:
-   `git clone https://github.com/CitationGecko/citation-network-explorer.git`
+   `git clone https://github.com/CitationGecko/gecko-react`
 2. If you don't have it already install Node.js from https://nodejs.org/en/.
 3. Open a terminal and navigate to the repository folder.
 4. Run `npm install` from the command line to install all the package dependencies.
