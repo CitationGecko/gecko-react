@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import styles from './styles.module.css';
-import SecondarySquareButton from 'core/ui/components/SecondarySquareButton';
-import Loader from 'core/ui/components/Loader';
-import Table from 'core/ui/components/Table';
+import SecondarySquareButton from 'core/components/SecondarySquareButton';
+import Loader from 'core/components/Loader';
+import Table from 'core/components/Table';
 import { Store } from 'core/state/data';
 import { crossrefSearch } from 'import-modules/crossref';
 

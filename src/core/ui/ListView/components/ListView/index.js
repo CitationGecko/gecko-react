@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import styles from './styles.module.css';
-import PrimaryButton from 'core/ui/components/PrimaryButton';
-import SecondaryButton from 'core/ui/components/SecondaryButton';
+import PrimaryButton from 'core/components/PrimaryButton';
+import SecondaryButton from 'core/components/SecondaryButton';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 
 class ListView extends Component {

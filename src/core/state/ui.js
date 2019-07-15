@@ -1,10 +1,11 @@
-import { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
+import OnboardingModal from 'core/ui/OnboardingModal';
 
 const initialState = {
   mode: 'references',
   selectedPapers: [],
   listView: 'Seeds',
-  modal: 'onboarding'
+  modalContent: <OnboardingModal />
 };
 // TODO: Split state
 
@@ -15,8 +16,8 @@ export function useUserInterface() {
 
   return {
     ...state,
-    closeModal: () => setState(prevState => ({ ...prevState, modal: null })),
-    openModal: modal => setState(prevState => ({ ...prevState, modal })),
+    closeModal: () => setState(prevState => ({ ...prevState, modalContent: null })),
+    openModal: modalContent => setState(prevState => ({ ...prevState, modalContent })),
     switchToList: view => setState(prevState => ({ ...prevState, listView: view })),
     switchMode: () =>
       setState(prevState => ({

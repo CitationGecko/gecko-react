@@ -2,9 +2,9 @@ import React, { useState, useContext } from 'react';
 import Select from 'react-select';
 import styles from './styles.module.css';
 import logo from './new-logo.svg';
-import SecondaryButton from 'core/ui/components/SecondaryButton';
-import SecondarySquareButton from 'core/ui/components/SecondarySquareButton';
-import Table from 'core/ui/components/Table';
+import SecondaryButton from 'core/components/SecondaryButton';
+import SecondarySquareButton from 'core/components/SecondarySquareButton';
+import Table from 'core/components/Table';
 import { Store } from 'core/state/data';
 import { getCollections, getItems, authenticate } from 'import-modules/zotero';
 

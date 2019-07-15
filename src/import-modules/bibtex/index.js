@@ -1,5 +1,12 @@
+import React from 'react';
 import bibtexParse from 'vendor/bibtexParse';
-// Import Bibtex
+import { addImportModule } from 'core/module-loader';
+import UploadBibTexModal from './UploadBibTexModal';
+
+addImportModule({
+  buttonText: 'Import from Bibtex',
+  modal: <UploadBibTexModal />
+});
 
 function parseBibtexEntry(p) {
   return {

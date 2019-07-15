@@ -1,0 +1,24 @@
+import React, { useContext } from 'react';
+import SecondarySquareButton from 'core/components/SecondarySquareButton';
+import ButtonList from 'core/components/ButtonList';
+import { UI } from 'core/state/ui';
+import { getImportModules } from 'core/module-loader';
+
+const AddSeedsModal = () => {
+  const { openModal } = useContext(UI);
+  const options = getImportModules();
+
+  const buttons = options.map((option, i) => {
+    return (
+      <SecondarySquareButton
+        key={i}
+        onClick={() => openModal(option.modal)}
+        text={option.buttonText}
+      />
+    );
+  });
+
+  return <ButtonList>{buttons}</ButtonList>;
+};
+
+export default AddSeedsModal;

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styles from './styles.module.css';
-import SideBarButton from 'core/ui/components/SideBarButton';
+import SideBarButton from 'core/components/SideBarButton';
 import settingsIcon from 'core/icons/settings-icon.png';
 import recommendedIcon from 'core/icons/recommended-icon.png';
 import seedIcon from 'core/icons/seed-icon.png';

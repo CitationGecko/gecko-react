@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import ListView from 'vis-modules/ListView/components/ListView';
-import PaperCard from 'core/ui/components/PaperCard';
-import DeleteButton from 'core/ui/components/DeleteButton';
+import ListView from './components/ListView';
+import PaperCard from 'core/components/PaperCard';
+import DeleteButton from 'core/components/DeleteButton';
 import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';
+import AddSeedsModal from 'core/ui/AddSeedsModal';
 
 function SeedList() {
   const { Papers, deletePapers } = useContext(Store);
@@ -30,7 +31,7 @@ function SeedList() {
       header={'My Seed Papers'}
       paperCards={paperCards}
       selected={selectedPapers}
-      primaryButton={{ text: 'Add more seeds', onClick: () => openModal('addSeeds') }}
+      primaryButton={{ text: 'Add more seeds', onClick: () => openModal(<AddSeedsModal />) }}
       secondaryButton={{
         text: 'Save Session',
         onClick: () => {

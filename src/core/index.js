@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './styles.module.css';
 import SideBar from './ui/SideBar';
 import Logo from './ui/Logo';
-import ModalController from './ui/ModalController';
-import ListPanel from 'vis-modules/ListView';
+import Modal from './ui/Modal';
+import ListPanel from 'core/ui/ListView';
 import NetworkPanel from 'vis-modules/ForceNetwork';
 import { Store, useDataStore } from 'core/state/data';
 import { UI, useUserInterface } from 'core/state/ui';
@@ -20,7 +20,7 @@ function App() {
           <SideBar />
           <ListPanel />
           <NetworkPanel />
-          <ModalController />
+          <Modal />
           <Logo />
         </div>
       </UI.Provider>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import SeedList from 'vis-modules/ListView/SeedList';
-import RecommendedList from 'vis-modules/ListView/RecommendedList';
+import SeedList from './SeedList';
+import RecommendedList from './RecommendedList';
 import { UI } from 'core/state/ui';
 
 const ListPanel = () => {

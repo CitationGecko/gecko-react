@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import ListView from 'vis-modules/ListView/components/ListView';
-import PaperCard from 'core/ui/components/PaperCard';
-import MetricLabel from 'core/ui/components/MetricLabel';
+import ListView from './components/ListView';
+import PaperCard from 'core/components/PaperCard';
+import MetricLabel from 'core/components/MetricLabel';
 import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';

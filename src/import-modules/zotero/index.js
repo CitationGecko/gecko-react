@@ -1,4 +1,12 @@
 import cookies from 'browser-cookies';
+import React from 'react';
+import { addImportModule } from 'core/module-loader';
+import ZoteroImportModal from './ZoteroImportModal';
+
+addImportModule({
+  buttonText: 'Import from Zotero',
+  modal: <ZoteroImportModal />
+});
 
 export function authenticate() {
   const apiKey = cookies.get('gecko_zotero_key');

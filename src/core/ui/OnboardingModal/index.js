@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import styles from './styles.module.css';
-import PrimarySquareButton from 'core/ui/components/PrimarySquareButton';
-import SecondarySquareButton from 'core/ui/components/SecondarySquareButton';
-import ButtonList from 'core/ui/components/ButtonList';
+import PrimarySquareButton from 'core/components/PrimarySquareButton';
+import SecondarySquareButton from 'core/components/SecondarySquareButton';
+import ButtonList from 'core/components/ButtonList';
 import { importExampleBibTex } from 'import-modules/bibtex';
+import AddSeedsModal from 'core/ui/AddSeedsModal';
 import { UI } from 'core/state/ui';
 import { Store } from 'core/state/data';
-import AddSeeds from 'core/ui/ModalController/AddSeedsModal';
 
 const Welcome = () => {
   const { openModal, closeModal } = useContext(UI);
@@ -25,7 +25,7 @@ const Welcome = () => {
       </p>
       <div className={styles['modal-footer']}>
         <PrimarySquareButton
-          onClick={() => openModal('addSeeds')}
+          onClick={() => openModal(<AddSeedsModal />)}
           text={'Start discovering papers'}
         />
       </div>
@@ -54,7 +54,7 @@ const AddSeedsHelp = () => {
         The first step is to pick the seed papers that define your area of interest. There are a
         number of ways to do this....
       </p>
-      <AddSeeds />
+      <AddSeedsModal />
     </React.Fragment>
   );
 };
