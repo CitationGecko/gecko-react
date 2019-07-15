@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Store } from 'state/data';
+import { Store } from 'core/state/data';
 
 export const Crossref = () => {
   const { Papers, updatePapers } = useContext(Store);
