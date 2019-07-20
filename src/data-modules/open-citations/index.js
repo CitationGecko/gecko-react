@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Store } from 'core/state/data';
+import { addDataModule } from 'core/module-loader';
 
 export const OpenCitations = () => {
   const { Papers, updatePapers } = useContext(Store);
@@ -41,3 +42,5 @@ export function parseResponse(response, paper) {
 }
 
 export default OpenCitations;
+
+addDataModule(OpenCitations);

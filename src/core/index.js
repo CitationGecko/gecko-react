@@ -4,11 +4,10 @@ import SideBar from './ui/SideBar';
 import Logo from './ui/Logo';
 import Modal from './ui/Modal';
 import ListPanel from 'core/ui/ListView';
-import NetworkPanel from 'vis-modules/ForceNetwork';
+import NetworkPanel from 'vis-modules/force-graph';
 import { Store, useDataStore } from 'core/state/data';
 import { UI, useUserInterface } from 'core/state/ui';
-import { Crossref } from 'data-modules/crossref';
-import { OpenCitations } from 'data-modules/open-citations';
+import { getDataModules } from 'core/module-loader';
 
 function App() {
   let store = useDataStore();
@@ -24,10 +23,8 @@ function App() {
           <Logo />
         </div>
       </UI.Provider>
-      <Crossref />
-      <OpenCitations />
+      {getDataModules().map(dataModule => React.createElement(dataModule))}
     </Store.Provider>
   );
 }
-
 export default App;

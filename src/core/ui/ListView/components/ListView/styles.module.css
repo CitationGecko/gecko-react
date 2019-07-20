@@ -19,6 +19,12 @@
 .list-header > h1 {
   font-size: 24px;
   margin: 0;
+  display: inline;
+}
+.list-header > div {
+  height: 24px;
+  margin: 0;
+  display: inline;
 }
 
 .list-body {

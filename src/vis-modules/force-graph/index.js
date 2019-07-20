@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NetworkView } from 'vis-modules/ForceNetwork/components/NetworkView';
+import { NetworkView } from './components/NetworkView';
 import { UI } from 'core/state/ui';
 import { Store } from 'core/state/data';
 

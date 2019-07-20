@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Store } from 'core/state/data';
+import { addDataModule } from 'core/module-loader';
 
 export const Crossref = () => {
   const { Papers, updatePapers } = useContext(Store);
@@ -87,3 +88,4 @@ function chunkArray(myArray, chunk_size) {
 }
 
 export default Crossref;
+addDataModule(Crossref);
