@@ -1,0 +1,14 @@
+.filter {
+  background: #f7f7f7;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  padding: 2px 20px;
+}
+
+.container button {
+  font-size: small;
+  flex-grow: 1;
+}

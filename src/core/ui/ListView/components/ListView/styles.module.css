@@ -19,11 +19,7 @@
 .list-header > h1 {
   font-size: 24px;
   margin: 0;
-  display: inline;
-}
-.list-header > div {
-  height: 24px;
-  margin: 0;
+  margin-right: 10px;
   display: inline;
 }
 
@@ -61,4 +57,9 @@
   width: 100%;
   margin: 0;
   text-align: center;
+}
+
+.settings {
+  float: right;
+  margin-right: 20px;
 }

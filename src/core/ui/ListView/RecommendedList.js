@@ -5,9 +5,11 @@ import MetricLabel from 'core/components/MetricLabel';
 import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';
+import { Filters } from 'core/state/filters';
 
 const RecommendedList = () => {
   const { Papers, makeSeed } = useContext(Store);
+  const { applyActiveFilters } = useContext(Filters);
   const { selectedPapers, selectPaper, mode } = useContext(UI);
 
   const sortMetric = mode === 'references' ? 'seedsCitedBy' : 'seedsCited';
@@ -16,7 +18,7 @@ const RecommendedList = () => {
     .filter(p => !p.seed && p[sortMetric] > 0)
     .sort((a, b) => b[sortMetric] - a[sortMetric]);
 
-  let paperCards = nonSeeds.map(p => (
+  let paperCards = applyActiveFilters(nonSeeds).map(p => (
     <PaperCard
       key={p.ID}
       selected={selectedPapers.includes(p.ID)}
