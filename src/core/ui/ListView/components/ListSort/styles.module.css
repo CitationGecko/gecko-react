@@ -1,0 +1,9 @@
+.sort {
+  background: #f7f7f7;
+  padding: 20px;
+  margin-bottom: 2px;
+}
+
+.sort > span {
+  margin-right: 10px;
+}

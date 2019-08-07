@@ -1,3 +1,4 @@
 import './crossref';
 import './bibtex';
-//import './zotero';
+import './zotero';
+import './mendeley';
