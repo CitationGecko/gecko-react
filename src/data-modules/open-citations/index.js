@@ -34,7 +34,7 @@ export function parseResponse(response, paper) {
     ...paper,
     citations: response.map(edge => {
       return {
-        doi: edge.citing
+        doi: edge.citing.match(/=> (\S*)/)[1]
       };
     })
   };

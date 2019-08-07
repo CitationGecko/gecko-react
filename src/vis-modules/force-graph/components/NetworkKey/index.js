@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 
 const NetworkKey = ({ mode, onSwitch }) => {
   const className =
-    mode === 'references' ? styles['toggle'] : `${styles['toggle']} ${styles['toggle-on']}`;
+    mode === 'seedsCitedBy' ? styles['toggle'] : `${styles['toggle']} ${styles['toggle-on']}`;
   return (
     <div className={styles['network-key']}>
       <div className={styles['key-icon']}>

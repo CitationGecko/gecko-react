@@ -9,26 +9,23 @@ import { Filters } from 'core/state/filters';
 
 const RecommendedList = () => {
   const { Papers, makeSeed } = useContext(Store);
-  const { applyActiveFilters } = useContext(Filters);
-  const { selectedPapers, selectPaper, mode } = useContext(UI);
+  const { activeSortField, applyActiveFilters, applySort } = useContext(Filters);
+  const { selectedPapers, selectPaper } = useContext(UI);
 
-  const sortMetric = mode === 'references' ? 'seedsCitedBy' : 'seedsCited';
+  let nonSeeds = applySort(applyActiveFilters(Object.values(Papers).filter(p => !p.seed)));
 
-  let nonSeeds = Object.values(Papers)
-    .filter(p => !p.seed && p[sortMetric] > 0)
-    .sort((a, b) => b[sortMetric] - a[sortMetric]);
-
-  let paperCards = applyActiveFilters(nonSeeds).map(p => (
+  let paperCards = nonSeeds.map(p => (
     <PaperCard
       key={p.ID}
       selected={selectedPapers.includes(p.ID)}
-      rightFloat={<MetricLabel paper={p} metric={sortMetric} />}
+      rightFloat={<MetricLabel paper={p} metric={activeSortField} />}
       paper={p}
       onClick={() => selectPaper(p)}
     />
   ));
   return (
     <ListView
+      settings={true}
       header={'Recommended Papers'}
       paperCards={paperCards}
       selected={selectedPapers}

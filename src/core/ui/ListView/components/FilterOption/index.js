@@ -6,13 +6,12 @@ import styles from './styles.module.css';
 import { IconButton } from '@material-ui/core';
 import Icon from 'core/components/Icon';
 import TextInput from 'core/components/TextInput';
-import { Filters } from 'core/state/filters';
 
-function FilterOption({ index, filter }) {
-  const { filters, setActiveFilter, clearActiveFilter } = useContext(Filters);
-  const setValue = value => setActiveFilter(index, { value });
-  const setField = field => setActiveFilter(index, { field });
-  const setOption = option => setActiveFilter(index, { option });
+function FilterOption({ filter, filters, setPendingFilter, clearPendingFilter }) {
+  const setValue = value => setPendingFilter({ value });
+  const setField = field =>
+    setPendingFilter({ field, option: Object.keys(filters[field].options)[0] });
+  const setOption = option => setPendingFilter({ option });
   return (
     <div className={styles['container']}>
       <Dropdown value={filter.field} options={Object.keys(filters)} onChange={setField} />
@@ -22,7 +21,7 @@ function FilterOption({ index, filter }) {
         onChange={setOption}
       />
       <TextInput value={filter.value} onChange={setValue} />
-      <IconButton color="red" disableRipple={true} onClick={() => clearActiveFilter(index)}>
+      <IconButton color="red" disableRipple={true} onClick={clearPendingFilter}>
         <Icon icon="close" />
       </IconButton>
     </div>

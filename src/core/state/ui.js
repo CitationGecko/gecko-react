@@ -13,23 +13,22 @@ export const UI = createContext(initialState);
 
 export function useUserInterface() {
   let [state, setState] = useState(initialState);
+  const [showSettings, toggleSettings] = useState(false);
 
   return {
     ...state,
     closeModal: () => setState(prevState => ({ ...prevState, modalContent: null })),
     openModal: modalContent => setState(prevState => ({ ...prevState, modalContent })),
     switchToList: view => setState(prevState => ({ ...prevState, listView: view })),
-    switchMode: () =>
-      setState(prevState => ({
-        ...prevState,
-        selectedPapers: [],
-        mode: prevState.mode === 'references' ? 'citations' : 'references'
-      })),
-    selectPaper: paper =>
+    selectPaper: paper => {
+      toggleSettings(false);
       setState(prevState => ({
         ...prevState,
         listView: paper ? (paper.seed ? 'Seeds' : 'Recommended') : prevState.listView,
         selectedPapers: paper ? [paper.ID] : []
-      }))
+      }));
+    },
+    showSettings,
+    toggleSettings
   };
 }

@@ -179,3 +179,12 @@ export function updateMetrics(Papers, Edges) {
   }
   return updatedPapers;
 }
+
+export function objectifyPapers(Papers) {
+  return Papers.reduce((obj, paper) => {
+    return {
+      ...obj,
+      [paper.ID]: paper
+    };
+  }, {});
+}

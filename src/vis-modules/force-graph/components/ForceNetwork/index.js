@@ -61,9 +61,7 @@ export default class ForceNetwork extends Component {
     const existingNodeIDs = this.nodes.map(n => n.ID);
     const newNodes = Object.values(Papers)
       .filter(p => !existingNodeIDs.includes(p.ID))
-      .map(p => {
-        return { ...p };
-      });
+      .map(p => ({ ...p }));
 
     this.nodes = this.nodes
       .filter(n => Papers[n.ID]) // filter dead nodes
@@ -76,7 +74,7 @@ export default class ForceNetwork extends Component {
       return { ...e };
     });
 
-    if (this.nodes.length !== existingNodeIDs) {
+    if (this.nodes.length !== existingNodeIDs.length) {
       this.circles = this.circles.data(this.nodes, p => p.ID).join('circle');
     }
     // Update the svg circles to match simulation

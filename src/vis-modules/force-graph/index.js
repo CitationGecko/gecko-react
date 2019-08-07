@@ -1,56 +1,42 @@
 import React, { useContext } from 'react';
 import { NetworkView } from './components/NetworkView';
 import { UI } from 'core/state/ui';
-import { Store } from 'core/state/data';
+import { Store, objectifyPapers } from 'core/state/data';
+import { Filters } from 'core/state/filters';
 
 const NetworkPanel = () => {
-  const { switchMode, selectPaper, selectedPapers, mode } = useContext(UI);
+  const { selectPaper, selectedPapers } = useContext(UI);
   const { Papers, Edges } = useContext(Store);
+  const { applyActiveFilters, activeSortField, setActiveSortField } = useContext(Filters);
 
-  let selector;
-  let metric;
-  switch (mode) {
-    case 'citations':
-      selector = 'target';
-      metric = 'seedsCited';
-      break;
-    case 'references':
-      selector = 'source';
-      metric = 'seedsCitedBy';
-      break;
-    default:
-      selector = 'source';
-      metric = 'seedsCitedBy';
-  }
+  const selector = activeSortField === 'seedsCitedBy' ? 'source' : 'target';
+
+  const papersToDisplay = objectifyPapers(
+    applyActiveFilters(Object.values(Papers))
+      .filter(p => p[activeSortField] > 0)
+      .concat(Object.values(Papers).filter(p => p.seed))
+  );
+
   const edgesToDisplay = Edges.filter(e => {
-    return Papers[e[selector]].seed;
+    return (
+      papersToDisplay[e.source] && papersToDisplay[e.target] && papersToDisplay[e[selector]].seed
+    );
   });
 
-  const papersToDisplay = Object.keys(Papers)
-    .filter(id => {
-      return (
-        edgesToDisplay
-          .map(e => e.source)
-          .concat(edgesToDisplay.map(e => e.target))
-          .includes(parseInt(id, 10)) || Papers[id].seed
-      );
-    })
-    .reduce((obj, key) => {
-      return {
-        ...obj,
-        [key]: Papers[key]
-      };
-    }, {});
+  const onSwitch = () => {
+    setActiveSortField(field => (field === 'seedsCitedBy' ? 'seedsCited' : 'seedsCitedBy'));
+    selectPaper(null);
+  };
 
   return (
     <NetworkView
-      mode={mode}
+      mode={activeSortField}
       selected={selectedPapers}
       onSelect={selectPaper}
-      onSwitch={switchMode}
+      onSwitch={onSwitch}
       onThreshold={() => {}}
       data={{ Papers: papersToDisplay, Edges: edgesToDisplay }}
-      sizeMetric={metric}
+      sizeMetric={activeSortField}
     />
   );
 };

@@ -40,6 +40,7 @@
     "react": "^16.5.1",
     "react-dev-utils": "^5.0.2",
     "react-dom": "^16.5.1",
+    "react-infinite": "^0.13.0",
     "react-scroll-into-view-if-needed": "^2.1.6",
     "react-select": "^3.0.4",
     "react-svg-loader": "^3.0.3",

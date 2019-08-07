@@ -9,7 +9,7 @@ import Icon from 'core/components/Icon';
 function ListSettings({ onClose }) {
   return (
     <React.Fragment>
-      <ListSort />
+      {/*<ListSort />*/}
       <ListFilter />
       <div className={styles['collapse-bar']} onClick={onClose}>
         <Icon icon="expand_less" />

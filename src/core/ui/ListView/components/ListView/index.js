@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import styles from './styles.module.css';
 import ListSettings from '../ListSettings';
@@ -7,9 +7,10 @@ import SecondaryButton from 'core/components/SecondaryButton';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import IconButton from '@material-ui/core/Icon';
 import Icon from 'core/components/Icon';
+import { UI } from 'core/state/ui';
 
-function ListView({ header, paperCards, selected, primaryButton, secondaryButton }) {
-  const [showSettings, toggleSettings] = useState(false);
+function ListView({ header, paperCards, selected, primaryButton, secondaryButton, settings }) {
+  const { showSettings, toggleSettings } = useContext(UI);
   const paperBoxes = paperCards.map(paperCard => (
     <ScrollIntoViewIfNeeded
       key={paperCard.key}
@@ -24,11 +25,13 @@ function ListView({ header, paperCards, selected, primaryButton, secondaryButton
     <div className={styles['list-view']}>
       <div className={styles['list-header']}>
         <h1>{header}</h1>
-        <div className={styles.settings}>
-          <IconButton onClick={() => toggleSettings(!showSettings)}>
-            <Icon icon="tune" />
-          </IconButton>
-        </div>
+        {settings && (
+          <div className={styles.settings}>
+            <IconButton onClick={() => toggleSettings(!showSettings)}>
+              <Icon icon="tune" />
+            </IconButton>
+          </div>
+        )}
       </div>
       {showSettings && <ListSettings onClose={() => toggleSettings(!showSettings)} />}
       <div className={styles['list-body']}>{paperBoxes}</div>
