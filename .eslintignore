@@ -1,4 +1,4 @@
 node_modules
 public
 server.js
-src/vendor
+src/third-party

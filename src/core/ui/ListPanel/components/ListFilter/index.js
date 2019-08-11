@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Filters } from 'core/state/filters';
 import styles from './styles.module.css';
-import FilterOption from 'core/ui/ListView/components/FilterOption';
+import FilterOption from 'core/ui/ListPanel/components/FilterOption';
 import SecondaryButton from 'core/components/SecondaryButton';
 import PrimaryButton from 'core/components/PrimaryButton';
 

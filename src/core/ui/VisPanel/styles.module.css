@@ -1,4 +1,4 @@
-.network-panel {
+.vis-panel {
   position: relative;
   overflow: hidden;
   background-color: rgb(255, 255, 255);
@@ -6,4 +6,13 @@
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+.selected-paper-box {
+  z-index: 100;
+  position: absolute;
+  bottom: 0em;
+  right: 0em;
+  margin: 1em;
+  width: 35%;
 }

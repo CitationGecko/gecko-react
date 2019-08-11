@@ -1,5 +1,5 @@
 import React from 'react';
-import bibtexParse from 'vendor/bibtexParse';
+import bibtexParse from 'third-party/bibtexParse';
 import { addImportModule } from 'core/module-loader';
 import UploadBibTexModal from './UploadBibTexModal';
 

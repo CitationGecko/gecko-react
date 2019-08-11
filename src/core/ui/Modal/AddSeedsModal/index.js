@@ -5,14 +5,14 @@ import { UI } from 'core/state/ui';
 import { getImportModules } from 'core/module-loader';
 
 const AddSeedsModal = () => {
-  const { openModal } = useContext(UI);
+  const { setModal } = useContext(UI);
   const options = getImportModules();
 
   const buttons = options.map((option, i) => {
     return (
       <SecondarySquareButton
         key={i}
-        onClick={() => openModal(option.modal)}
+        onClick={() => setModal(option.modal)}
         text={option.buttonText}
       />
     );

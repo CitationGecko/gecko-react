@@ -5,11 +5,11 @@ import DeleteButton from 'core/components/DeleteButton';
 import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';
-import AddSeedsModal from 'core/ui/AddSeedsModal';
+import AddSeedsModal from 'core/ui/Modal/AddSeedsModal';
 
 function SeedList() {
   const { Papers, deletePapers } = useContext(Store);
-  const { selectedPapers, selectPaper, openModal } = useContext(UI);
+  const { selectedPapers, selectPaper, setModal } = useContext(UI);
   let seedPapers = Object.values(Papers).filter(p => p.seed);
   let paperCards = seedPapers.map(p => (
     <PaperCard
@@ -31,7 +31,7 @@ function SeedList() {
       header={'My Seed Papers'}
       paperCards={paperCards}
       selected={selectedPapers}
-      primaryButton={{ text: 'Add more seeds', onClick: () => openModal(<AddSeedsModal />) }}
+      primaryButton={{ text: 'Add more seeds', onClick: () => setModal(<AddSeedsModal />) }}
       secondaryButton={{
         text: 'Save Session',
         onClick: () => {

@@ -7,22 +7,24 @@ import seedIcon from 'core/icons/seed-icon.png';
 import { UI } from 'core/state/ui';
 
 const SeedsButton = () => {
-  const { listView, switchToList } = useContext(UI);
+  const { listView, setListView } = useContext(UI);
+  const active = listView === 'Seeds';
   return (
     <SideBarButton
-      active={listView === 'Seeds'}
+      active={active}
       img={seedIcon}
-      onClick={() => switchToList('Seeds')}
+      onClick={() => setListView(active ? null : 'Seeds')}
     />
   );
 };
 const RecommendedButton = () => {
-  const { listView, switchToList } = useContext(UI);
+  const { listView, setListView } = useContext(UI);
+  const active = listView === 'Recommended';
   return (
     <SideBarButton
-      active={listView === 'Recommended'}
+      active={active}
       img={recommendedIcon}
-      onClick={() => switchToList('Recommended')}
+      onClick={() => setListView(active ? null : 'Recommended')}
     />
   );
 };

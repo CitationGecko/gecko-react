@@ -1,34 +1,32 @@
 import React, { createContext, useState } from 'react';
-import OnboardingModal from 'core/ui/OnboardingModal';
+import OnboardingModal from 'core/ui/Modal/OnboardingModal';
 
-const initialState = {
-  mode: 'references',
-  selectedPapers: [],
-  listView: 'Seeds',
-  modalContent: <OnboardingModal />
-};
-// TODO: Split state
-
-export const UI = createContext(initialState);
+export const UI = createContext();
 
 export function useUserInterface() {
-  let [state, setState] = useState(initialState);
+  const [mode, setMode] = useState('references');
+  const [selectedPapers, setSelectedPapers] = useState([]);
+  const [listView, setListView] = useState('Seeds');
+  const [modalContent, setModal] = useState(<OnboardingModal />);
   const [showSettings, toggleSettings] = useState(false);
 
   return {
-    ...state,
-    closeModal: () => setState(prevState => ({ ...prevState, modalContent: null })),
-    openModal: modalContent => setState(prevState => ({ ...prevState, modalContent })),
-    switchToList: view => setState(prevState => ({ ...prevState, listView: view })),
-    selectPaper: paper => {
-      toggleSettings(false);
-      setState(prevState => ({
-        ...prevState,
-        listView: paper ? (paper.seed ? 'Seeds' : 'Recommended') : prevState.listView,
-        selectedPapers: paper ? [paper.ID] : []
-      }));
-    },
+    mode,
+    selectedPapers,
+    listView,
+    modalContent,
     showSettings,
-    toggleSettings
+    setModal,
+    closeModal: () => setModal(null),
+    setListView,
+    selectPaper: paper => {
+      if (listView) {
+        toggleSettings(false);
+        setListView(listView => (paper ? (paper.seed ? 'Seeds' : 'Recommended') : listView));
+      }
+      setSelectedPapers(paper ? [paper.ID] : []);
+    },
+    toggleSettings,
+    setMode
   };
 }

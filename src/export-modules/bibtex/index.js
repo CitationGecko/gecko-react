@@ -1,4 +1,4 @@
-import bibtexParse from 'vendor/bibtexParse';
+import bibtexParse from 'third-party/bibtexParse';
 
 function makeBibtexEntry(p) {
   return {

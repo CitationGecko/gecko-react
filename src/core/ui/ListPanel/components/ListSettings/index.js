@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import ListFilter from 'core/ui/ListView/components/ListFilter';
-import ListSort from 'core/ui/ListView/components/ListSort';
+import ListFilter from 'core/ui/ListPanel/components/ListFilter';
+import ListSort from 'core/ui/ListPanel/components/ListSort';
 
 import styles from './styles.module.css';
 import Icon from 'core/components/Icon';

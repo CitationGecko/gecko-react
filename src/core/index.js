@@ -3,8 +3,8 @@ import styles from './styles.module.css';
 import SideBar from './ui/SideBar';
 import Logo from './ui/Logo';
 import Modal from './ui/Modal';
-import ListPanel from 'core/ui/ListView';
-import NetworkPanel from 'vis-modules/force-graph';
+import ListPanel from 'core/ui/ListPanel';
+import VisPanel from 'core/ui/VisPanel';
 import { Store, useDataStore } from 'core/state/data';
 import { Filters, useFilters } from 'core/state/filters';
 import { UI, useUserInterface } from 'core/state/ui';
@@ -21,7 +21,7 @@ function App() {
           <div className={styles.App}>
             <SideBar />
             <ListPanel />
-            <NetworkPanel />
+            <VisPanel />
             <Modal />
             <Logo />
           </div>

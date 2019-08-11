@@ -4,12 +4,12 @@ import PrimarySquareButton from 'core/components/PrimarySquareButton';
 import SecondarySquareButton from 'core/components/SecondarySquareButton';
 import ButtonList from 'core/components/ButtonList';
 import { importExampleBibTex } from 'import-modules/bibtex';
-import AddSeedsModal from 'core/ui/AddSeedsModal';
+import AddSeedsModal from 'core/ui/Modal/AddSeedsModal';
 import { UI } from 'core/state/ui';
 import { Store } from 'core/state/data';
 
 const Welcome = () => {
-  const { openModal, closeModal } = useContext(UI);
+  const { setModal } = useContext(UI);
   const { updatePapers } = useContext(Store);
   return (
     <React.Fragment>
@@ -25,7 +25,7 @@ const Welcome = () => {
       </p>
       <div className={styles['modal-footer']}>
         <PrimarySquareButton
-          onClick={() => openModal(<AddSeedsModal />)}
+          onClick={() => setModal(<AddSeedsModal />)}
           text={'Start discovering papers'}
         />
       </div>
@@ -35,7 +35,7 @@ const Welcome = () => {
           onClick={async () => {
             let papers = await importExampleBibTex();
             updatePapers(papers, true);
-            closeModal();
+            setModal(null);
           }}
         >
           show me an example!
@@ -46,7 +46,7 @@ const Welcome = () => {
 };
 
 const AddSeedsHelp = () => {
-  const { openModal, closeModal } = useContext(UI);
+  const { setModal } = useContext(UI);
   return (
     <React.Fragment>
       <h1> Add seed papers... </h1>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styles from './styles.module.css';
 
-export default class ForceNetwork extends Component {
+export default class ForceGraph extends Component {
   componentDidMount() {
     this.width = this.svg.node().getBoundingClientRect().width;
     this.height = this.svg.node().getBoundingClientRect().height;

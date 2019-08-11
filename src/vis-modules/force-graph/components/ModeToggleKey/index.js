@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-const NetworkKey = ({ mode, onSwitch }) => {
+const ModeToggleKey = ({ mode, onSwitch }) => {
   const className =
     mode === 'seedsCitedBy' ? styles['toggle'] : `${styles['toggle']} ${styles['toggle-on']}`;
   return (
@@ -20,4 +20,4 @@ const NetworkKey = ({ mode, onSwitch }) => {
   );
 };
 
-export default NetworkKey;
+export default ModeToggleKey;
