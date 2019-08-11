@@ -6,23 +6,23 @@ export const UI = createContext();
 export function useUserInterface() {
   const [mode, setMode] = useState('references');
   const [selectedPapers, setSelectedPapers] = useState([]);
-  const [listView, setListView] = useState('Seeds');
+  const [leftPanel, setLeftPanel] = useState('Seeds');
   const [modalContent, setModal] = useState(<OnboardingModal />);
   const [showSettings, toggleSettings] = useState(false);
 
   return {
     mode,
     selectedPapers,
-    listView,
+    leftPanel,
     modalContent,
     showSettings,
     setModal,
     closeModal: () => setModal(null),
-    setListView,
+    setLeftPanel,
     selectPaper: paper => {
-      if (listView) {
+      if (leftPanel) {
         toggleSettings(false);
-        setListView(listView => (paper ? (paper.seed ? 'Seeds' : 'Recommended') : listView));
+        setLeftPanel(leftPanel => (paper ? (paper.seed ? 'Seeds' : 'Recommended') : leftPanel));
       }
       setSelectedPapers(paper ? [paper.ID] : []);
     },

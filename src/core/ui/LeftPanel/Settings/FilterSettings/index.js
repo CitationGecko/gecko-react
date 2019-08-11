@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Filters } from 'core/state/filters';
 import styles from './styles.module.css';
-import FilterOption from 'core/ui/LeftPanel/components/FilterOption';
+import FilterOption from 'core/components/FilterOption';
 import SecondaryButton from 'core/components/SecondaryButton';
 import PrimaryButton from 'core/components/PrimaryButton';
 
-function ListFilter() {
+function FilterSettings() {
   const { filters, activeFilters, setActiveFilters } = useContext(Filters);
   const [pendingFilters, setPendingFilters] = useState(activeFilters);
   const addPendingFilter = () =>
@@ -44,4 +44,4 @@ function ListFilter() {
   );
 }
 
-export default ListFilter;
+export default FilterSettings;

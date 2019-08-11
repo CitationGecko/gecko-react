@@ -1,16 +1,19 @@
 import React, { useContext } from 'react';
-import SeedList from './SeedList';
-import RecommendedList from './RecommendedList';
+import SeedList from 'core/ui/LeftPanel/SeedList';
+import RecommendedList from 'core/ui/LeftPanel/RecommendedList';
+import Settings from 'core/ui/LeftPanel/Settings';
 import { UI } from 'core/state/ui';
 
 const LeftPanel = () => {
-  const { listView } = useContext(UI);
+  const { leftPanel } = useContext(UI);
 
-  switch (listView) {
+  switch (leftPanel) {
     case 'Seeds':
       return <SeedList />;
     case 'Recommended':
       return <RecommendedList />;
+    case 'Settings':
+      return <Settings />;
     default:
       return null;
   }

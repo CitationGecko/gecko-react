@@ -28,7 +28,7 @@ const PaperInfoBox = ({ paper }) => {
 };
 
 const RightPanel = () => {
-  const { listView, selectPaper, selectedPapers } = useContext(UI);
+  const { leftPanel, selectPaper, selectedPapers } = useContext(UI);
   const { Papers, Edges, updatePaper } = useContext(Store);
   const { applyActiveFilters, activeSortField, setActiveSortField } = useContext(Filters);
 
@@ -64,7 +64,7 @@ const RightPanel = () => {
         data={{ Papers: papersToDisplay, Edges: edgesToDisplay }}
         sizeMetric={activeSortField}
       />
-      {!listView && selectedPaper && (
+      {!leftPanel && selectedPaper && (
         <div className={styles['selected-paper-box']}>
           <PaperInfoBox paper={selectedPaper} />
         </div>

@@ -6,7 +6,7 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { Filters } from 'core/state/filters';
 
-function ListSort({ applyFilters }) {
+function SortSettings({ applyFilters }) {
   const { sortFields, activeSortField, setActiveSortField } = useContext(Filters);
   return (
     <div className={styles['sort']}>
@@ -19,4 +19,4 @@ function ListSort({ applyFilters }) {
   );
 }
 
-export default ListSort;
+export default SortSettings;

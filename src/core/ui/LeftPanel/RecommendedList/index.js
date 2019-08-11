@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
-import { PaperList } from './components/PaperList';
+import { PaperList } from 'core/ui/LeftPanel/PaperList';
 import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';
 import { Filters } from 'core/state/filters';
 import GenericLeftPanel from 'core/components/GenericLeftPanel';
 import { ToggleIrrelevant } from 'core/actions/ToggleIrrelevant';
+import PrimaryButton from 'core/components/PrimaryButton';
+import SecondaryButton from 'core/components/SecondaryButton';
 
 const RecommendedList = () => {
   const { Papers, makeSeed } = useContext(Store);
@@ -17,11 +19,15 @@ const RecommendedList = () => {
     <GenericLeftPanel
       header={'Recommended Papers'}
       body={<PaperList papers={filteredNonSeeds} actions={[ToggleIrrelevant]} />}
-      primaryButton={{ text: 'Add as seed', onClick: () => makeSeed(selectedPapers[0]) }}
-      secondaryButton={{
-        text: 'Export',
-        onClick: () => exportBibtex('GeckoRecommendations.bib', filteredNonSeeds)
-      }}
+      footer={
+        <React.Fragment>
+          <PrimaryButton text="Add as seed" onClick={() => makeSeed(selectedPapers[0])} />
+          <SecondaryButton
+            text="Export"
+            onClick={() => exportBibtex('GeckoRecommendations.bib', filteredNonSeeds)}
+          />
+        </React.Fragment>
+      }
     />
   );
 };
