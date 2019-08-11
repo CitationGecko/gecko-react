@@ -3,9 +3,11 @@
   border: none;
   margin: 0.1em 0;
   padding: 5% 2% 5% 10%;
+  font-size: small;
 }
 .paper-title {
   padding-bottom: 0.2em;
+  font-size: inherit;
 }
 
 .float-right {
@@ -13,19 +15,7 @@
   position: relative;
   right: 0em;
   padding: 0.2em;
-}
-
-.metric {
-  float: right;
-  position: relative;
-  right: 0em;
-  padding: 0.2em 0em;
-  color: black;
-  font-weight: 400;
-}
-.metric-count {
-  color: #be2121;
-  font-weight: 400;
+  font-size: inherit;
 }
 
 .delete-seed {
@@ -39,11 +29,13 @@
 .author-year {
   text-align: left;
   padding: 0.2em 0em;
+  font-size: inherit;
 }
 .journal {
   text-align: left;
   padding: 0.2em 0em;
   font-style: italic;
+  font-size: inherit;
 }
 .linkout-icon {
   margin-left: 0.5em;

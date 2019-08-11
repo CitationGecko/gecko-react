@@ -6,6 +6,7 @@ import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';
 import AddSeedsModal from 'core/ui/Modal/AddSeedsModal';
+import { Action } from 'core/components/Action';
 
 function SeedList() {
   const { Papers, deletePapers } = useContext(Store);
@@ -15,15 +16,9 @@ function SeedList() {
     <PaperCard
       key={p.ID}
       selected={selectedPapers.includes(p.ID)}
-      rightFloat={
-        <DeleteButton
-          onClick={() => {
-            deletePapers([p.ID]);
-          }}
-        />
-      }
       paper={p}
       onClick={() => selectPaper(p)}
+      actions={<Action icon="delete" text="Delete seed" onClick={() => deletePapers([p.ID])} />}
     />
   ));
   return (

@@ -5,8 +5,10 @@
   padding: 0.2em 0em;
   color: black;
   font-weight: 400;
+  font-size: inherit;
 }
 .metric-count {
   color: #be2121;
   font-weight: 400;
+  font-size: inherit;
 }
