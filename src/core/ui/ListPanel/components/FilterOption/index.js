@@ -20,7 +20,9 @@ function FilterOption({ filter, filters, setPendingFilter, clearPendingFilter })
         options={Object.keys(filters[filter.field].options)}
         onChange={setOption}
       />
-      <TextInput value={filter.value} onChange={setValue} />
+      {filters[filter.field].value === 'text' && (
+        <TextInput value={filter.value} onChange={setValue} />
+      )}
       <IconButton color="red" disableRipple={true} onClick={clearPendingFilter}>
         <Icon icon="close" />
       </IconButton>

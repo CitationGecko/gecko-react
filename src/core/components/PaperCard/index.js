@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.css';
 import { LinkoutIcon } from 'core/icons/LinkoutIcon';
 
-const PaperCard = ({ paper, onClick, selected, rightFloat }) => {
+const PaperCard = ({ paper, onClick, selected, actions, rightFloat }) => {
   let author = paper.author ? paper.author : '';
   let journal = paper.journal ? paper.journal : '';
 
@@ -25,6 +25,7 @@ const PaperCard = ({ paper, onClick, selected, rightFloat }) => {
       <div className={styles['author-year']}>{`${author} ${paper.year}`}</div>
       <div className={styles['float-right']}>{rightFloat}</div>
       <div className={styles['journal']}>{journal}</div>
+      {selected && actions}
     </div>
   );
 };

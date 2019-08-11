@@ -1,0 +1,11 @@
+.action {
+  display: flex;
+  cursor: pointer;
+  font-size: small;
+  margin-top: 10px;
+}
+
+.actionText {
+  font-size: inherit;
+  margin-left: 5px;
+}

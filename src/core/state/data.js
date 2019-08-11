@@ -15,7 +15,13 @@ export function useDataStore() {
     Edges: state.Edges,
     updatePapers: (papers, seeds) => setState(prevState => updatePapers(papers, seeds, prevState)),
     deletePapers: paperIDs => setState(prevState => deletePapers(paperIDs, prevState)),
-    makeSeed: id => setState(prevState => makeSeed(id, prevState))
+    makeSeed: id => setState(prevState => makeSeed(id, prevState)),
+    updatePaper: paper => {
+      setState(prevState => ({
+        ...prevState,
+        Papers: { ...prevState.Papers, [paper.ID]: { ...prevState.Papers[paper.ID], ...paper } }
+      }));
+    }
   };
 }
 

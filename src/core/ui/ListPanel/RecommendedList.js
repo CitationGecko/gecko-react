@@ -6,9 +6,10 @@ import { Store } from 'core/state/data';
 import { UI } from 'core/state/ui';
 import { exportBibtex } from 'export-modules/bibtex';
 import { Filters } from 'core/state/filters';
+import { Action } from 'core/components/Action';
 
 const RecommendedList = () => {
-  const { Papers, makeSeed } = useContext(Store);
+  const { Papers, makeSeed, updatePaper } = useContext(Store);
   const { activeSortField, applyActiveFilters, applySort } = useContext(Filters);
   const { selectedPapers, selectPaper } = useContext(UI);
 
@@ -21,6 +22,21 @@ const RecommendedList = () => {
       rightFloat={<MetricLabel paper={p} metric={activeSortField} />}
       paper={p}
       onClick={() => selectPaper(p)}
+      actions={
+        p.irrelevant ? (
+          <Action
+            icon="visibility_on"
+            text="Mark as relevant"
+            onClick={() => updatePaper({ ...p, irrelevant: false })}
+          />
+        ) : (
+          <Action
+            icon="visibility_off"
+            text="Mark as irrelevant"
+            onClick={() => updatePaper({ ...p, irrelevant: true })}
+          />
+        )
+      }
     />
   ));
   return (
