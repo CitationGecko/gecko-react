@@ -27,7 +27,7 @@ const PaperInfoBox = ({ paper }) => {
   return <PaperCard paper={paper} selected={true} actions={actions} />;
 };
 
-const VisPanel = () => {
+const RightPanel = () => {
   const { listView, selectPaper, selectedPapers } = useContext(UI);
   const { Papers, Edges, updatePaper } = useContext(Store);
   const { applyActiveFilters, activeSortField, setActiveSortField } = useContext(Filters);
@@ -73,4 +73,4 @@ const VisPanel = () => {
   );
 };
 
-export default VisPanel;
+export default RightPanel;

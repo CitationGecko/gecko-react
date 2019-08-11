@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 import SideBarButton from 'core/components/SideBarButton';
 import settingsIcon from 'core/icons/settings-icon.png';
 import recommendedIcon from 'core/icons/recommended-icon.png';
+import filterIcon from 'core/icons/filter-icon.png';
 import seedIcon from 'core/icons/seed-icon.png';
 import { UI } from 'core/state/ui';
 
@@ -29,8 +30,8 @@ const RecommendedButton = () => {
   );
 };
 
-const SettingsButton = () => {
-  return <SideBarButton img={settingsIcon} />;
+const FilterButton = () => {
+  return <SideBarButton img={filterIcon} />;
 };
 
 const SideBar = () => {
@@ -38,6 +39,7 @@ const SideBar = () => {
     <div className={styles['side-bar']}>
       <SeedsButton />
       <RecommendedButton />
+      <FilterButton />
     </div>
   );
 };

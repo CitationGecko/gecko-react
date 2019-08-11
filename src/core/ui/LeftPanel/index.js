@@ -3,7 +3,7 @@ import SeedList from './SeedList';
 import RecommendedList from './RecommendedList';
 import { UI } from 'core/state/ui';
 
-const ListPanel = () => {
+const LeftPanel = () => {
   const { listView } = useContext(UI);
 
   switch (listView) {
@@ -16,4 +16,4 @@ const ListPanel = () => {
   }
 };
 
-export default ListPanel;
+export default LeftPanel;
