@@ -1,6 +1,7 @@
 .side-bar {
   width: 65px;
   background-color: #e0dfdf;
+  flex-shrink: 0;
 }
 
 .bottom-button {

@@ -40,6 +40,7 @@ export default class ForceGraph extends Component {
 
     this.nodes = [];
     this.edges = [];
+    this.shouldComponentUpdate(this.props);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -90,6 +91,7 @@ export default class ForceGraph extends Component {
           return styles['node'];
         }
       })
+      .html(d => `<title>${d.title}</title>`)
       .call(
         d3
           .drag()
@@ -114,10 +116,6 @@ export default class ForceGraph extends Component {
     this.svg.on('click', () => {
       onSelect(null);
     });
-
-    this.circles.append('title').text(function(d) {
-      return d.title;
-    }); //Label nodes with title on hover
 
     // Update svg lines to match simulation
     this.lines = this.lines.data(this.edges, d => d.ID).join('line');
