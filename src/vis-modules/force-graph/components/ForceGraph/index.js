@@ -33,7 +33,7 @@ export default class ForceGraph extends Component {
           return d.ID;
         })
       )
-      .force('charge', d3.forceManyBody().strength(-100))
+      .force('charge', d3.forceManyBody().strength(-200))
       //.force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force('xattract', d3.forceX())
       .force('yattract', d3.forceY());

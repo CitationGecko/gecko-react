@@ -3,8 +3,8 @@ import styles from './styles.module.css';
 import SideBar from './ui/SideBar';
 import Logo from './ui/Logo';
 import Modal from './ui/Modal';
-import ListPanel from 'core/ui/ListPanel';
-import VisPanel from 'core/ui/VisPanel';
+import LeftPanel from 'core/ui/LeftPanel';
+import RightPanel from 'core/ui/RightPanel';
 import { Store, useDataStore } from 'core/state/data';
 import { Filters, useFilters } from 'core/state/filters';
 import { UI, useUserInterface } from 'core/state/ui';
@@ -20,8 +20,8 @@ function App() {
         <Filters.Provider value={filters}>
           <div className={styles.App}>
             <SideBar />
-            <ListPanel />
-            <VisPanel />
+            <LeftPanel />
+            <RightPanel />
             <Modal />
             <Logo />
           </div>

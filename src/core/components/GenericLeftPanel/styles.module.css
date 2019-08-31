@@ -1,4 +1,4 @@
-.list-view {
+.left-panel {
   position: relative;
   overflow: hidden;
   background-color: rgb(255, 255, 255);
@@ -8,7 +8,7 @@
   flex-direction: column;
 }
 
-.list-header {
+.left-panel-header {
   height: 10%;
   padding-top: 6%;
   padding-bottom: 1%;
@@ -16,14 +16,15 @@
   padding-right: 2%;
   box-sizing: border-box;
 }
-.list-header > h1 {
+
+.left-panel-header > h1 {
   font-size: 24px;
   margin: 0;
   margin-right: 10px;
   display: inline;
 }
 
-.list-body {
+.left-panel-body {
   overflow: auto;
   overflow-x: hidden;
   flex: auto;
@@ -31,7 +32,7 @@
   box-sizing: border-box;
 }
 
-.list-footer {
+.left-panel-footer {
   height: 15%;
   bottom: 0px;
   width: 100%;
@@ -44,11 +45,11 @@
   box-sizing: border-box;
 }
 
-.list-footer p {
+.left-panel-footer p {
   margin: 0.5em;
 }
 
-.list-footer-btn-group {
+.left-panel-footer-btn-group {
   display: flex;
 }
 
