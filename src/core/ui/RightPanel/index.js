@@ -6,6 +6,7 @@ import { Filters } from 'core/state/filters';
 import styles from './styles.module.css';
 import PaperCard from 'core/components/PaperCard';
 import { Action } from 'core/components/Action';
+import { Timeline } from 'vis-modules/timeline';
 
 const PaperInfoBox = ({ paper }) => {
   const { deletePapers, updatePaper } = useContext(Store);
@@ -55,7 +56,14 @@ const RightPanel = () => {
 
   return (
     <div className={styles['vis-panel']}>
-      <NetworkView
+      {
+        <Timeline
+          data={{ Papers: papersToDisplay, Edges: edgesToDisplay }}
+          selected={selectedPapers}
+          onSelect={selectPaper}
+        />
+      }
+      {/* <NetworkView
         mode={activeSortField}
         selected={selectedPapers}
         onSelect={selectPaper}
@@ -63,7 +71,7 @@ const RightPanel = () => {
         onThreshold={() => {}}
         data={{ Papers: papersToDisplay, Edges: edgesToDisplay }}
         sizeMetric={activeSortField}
-      />
+      /> */}
       {!leftPanel && selectedPaper && (
         <div className={styles['selected-paper-box']}>
           <PaperInfoBox paper={selectedPaper} />
