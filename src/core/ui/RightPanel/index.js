@@ -4,47 +4,20 @@ import { UI } from 'core/state/ui';
 import { Store, objectifyPapers } from 'core/state/data';
 import { Filters } from 'core/state/filters';
 import styles from './styles.module.css';
-import PaperCard from 'core/components/PaperCard';
-import { Action } from 'core/components/Action';
-
-const PaperInfoBox = ({ paper }) => {
-  const { deletePapers, updatePaper } = useContext(Store);
-  const actions = paper.seed ? (
-    <Action icon="delete" text="Delete seed" onClick={() => deletePapers([paper.ID])} />
-  ) : paper.irrelevant ? (
-    <Action
-      icon="visibility_on"
-      text="Mark as relevant"
-      onClick={() => updatePaper({ ...paper, irrelevant: false })}
-    />
-  ) : (
-    <Action
-      icon="visibility_off"
-      text="Mark as irrelevant"
-      onClick={() => updatePaper({ ...paper, irrelevant: true })}
-    />
-  );
-  return <PaperCard paper={paper} selected={true} actions={actions} />;
-};
+import { Timeline } from 'vis-modules/timeline';
+import { PaperInfoBox } from 'core/ui/RightPanel/PaperInfoBox';
+import { VisToggle } from 'core/ui/RightPanel/VisToggle';
 
 const RightPanel = () => {
-  const { leftPanel, selectPaper, selectedPapers } = useContext(UI);
-  const { Papers, Edges, updatePaper } = useContext(Store);
+  const { leftPanel, rightPanel, selectPaper, selectedPapers } = useContext(UI);
+  const { Papers, Edges } = useContext(Store);
   const { applyActiveFilters, activeSortField, setActiveSortField } = useContext(Filters);
 
-  const selector = activeSortField === 'seedsCitedBy' ? 'source' : 'target';
-
-  const papersToDisplay = objectifyPapers(
-    applyActiveFilters(Object.values(Papers))
-      .filter(p => p[activeSortField] > 0)
-      .concat(Object.values(Papers).filter(p => p.seed))
+  const activePapers = objectifyPapers(
+    applyActiveFilters(Object.values(Papers)).concat(Object.values(Papers).filter(p => p.seed))
   );
 
-  const edgesToDisplay = Edges.filter(e => {
-    return (
-      papersToDisplay[e.source] && papersToDisplay[e.target] && papersToDisplay[e[selector]].seed
-    );
-  });
+  const activeEdges = Edges.filter(e => activePapers[e.source] && activePapers[e.target]);
 
   const onSwitch = () => {
     setActiveSortField(field => (field === 'seedsCitedBy' ? 'seedsCited' : 'seedsCitedBy'));
@@ -55,20 +28,29 @@ const RightPanel = () => {
 
   return (
     <div className={styles['vis-panel']}>
-      <NetworkView
-        mode={activeSortField}
-        selected={selectedPapers}
-        onSelect={selectPaper}
-        onSwitch={onSwitch}
-        onThreshold={() => {}}
-        data={{ Papers: papersToDisplay, Edges: edgesToDisplay }}
-        sizeMetric={activeSortField}
-      />
+      {rightPanel === 'timeline' ? (
+        <Timeline
+          data={{ Papers: activePapers, Edges: activeEdges }}
+          selected={selectedPapers}
+          onSelect={selectPaper}
+        />
+      ) : (
+        <NetworkView
+          mode={activeSortField}
+          selected={selectedPapers}
+          onSelect={selectPaper}
+          onSwitch={onSwitch}
+          onThreshold={() => {}}
+          data={{ Papers: activePapers, Edges: activeEdges }}
+          sizeMetric={activeSortField}
+        />
+      )}
       {!leftPanel && selectedPaper && (
         <div className={styles['selected-paper-box']}>
           <PaperInfoBox paper={selectedPaper} />
         </div>
       )}
+      <VisToggle />
     </div>
   );
 };

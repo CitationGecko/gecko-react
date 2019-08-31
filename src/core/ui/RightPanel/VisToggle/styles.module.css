@@ -1,0 +1,7 @@
+.vis-toggle {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 4em;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}

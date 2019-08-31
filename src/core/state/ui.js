@@ -9,16 +9,19 @@ export function useUserInterface() {
   const [leftPanel, setLeftPanel] = useState('Seeds');
   const [modalContent, setModal] = useState(<OnboardingModal />);
   const [showSettings, toggleSettings] = useState(false);
+  const [rightPanel, setRightPanel] = useState('timeline');
 
   return {
     mode,
     selectedPapers,
     leftPanel,
+    rightPanel,
     modalContent,
     showSettings,
     setModal,
     closeModal: () => setModal(null),
     setLeftPanel,
+    setRightPanel,
     selectPaper: paper => {
       if (leftPanel) {
         toggleSettings(false);
