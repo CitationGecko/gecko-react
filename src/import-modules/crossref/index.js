@@ -10,7 +10,7 @@ addImportModule({
 
 export function crossrefSearch(input) {
   let query = input.replace(' ', '+');
-  let url = `https://api.crossref.org/works?query=${query}`;
+  let url = `https://api.crossref.org/works?query=${query}&rows=60`;
   return fetch(url)
     .then(resp => resp.json())
     .then(json => {
