@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import PaperCard from 'core/components/PaperCard';
-import { UI } from 'core/state/ui';
 
-export const PaperList = ({ papers, actions }) => {
-  const { selectedPapers, selectPaper } = useContext(UI);
+export const PaperList = ({ papers, actions, selectedPapers, selectPaper }) => {
   return papers.map((paper, i) => (
     <ScrollIntoViewIfNeeded
       key={i}

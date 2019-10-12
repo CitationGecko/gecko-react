@@ -11,12 +11,19 @@ import SecondaryButton from 'core/components/SecondaryButton';
 
 function SeedList() {
   const { Papers } = useContext(Store);
-  const { setModal } = useContext(UI);
+  const { setModal, selectedPapers, selectPaper } = useContext(UI);
   let seedPapers = Object.values(Papers).filter(p => p.seed);
   return (
     <GenericLeftPanel
       header={'My Seed Papers'}
-      body={<PaperList papers={seedPapers} actions={[DeletePaperAction]} />}
+      body={
+        <PaperList
+          papers={seedPapers}
+          actions={[DeletePaperAction]}
+          selectedPapers={selectedPapers}
+          selectPaper={selectPaper}
+        />
+      }
       footer={
         <React.Fragment>
           <PrimaryButton text="Add more seeds" onClick={() => setModal(<AddSeedsModal />)} />
