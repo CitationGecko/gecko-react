@@ -75,10 +75,16 @@ const MendeleyImportModal = () => {
   const [folders, setFolders] = useState(null);
 
   if (!folders) {
-    getFolders().then(folders => {
-      setFolders(folders);
-      setAuthenticated(true);
-    });
+    getFolders()
+      .then(folders => {
+        setFolders(folders);
+        setAuthenticated(true);
+      })
+      .catch(err => {
+        if (authenticated) {
+          setAuthenticated(false);
+        }
+      });
   }
 
   return authenticated ? <MendeleySearch folders={folders} /> : <MendeleyConnect />;

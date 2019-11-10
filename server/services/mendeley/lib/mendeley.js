@@ -31,7 +31,7 @@ function getFolders(params) {
 
 function getDocumentsInFolder(folderID, params) {
   const opts = {
-    url: API_ROOT + '/folders/' + folderID + '/documents',
+    url: API_ROOT + '/folders/' + folderID + '/documents?limit=500',
     method: 'GET',
     headers: getHeaders(params)
   };
@@ -42,6 +42,16 @@ function getDocumentsInFolder(folderID, params) {
 function getDocument(id, params) {
   const opts = {
     url: API_ROOT + '/documents/' + id,
+    method: 'GET',
+    headers: getHeaders(params)
+  };
+
+  return request(opts).then(resp => JSON.parse(resp));
+}
+
+function getAllDocuments(params) {
+  const opts = {
+    url: API_ROOT + '/documents/',
     method: 'GET',
     headers: getHeaders(params)
   };
