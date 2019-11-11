@@ -52,8 +52,13 @@ const Help = () => {
       </div>
       <div className={styles.footer}>
         Please submit bugs reports and feature requests on Github{' '}
-        <a href="https://github.com/CitationGecko/gecko-react/issues">here</a> or by email to{' '}
-        <a href="mailto:bjw15@ic.ac.uk">bjw15@ic.ac.uk</a>
+        <a target="_blank" href="https://github.com/CitationGecko/gecko-react/issues">
+          here
+        </a>{' '}
+        or by email to{' '}
+        <a target="_blank" href="mailto:bjw15@ic.ac.uk">
+          bjw15@ic.ac.uk
+        </a>
       </div>
     </React.Fragment>
   );
