@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import OnboardingModal from 'core/ui/Modal/OnboardingModal';
+import StartModal from 'core/ui/Modal/StartModal';
 
 export const UI = createContext();
 
@@ -7,7 +7,7 @@ export function useUserInterface() {
   const [mode, setMode] = useState('references');
   const [selectedPapers, setSelectedPapers] = useState([]);
   const [leftPanel, setLeftPanel] = useState('Seeds');
-  const [modalContent, setModal] = useState(<OnboardingModal />);
+  const [modalContent, setModal] = useState(<StartModal />);
   const [showSettings, toggleSettings] = useState(false);
   const [rightPanel, setRightPanel] = useState('timeline');
 

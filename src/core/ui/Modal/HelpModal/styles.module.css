@@ -1,0 +1,25 @@
+.outerContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.container {
+  display: flex;
+}
+
+.container button {
+  margin: 2px;
+}
+
+.screenshot {
+  max-height: 400px;
+  width: 100%;
+  object-fit: contain;
+}
+
+.footer {
+  margin-top: 10px;
+  text-align: right;
+}

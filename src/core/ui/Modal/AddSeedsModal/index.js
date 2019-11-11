@@ -18,7 +18,15 @@ const AddSeedsModal = () => {
     );
   });
 
-  return <ButtonList>{buttons}</ButtonList>;
+  return (
+    <React.Fragment>
+      <h1>Add Seed Papers</h1>
+      <p>
+        Add seed papers that define your area of interest and Gecko will find you connected papers.
+      </p>
+      <ButtonList>{buttons}</ButtonList>
+    </React.Fragment>
+  );
 };
 
 export default AddSeedsModal;
