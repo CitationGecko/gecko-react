@@ -23,6 +23,7 @@ const AddSeedsModal = () => {
       <h1>Add Seed Papers</h1>
       <p>
         Add seed papers that define your area of interest and Gecko will find you connected papers.
+        We recommended starting with 5 or 6.
       </p>
       <ButtonList>{buttons}</ButtonList>
     </React.Fragment>
