@@ -120,12 +120,14 @@ function getNodes(papers) {
   let nodes = {};
   // Sort by year
   const sortedPapers = papers.sort((a, b) => b.year - a.year);
+  let seeds = papers.filter(p => p.seed);
   //Initialise
   let [lastX, lastY, lastR, lastYear] = [X_OFFSET, Y_OFFSET - Y_GAP, 0, 3000];
   // Loop
   for (let i = 0; i < sortedPapers.length; i++) {
     let paper = sortedPapers[i];
-    let r = paper.seed ? 10 : 5 * (paper['seedsCitedBy'] + paper['seedsCited']);
+    let sizeMetric = paper['seedsCitedBy'] + paper['seedsCited'];
+    let r = paper.seed ? 10 : 5 + ((Y_GAP / 2 - 5) * sizeMetric) / seeds.length;
     if (paper.year < lastYear) {
       lastY += Y_GAP;
       lastYear = paper.year;
