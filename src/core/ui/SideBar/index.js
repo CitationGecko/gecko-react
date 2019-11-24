@@ -4,7 +4,9 @@ import SideBarButton from 'core/components/SideBarButton';
 import recommendedIcon from 'core/icons/recommended-icon.png';
 import filterIcon from 'core/icons/filter-icon.png';
 import seedIcon from 'core/icons/seed-icon.png';
+import helpIcon from 'core/icons/help-icon.png';
 import { UI } from 'core/state/ui';
+import HelpModal from 'core/ui/Modal/HelpModal';
 
 const TogglePanelButton = ({ panel, img }) => {
   const { leftPanel, setLeftPanel } = useContext(UI);
@@ -15,11 +17,24 @@ const TogglePanelButton = ({ panel, img }) => {
 };
 
 const SideBar = () => {
+  const { setModal } = useContext(UI);
+
   return (
     <div className={styles['side-bar']}>
-      <TogglePanelButton panel="Seeds" img={seedIcon} />
-      <TogglePanelButton panel="Recommended" img={recommendedIcon} />
-      <TogglePanelButton panel="Settings" img={filterIcon} />
+      <div>
+        <TogglePanelButton panel="Seeds" img={seedIcon} />
+        <TogglePanelButton panel="Recommended" img={recommendedIcon} />
+        <TogglePanelButton panel="Settings" img={filterIcon} />
+      </div>
+      <div>
+        <SideBarButton
+          active={false}
+          img={helpIcon}
+          onClick={() => {
+            setModal(<HelpModal />);
+          }}
+        />
+      </div>
     </div>
   );
 };

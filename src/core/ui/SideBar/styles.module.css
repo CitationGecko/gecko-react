@@ -2,6 +2,9 @@
   width: 65px;
   background-color: #e0dfdf;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .bottom-button {
