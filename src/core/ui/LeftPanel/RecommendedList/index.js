@@ -12,13 +12,20 @@ import SecondaryButton from 'core/components/SecondaryButton';
 const RecommendedList = () => {
   const { Papers, makeSeed } = useContext(Store);
   const { activeSortField, applyActiveFilters, applySort } = useContext(Filters);
-  const { selectedPapers } = useContext(UI);
+  const { selectedPapers, selectPaper } = useContext(UI);
 
   let filteredNonSeeds = applySort(applyActiveFilters(Object.values(Papers).filter(p => !p.seed)));
   return (
     <GenericLeftPanel
       header={'Recommended Papers'}
-      body={<PaperList papers={filteredNonSeeds} actions={[ToggleIrrelevant]} />}
+      body={
+        <PaperList
+          papers={filteredNonSeeds}
+          actions={[ToggleIrrelevant]}
+          selectedPapers={selectedPapers}
+          selectPaper={selectPaper}
+        />
+      }
       footer={
         <React.Fragment>
           <PrimaryButton text="Add as seed" onClick={() => makeSeed(selectedPapers[0])} />

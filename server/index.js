@@ -23,6 +23,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(path.dirname(__dirname), 'build', 'index.html'));
 });
 
+app.get('/services/mendeley/authenticate', require('./services/mendeley/authenticate'));
+app.get('/services/mendeley/verify', require('./services/mendeley/verify'));
+app.get('/services/mendeley/getFolders', require('./services/mendeley/getFolders'));
+app.get(
+  '/services/mendeley/getDocumentsInFolder',
+  require('./services/mendeley/getDocumentsInFolder')
+);
 app.get('/services/zotero/authenticate', require('./services/zotero/authenticate'));
 app.get('/services/zotero/verify', require('./services/zotero/verify'));
 app.get('/services/zotero/login', require('./services/zotero/login'));
@@ -30,4 +37,5 @@ app.get('/services/zotero/getCollections', require('./services/zotero/getCollect
 app.get('/services/zotero/getItemsInCollection', require('./services/zotero/getItemsInCollection'));
 app.post('/services/zotero/addItems', require('./services/zotero/addItems'));
 
-app.listen(process.env.PORT || 8080, () => console.log('CitationGecko server listening...'));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`CitationGecko server listening on...${PORT}`));

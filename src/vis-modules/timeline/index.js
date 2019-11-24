@@ -8,47 +8,57 @@ const Y_OFFSET = 50;
 const X_GAP = 20;
 const Y_GAP = 70;
 
-const TimeAxis = ({ years }) =>
-  years.map((year, i) => (
-    <React.Fragment>
-      <text x={10} y={5 + Y_OFFSET + i * Y_GAP}>
-        {year}
-      </text>
-      <line
-        x1={25}
-        y1={5 + Y_OFFSET + i * Y_GAP + 10}
-        x2={25}
-        y2={5 + Y_OFFSET + (i + 1) * Y_GAP - 20}
-        stroke="black"
-        stroke-dasharray={year - years[i + 1] > 1 ? '4' : null}
-      />
-    </React.Fragment>
-  ));
+const TimeAxis = ({ years }) => (
+  <g key="axis">
+    {years.map((year, i) => (
+      <g key={year}>
+        <text x={10} y={5 + Y_OFFSET + i * Y_GAP}>
+          {year}
+        </text>
+        <line
+          x1={25}
+          y1={5 + Y_OFFSET + i * Y_GAP + 10}
+          x2={25}
+          y2={5 + Y_OFFSET + (i + 1) * Y_GAP - 20}
+          stroke="black"
+          strokeDasharray={year - years[i + 1] > 1 ? '4' : null}
+        />
+      </g>
+    ))}
+  </g>
+);
 
-const Connectors = ({ edges, nodes }) =>
-  edges.map(edge => (
-    <path d={getConnectingPath(edge, nodes)} fill="none" stroke="grey" strokeWidth={1} />
-  ));
+const Connectors = ({ edges, nodes }) => (
+  <g key="edges">
+    {edges.map(edge => (
+      <path d={getConnectingPath(edge, nodes)} fill="none" stroke="grey" strokeWidth={1} />
+    ))}
+  </g>
+);
 
-const Nodes = ({ nodes, onSelect, isHighlighted }) =>
-  Object.values(nodes).map(node => (
-    <circle
-      onClick={evt => {
-        onSelect(node.paper);
-        evt.stopPropagation();
-      }}
-      className={classNames({
-        [styles['seed-node']]: node.paper.seed,
-        [styles['node']]: !node.paper.seed,
-        [styles['hide']]: !isHighlighted(node)
-      })}
-      r={node.r}
-      cx={node.x}
-      cy={node.y}
-    >
-      <title>{node.paper.title}</title>
-    </circle>
-  ));
+const Nodes = ({ nodes, onSelect, isHighlighted }) => (
+  <g key="nodes">
+    {Object.values(nodes).map(node => (
+      <circle
+        key={node.paper.ID}
+        onClick={evt => {
+          onSelect(node.paper);
+          evt.stopPropagation();
+        }}
+        className={classNames({
+          [styles['seed-node']]: node.paper.seed,
+          [styles['node']]: !node.paper.seed,
+          [styles['hide']]: !isHighlighted(node)
+        })}
+        r={node.r}
+        cx={node.x}
+        cy={node.y}
+      >
+        <title>{node.paper.title}</title>
+      </circle>
+    ))}
+  </g>
+);
 
 export const Timeline = ({ data: { Papers, Edges }, onSelect, selected }) => {
   const papersByYear = groupBy(Object.values(Papers), 'year');
