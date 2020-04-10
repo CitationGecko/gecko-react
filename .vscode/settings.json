@@ -7,5 +7,11 @@
     "crossref",
     "placeholder",
     "zotero"
-  ]
+  ],
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/b71c1e43-5e1f-4194-a000-9d8d61813766/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/citation-gecko",
+  "appService.deploySubpath": ""
 }
