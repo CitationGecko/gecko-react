@@ -115,6 +115,5 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.11.0",
     "prettier": "^1.16.0"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }
