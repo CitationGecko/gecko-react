@@ -22,5 +22,6 @@ const OAuthClient = new OAuth.OAuth2(
 
 module.exports = {
   OAuthClient,
-  endpoints
+  endpoints,
+  client_id: APP_ID
 };

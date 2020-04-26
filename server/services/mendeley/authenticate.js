@@ -1,7 +1,14 @@
-const { endpoints, OAuthClient } = require('./lib/auth');
+const qs = require('query-string');
+const { endpoints, client_id } = require('./lib/auth');
 
-const AUTH_URL =
-  'https://api.mendeley.com/oauth/authorize?client_id=7425&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fservices%2Fmendeley%2Fverify&response_type=code&scope=all';
+const query = {
+  client_id,
+  redirect_uri: endpoints.callbackUrl,
+  response_type: 'code',
+  scope: 'all'
+};
+
+const AUTH_URL = qs.stringifyUrl({ url: endpoints.authorize, query });
 
 module.exports = (req, res) => {
   return res.redirect(AUTH_URL);
