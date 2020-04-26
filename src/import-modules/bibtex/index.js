@@ -38,6 +38,10 @@ export function importBibTex(evt) {
 // Importing Example BibTex
 export function importExampleBibTex() {
   const url = `${window.location.href}examples/exampleBibTex.bib`;
+  return importBibTexFromUrl(url);
+}
+
+export function importBibTexFromUrl(url) {
   return fetch(url)
     .then(resp => resp.text())
     .then(data => {
