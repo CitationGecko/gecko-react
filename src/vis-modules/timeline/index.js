@@ -127,7 +127,7 @@ function getNodes(papers) {
   for (let i = 0; i < sortedPapers.length; i++) {
     let paper = sortedPapers[i];
     let sizeMetric = paper['seedsCitedBy'] + paper['seedsCited'];
-    let r = paper.seed ? 10 : 5 + ((Y_GAP / 2 - 5) * sizeMetric) / seeds.length;
+    let r = paper.seed ? 10 : 10 + ((Y_GAP / 2 - 5) * (sizeMetric - 1)) / seeds.length;
     if (paper.year < lastYear) {
       lastY += Y_GAP;
       lastYear = paper.year;

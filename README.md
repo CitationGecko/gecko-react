@@ -27,12 +27,12 @@ The tool allows the user to view these highly connected papers either in a table
 3. Open a terminal and navigate to the repository folder.
 4. Run `npm install` from the command line to install all the package dependencies.
 5. Run `npm run build` from the command line to build the app.
-6. Run `node server` to launch the server.
-7. The application will be served to http://localhost:8080
+6. Run `npm run start` to launch the server.
+7. The application will be served to http://localhost:8000
 
 ## Instructions for use
 
-1. Go to [citationgecko.com](http://citationgecko.com) or [localhost:8080](http://localhost:8080) if you're running application locally
+1. Go to [citationgecko.com](http://citationgecko.com) or [localhost:8000](http://localhost:8000) if you're running application locally
 2. Add some seed papers by clicking 'Add more seeds' button in the left-hand panel.
 3. There are several ways of choosing seed papers to start with:
    2. Upload a bibTex file (NOTE: currently only entries with a DOI will be added)

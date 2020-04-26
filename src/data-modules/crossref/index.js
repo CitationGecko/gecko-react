@@ -73,7 +73,8 @@ export function parseReference(ref) {
     title: ref['article-title'] ? ref['article-title'].replace(/<\/?[^>]+(>|$)/g, '') : null,
     author: ref.author ? ref.author : null,
     year: ref.year ? ref.year : null,
-    journal: ref['journal-title'] ? ref['journal-title'] : null
+    journal: ref['journal-title'] ? ref['journal-title'] : null,
+    unstructured: ref.unstructured
   };
 }
 
