@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './styles.module.css';
 import PrimarySquareButton from 'core/components/PrimarySquareButton';
-import SecondarySquareButton from 'core/components/SecondarySquareButton';
-import ButtonList from 'core/components/ButtonList';
-import { importExampleBibTex } from 'import-modules/bibtex';
+import { importExampleBibTex, importBibTexFromUrl } from 'import-modules/bibtex';
 import AddSeedsModal from 'core/ui/Modal/AddSeedsModal';
 import { UI } from 'core/state/ui';
 import { Store } from 'core/state/data';

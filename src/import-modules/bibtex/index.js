@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import bibtexParse from 'third-party/bibtexParse';
 import { addImportModule } from 'core/module-loader';
 import UploadBibTexModal from './UploadBibTexModal';
+import { UI } from 'core/state/ui';
+import { Store } from 'core/state/data';
+import { getQueryString } from 'utils';
 
-addImportModule({
-  buttonText: 'Import from Bibtex',
-  modal: <UploadBibTexModal />
-});
+export const BibTex = () => {
+  const { setModal } = useContext(UI);
+  const { updatePapers } = useContext(Store);
+  useEffect(() => {
+    let bibTexUrl = getQueryString('bib');
+    if (bibTexUrl && bibTexUrl.endsWith('.bib')) {
+      importBibTexFromUrl(bibTexUrl).then(papers => {
+        updatePapers(papers, true);
+        setModal(null);
+      });
+    }
+  }, []);
+  return null;
+};
 
 function parseBibtexEntry(p) {
   return {
@@ -38,6 +51,10 @@ export function importBibTex(evt) {
 // Importing Example BibTex
 export function importExampleBibTex() {
   const url = `${window.location.href}examples/exampleBibTex.bib`;
+  return importBibTexFromUrl(url);
+}
+
+export function importBibTexFromUrl(url) {
   return fetch(url)
     .then(resp => resp.text())
     .then(data => {
@@ -46,3 +63,9 @@ export function importExampleBibTex() {
       return newPapers;
     });
 }
+
+addImportModule({
+  buttonText: 'Import from Bibtex',
+  modal: <UploadBibTexModal />,
+  component: BibTex
+});
