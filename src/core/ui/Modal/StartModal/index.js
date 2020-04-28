@@ -1,16 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './styles.module.css';
 import PrimarySquareButton from 'core/components/PrimarySquareButton';
 import SecondarySquareButton from 'core/components/SecondarySquareButton';
 import ButtonList from 'core/components/ButtonList';
-import { importExampleBibTex } from 'import-modules/bibtex';
+import { importExampleBibTex, importBibTexFromUrl } from 'import-modules/bibtex';
 import AddSeedsModal from 'core/ui/Modal/AddSeedsModal';
 import { UI } from 'core/state/ui';
 import { Store } from 'core/state/data';
+import { getQueryString } from 'utils';
 
 const StartModal = () => {
   const { setModal } = useContext(UI);
   const { updatePapers } = useContext(Store);
+  useEffect(() => {
+    let bibTexUrl = getQueryString('bib');
+    if (bibTexUrl && bibTexUrl.endsWith('.bib')) {
+      importBibTexFromUrl(bibTexUrl).then(papers => {
+        updatePapers(papers, true);
+        setModal(null);
+      });
+    }
+  }, []);
   return (
     <React.Fragment>
       <h1> Welcome to Gecko </h1>
