@@ -8,7 +8,7 @@ import RightPanel from 'core/ui/RightPanel';
 import { Store, useDataStore } from 'core/state/data';
 import { Filters, useFilters } from 'core/state/filters';
 import { UI, useUserInterface } from 'core/state/ui';
-import { getDataModules } from 'core/module-loader';
+import { getDataModules, getImportModules } from 'core/module-loader';
 
 function App() {
   let store = useDataStore();
@@ -26,6 +26,7 @@ function App() {
             <Logo />
           </div>
         </Filters.Provider>
+        {getImportModules().map(({ component }) => component && React.createElement(component))}
       </UI.Provider>
       {getDataModules().map(dataModule => React.createElement(dataModule))}
     </Store.Provider>
