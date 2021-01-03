@@ -37,5 +37,5 @@ app.get('/services/zotero/getCollections', require('./services/zotero/getCollect
 app.get('/services/zotero/getItemsInCollection', require('./services/zotero/getItemsInCollection'));
 app.post('/services/zotero/addItems', require('./services/zotero/addItems'));
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`CitationGecko server listening on...${PORT}`));
