@@ -6,8 +6,8 @@
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 .modal-content {
   background-color: #fefefe;
@@ -17,9 +17,11 @@
   -webkit-transform: translateY(-50%) translateX(-50%);
   -ms-transform: translateY(-50%) translate(-50%);
   transform: translateY(-50%) translate(-50%);
-  border-style:none;
-  border-radius: .5em;
+  border-style: none;
+  border-radius: 0.5em;
   max-width: 70%;
-  padding:2%;
-  max-height:90%;
+  padding: 2%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
 }
