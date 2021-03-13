@@ -2,6 +2,7 @@ import React from 'react';
 import ModeToggleKey from './components/ModeToggleKey';
 import ForceGraph from './components/ForceGraph';
 import { objectifyPapers } from 'core/state/data';
+import { DownloadSVG } from 'core/ui/DownloadSVG';
 
 export const NetworkView = ({
   mode,
@@ -28,6 +29,7 @@ export const NetworkView = ({
         onSelect={onSelect}
         selected={selected}
       />
+      <DownloadSVG id={'force-graph'} />
     </React.Fragment>
   );
 };
