@@ -145,6 +145,8 @@ export default class ForceGraph extends Component {
   render() {
     return (
       <svg
+        id="force-graph"
+        xmlns="http://www.w3.org/2000/svg"
         ref={n => {
           this.svg = d3.select(n);
         }}
