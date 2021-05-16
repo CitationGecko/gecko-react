@@ -1,11 +1,11 @@
 .table {
-  display: block;
-  height: 80%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   border-spacing: 0 0.1em;
 }
 
 .table tbody {
-  height: 68%;
   overflow: auto;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .table td {
-  padding: 1em;
+  padding: 0.8em;
   font-size: 12px;
 }
 
@@ -41,8 +41,6 @@
 }
 
 .table tbody {
-  display: block;
-  max-height: 300px;
   overflow-y: scroll;
 }
 
@@ -51,4 +49,8 @@ tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+
+.table thead {
+  flex-shrink: 0;
 }

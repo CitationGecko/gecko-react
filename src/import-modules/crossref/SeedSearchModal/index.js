@@ -25,7 +25,7 @@ const SeedSearchModal = () => {
     });
   };
   return (
-    <React.Fragment>
+    <div className={styles['container']}>
       <h1>Search for seed papers</h1>
       <form className={styles['search-input']} onSubmit={handleSubmit}>
         <span>Enter query:</span>
@@ -35,11 +35,11 @@ const SeedSearchModal = () => {
           <input type="submit" className={styles['submit']} value="Search" />
         )}
       </form>
-      <div>
+      <div className={styles['table']}>
         <Table papers={results} selected={selected} setSelected={setSelected} />
         <SecondarySquareButton text={'Add selected as seed papers'} onClick={addSeeds} />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { groupBy } from 'utils';
 import classNames from 'classnames';
 import styles from './styles.module.css';
+import { DownloadSVG } from 'core/ui/DownloadSVG';
 
 const X_OFFSET = 100;
 const Y_OFFSET = 50;
@@ -81,7 +82,14 @@ export const Timeline = ({ data: { Papers, Edges }, onSelect, selected }) => {
 
   return (
     <div className={styles['timeline-container']}>
-      <svg width={maxWidth} height={maxHeight} onClick={() => onSelect(null)}>
+      <DownloadSVG id={'timeline'} />
+      <svg
+        id="timeline"
+        width={maxWidth}
+        height={maxHeight}
+        onClick={() => onSelect(null)}
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <TimeAxis years={years} />
         <Connectors edges={edges} nodes={nodes} />
         <Nodes nodes={nodes} onSelect={onSelect} isHighlighted={isHighlighted} />

@@ -1,5 +1,4 @@
-const _ = require('lodash');
-const request = require('request-promise');
+const axios = require('axios');
 
 const API_ROOT = 'https://api.mendeley.com';
 
@@ -10,61 +9,58 @@ function getHeaders(params) {
 }
 
 function getProfile(params) {
-  const url = API_ROOT + '/profile/me';
-  const opts = {
-    url: url,
-    method: 'GET',
-    headers: getHeaders(params)
-  };
-  return request(opts).then(resp => JSON.parse(resp));
+  return axios
+    .get(`${API_ROOT}/profile/me`, { headers: getHeaders(params) })
+    .then(response => response.data);
 }
 
 function getFolders(params) {
-  const url = API_ROOT + '/folders?limit=500';
-  const opts = {
-    url: url,
-    method: 'GET',
-    headers: getHeaders(params)
-  };
-  return request(opts).then(JSON.parse);
+  return axios
+    .get(`${API_ROOT}/folders?limit=500`, { headers: getHeaders(params) })
+    .then(response => response.data);
 }
 
 function getDocumentsInFolder(folderID, params) {
-  const opts = {
-    url: API_ROOT + '/folders/' + folderID + '/documents?limit=500',
-    method: 'GET',
-    headers: getHeaders(params)
-  };
-
-  return request(opts).then(resp => JSON.parse(resp));
+  return axios
+    .get(`${API_ROOT}/folders/${folderID}/documents?limit=500`, {
+      headers: getHeaders(params)
+    })
+    .then(response => response.data);
 }
 
 function getDocument(id, params) {
-  const opts = {
-    url: API_ROOT + '/documents/' + id,
-    method: 'GET',
-    headers: getHeaders(params)
-  };
-
-  return request(opts).then(resp => JSON.parse(resp));
+  return axios
+    .get(`${API_ROOT}/documents/${id}`, {
+      headers: getHeaders(params)
+    })
+    .then(response => response.data);
 }
 
 function getAllDocuments(params) {
-  const opts = {
-    url: API_ROOT + '/documents/',
-    method: 'GET',
-    headers: getHeaders(params)
-  };
-
-  return request(opts).then(resp => JSON.parse(resp));
+  return axios
+    .get(`${API_ROOT}/documents/`, {
+      headers: getHeaders(params)
+    })
+    .then(response => response.data);
 }
 
-function addDocuments(papers, folderId, data) {}
+function addDocument(params, folderID, documentID) {
+  return axios
+    .post(
+      `${API_ROOT}/folders/${folderID}/documents`,
+      { id: documentID },
+      {
+        headers: getHeaders(params)
+      }
+    )
+    .then(response => response.data);
+}
 
 module.exports = {
   getProfile,
   getFolders,
   getDocument,
+  getAllDocuments,
   getDocumentsInFolder,
-  addDocuments
+  addDocument
 };

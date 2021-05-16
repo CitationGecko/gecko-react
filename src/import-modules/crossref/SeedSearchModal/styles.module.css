@@ -7,3 +7,22 @@
   display: inline;
   margin-left: 1em;
 }
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table button {
+  flex-shrink: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container > h1,
+form {
+  flex-shrink: 0;
+}
