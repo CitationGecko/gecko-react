@@ -18,7 +18,7 @@ function AuthZoteroVerifyRoute(req, res) {
       if (err) {
         console.log(err);
         _.set(req.session, 'auth.zotero', null);
-        return res.send("Couldn't obtain valid access token from Zotero.");
+        return res.status(500).send("Couldn't obtain valid access token from Zotero.");
       }
 
       _.set(req.session, 'auth.zotero.accessToken', accessToken);

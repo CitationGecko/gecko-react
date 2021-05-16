@@ -1,76 +1,13 @@
 const _ = require('lodash');
-const request = require('request-promise');
+const axios = require('axios');
 
 const API_ROOT = 'https://api.zotero.org';
-
-function getUser(data) {
-  const opts = {
-    url: API_ROOT + '/keys/' + data.userApiKey,
-    method: 'GET',
-    headers: getHeaders(data)
-  };
-
-  return request(opts).then(resp => JSON.parse(resp));
-}
 
 function getHeaders(data) {
   return {
     // 'User-Agent': 'CitationGecko',
     'Zotero-API-Key': data.userApiKey
   };
-}
-
-/**
- * @param data.userId
- * @param data.userApiKey
- * @param data.aggregatedResults
- * @param data.offset
- */
-function getCollections(data) {
-  const limit = 100;
-
-  if (!data.offset) {
-    data.offset = 0;
-  }
-
-  const url =
-    API_ROOT + '/users/' + data.userId + '/collections?limit=' + limit + '&start=' + data.offset;
-
-  const opts = {
-    url: url,
-    method: 'GET',
-    headers: getHeaders(data)
-  };
-
-  data.aggregatedResults = data.aggregatedResults || [];
-
-  return request(opts).then(response => {
-    const parsedBody = JSON.parse(response);
-    const totalCollections = _.get(response, 'headers.total-results');
-    var collections = _.map(parsedBody, 'data');
-
-    if (parsedBody && parsedBody.error) {
-      return parsedBody.message || 'Unknown error communicating with Zotero';
-    }
-
-    data.aggregatedResults = data.aggregatedResults.concat(collections);
-
-    if (totalCollections > data.offset + limit) {
-      data.offset += limit;
-      return getCollections(data);
-    }
-    return data.aggregatedResults;
-  });
-}
-
-function getContents(collectionID, data) {
-  const opts = {
-    url: API_ROOT + '/users/' + data.userId + '/collections/' + collectionID + '/items/top',
-    method: 'GET',
-    headers: getHeaders(data)
-  };
-
-  return request(opts).then(resp => JSON.parse(resp));
 }
 
 function insertPaperDataIntoTemplate(template, paper, collectionId) {
@@ -85,35 +22,87 @@ function insertPaperDataIntoTemplate(template, paper, collectionId) {
 }
 
 /**
- * @param data.userId
- * @param data.userApiKey
- * @param data.collectionId
+ * @param params.userApiKey
  */
-function addItems(papers, collectionId, data) {
+function getUser(params) {
+  return axios
+    .get(`${API_ROOT}/keys/${params.userApiKey}`, { headers: getHeaders(params) })
+    .then(response => response.data);
+}
+
+/**
+ * @param params.userId
+ * @param params.userApiKey
+ * @param params.aggregatedResults
+ * @param params.offset
+ */
+function getCollections(params) {
+  const limit = 100;
+
+  if (!params.offset) {
+    params.offset = 0;
+  }
+
+  params.aggregatedResults = params.aggregatedResults || [];
+
+  return axios
+    .get(`${API_ROOT}/users/${params.userId}/collections`, {
+      headers: getHeaders(params),
+      params: { limit, start: params.offset }
+    })
+    .then(response => response.data)
+    .then(response => {
+      const totalCollections = _.get(response, 'headers.total-results');
+      var collections = _.map(response, 'data');
+
+      if (response && response.error) {
+        return response.message || 'Unknown error communicating with Zotero';
+      }
+
+      params.aggregatedResults = params.aggregatedResults.concat(collections);
+
+      if (totalCollections > params.offset + limit) {
+        params.offset += limit;
+        return getCollections(params);
+      }
+      return params.aggregatedResults;
+    });
+}
+
+function getContents(collectionID, params) {
+  return axios
+    .get(`${API_ROOT}/users/${params.userId}/collections/${collectionID}/items/top`, {
+      headers: getHeaders(params)
+    })
+    .then(response => response.data);
+}
+
+/**
+ * @param params.userId
+ * @param params.userApiKey
+ * @param params.collectionId
+ */
+function addItems(papers, collectionId, params) {
   if (!Array.isArray(papers) && typeof papers === 'object') {
     papers = [papers];
   }
 
-  const url = 'https://api.zotero.org/items/new?itemType=journalArticle';
-  const templateOpts = {
-    url: url,
-    method: 'GET',
-    headers: getHeaders(data)
-  };
-
-  request(templateOpts).then(resp => {
-    const template = JSON.parse(resp);
-    const allPapersPayload = _.map(papers, paper =>
-      insertPaperDataIntoTemplate(template, paper, collectionId)
-    );
-    const opts = {
-      url: API_ROOT + '/users/' + data.userId + '/items',
-      method: 'POST',
-      headers: getHeaders(data),
-      body: JSON.stringify(allPapersPayload)
-    };
-    return request(opts).then(resp => JSON.parse(resp));
-  });
+  return axios
+    .get(`${API_ROOT}/items/new`, {
+      headers: getHeaders(params),
+      params: { itemType: 'journalArticle' }
+    })
+    .then(response => response.data)
+    .then(template => {
+      const allPapersPayload = _.map(papers, paper =>
+        insertPaperDataIntoTemplate(template, paper, collectionId)
+      );
+      return axios
+        .post(`${API_ROOT}/users/${params.userId}/items`, allPapersPayload, {
+          headers: getHeaders(params)
+        })
+        .then(resp => JSON.parse(resp));
+    });
 }
 
 module.exports = {

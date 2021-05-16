@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Zotero = require('./lib/zotero');
 
-function ZoteroGetCollectionsRoute(req, res) {
+function ZoteroGetItemsInCollectionRoute(req, res) {
   const collectionId = req.query.collectionId;
 
   const opts = {
@@ -21,8 +21,9 @@ function ZoteroGetCollectionsRoute(req, res) {
   }
 
   Zotero.getContents(collectionId, opts).then(collectionsData => {
+    console.log(collectionsData);
     return res.json({ success: true, data: collectionsData });
   });
 }
 
-module.exports = ZoteroGetCollectionsRoute;
+module.exports = ZoteroGetItemsInCollectionRoute;
