@@ -2,6 +2,7 @@
 
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![DOI](https://zenodo.org/badge/167792602.svg)](https://zenodo.org/badge/latestdoi/167792602)
 
 This is a tool that uses the citation relations between scientific papers to help researchers find interesting and relevant papers.
 
@@ -46,3 +47,15 @@ The tool allows the user to view these highly connected papers either in a table
 5. For a list of the papers connected to these seed papers click the icon with 3 dots in the side bar.
 6. You can switch between viewing a graph showing only references of the seed papers and a graph showing only the papers that cite the seed papers by clicking the toggle between 'Papers Cited-By Seed Papers' and 'Papers Citing Seed Papers' that also acts as a key.
 7. If one of the connected papers seems highly relevant you can add it as a seed paper either from the list view or network view, expanding the network in order to uncover more papers.
+
+## Citing CitationGecko
+
+To cite CitationGecko use the following details:
+
+Author: Barnabas James Walker
+Title: CitationGecko
+DOI: https://doi.org/10.5281/zenodo.7068284
+
+An example format may be:
+
+Walker. B (2022) CitationGecko [Software] https://doi.org/10.5281/zenodo.7068284
