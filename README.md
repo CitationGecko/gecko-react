@@ -54,7 +54,9 @@ The tool allows the user to view these highly connected papers either in a table
 To cite CitationGecko use the following details:
 
 Author: Barnabas James Walker
+
 Title: CitationGecko
+
 DOI: https://doi.org/10.5281/zenodo.7068284
 
 An example format may be:
