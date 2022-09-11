@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
-import PrimarySquareButton from 'core/components/PrimarySquareButton';
 import SecondarySquareButton from 'core/components/SecondarySquareButton';
 
 const Help = () => {
@@ -51,14 +50,8 @@ const Help = () => {
         )}
       </div>
       <div className={styles.footer}>
-        Please submit bugs reports and feature requests on Github{' '}
-        <a target="_blank" href="https://github.com/CitationGecko/gecko-react/issues">
-          here
-        </a>{' '}
-        or by email to{' '}
-        <a target="_blank" href="mailto:bjw15@ic.ac.uk">
-          bjw15@ic.ac.uk
-        </a>
+        CitationGecko is OpenSource. If you are interested in building upon it checkout the{' '}
+        <a href="https://github.com/CitationGecko/gecko-react">Github Repo</a>.
       </div>
     </React.Fragment>
   );

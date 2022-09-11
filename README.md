@@ -25,11 +25,12 @@ The tool allows the user to view these highly connected papers either in a table
 1. Clone the git repo:
    `git clone https://github.com/CitationGecko/gecko-react`
 2. If you don't have it already install Node.js from https://nodejs.org/en/.
-3. Open a terminal and navigate to the repository folder.
-4. Run `npm install` from the command line to install all the package dependencies.
-5. Run `npm run build` from the command line to build the app.
-6. Run `npm run start` to launch the server.
-7. The application will be served to http://localhost:8000
+3. Install Yarn from https://yarnpkg.com/getting-started/install
+4. Open a terminal and navigate to the repository folder.
+5. Run `yarn` from the command line to install all the package dependencies.
+6. Run `yarn run build` from the command line to build the app.
+7. Run `yarn run start` to launch the server.
+8. The application will be served to http://localhost:8000
 
 ## Instructions for use
 

@@ -1,0 +1,17 @@
+.main-button {
+  display: flex;
+  align-items: center;
+}
+
+.main-button a {
+  width: 100%;
+}
+
+.main-button button {
+  margin: 0px !important;
+}
+
+.secondary {
+  cursor: pointer;
+}
+
